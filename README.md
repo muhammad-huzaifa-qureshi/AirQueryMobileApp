@@ -16,15 +16,16 @@ An **unofficial** mobile app for Air University students to post and answer camp
 # Firestore Rules
 All Firestore reads and writes are disabled. Use Cloud Functions for all database operations.
 
-# Future Enhancements
-- To implement **Profile Picture** Functionality
-- To implement **Change Password** functionality
-- To enhance the overall **User Experience**
-- To improve the **UI and aesthetics** of the app
-- To improve **Code Quality**
-- To implement **Auto delete Queries** after 30 days
-- To implement **Notifications** Functionality (upon user's query answered)
-- To optimize the overall app code
+# What’s Coming Next
+- Introduce a **"Report Query"** feature for better moderation
+- Add **notifications** when a user’s query receives a response
+- Implement **automatic deletion of queries** after 30 days
+- Introduce **change password** functionality
+- Add **profile picture support** for user accounts
+- Enhance the overall **user experience** and interaction flow
+- Improve the app’s **UI and visual aesthetics**
+- Refactor and improve overall **code quality and maintainability**
+- Optimize app performance and internal logic
 
 # Disclaimer
 This application is an independent project and is **NOT** affiliated with, endorsed by, or officially associated with Air University in any capacity. All references to Air University are for identification purposes only.
