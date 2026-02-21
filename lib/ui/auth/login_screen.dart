@@ -1,4 +1,5 @@
 import 'package:air_query/core/constants/app_sizes.dart';
+import 'package:air_query/core/widgets/cta_button.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -65,6 +66,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     validator: (value) {
                       return null;
                     },
+                  ),
+
+                  const SizedBox(height: AppSizes.large),
+                  CTAButton(text: "Login", onPressed: (){}),
+
+                  const SizedBox(height: AppSizes.medium),
+                  Text(
+                    "Developed by an Airian, for the Airians 💌",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    textAlign: .center,
                   ),
                 ],
               ),
