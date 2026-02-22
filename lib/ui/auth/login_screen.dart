@@ -1,4 +1,5 @@
 import 'package:air_query/core/constants/app_sizes.dart';
+import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
 import 'package:flutter/material.dart';
 
@@ -50,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       labelText: "AU Email",
                       hintText: "eg: 000000",
                       prefixIcon: Icon(Icons.email_outlined),
+                      suffixText: "@students.au.edu.pk",
                     ),
                     validator: (value) {
                       return null;
@@ -76,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: AppSizes.small),
                   CTAButton(
                     text: "New? Make a free account!",
-                    onPressed: () {},
+                    onPressed: () => Navigator.pushNamed(context, AppRoutes.register),
                     isPrimary: false,
                   ),
 

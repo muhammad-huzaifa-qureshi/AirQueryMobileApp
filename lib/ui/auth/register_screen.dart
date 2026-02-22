@@ -17,7 +17,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Register"),),
+      appBar: AppBar(title: Text("Register")),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -51,6 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       labelText: "AU Email",
                       hintText: "eg: 000000",
                       prefixIcon: Icon(Icons.email_outlined),
+                      suffixText: "@students.au.edu.pk",
                     ),
                     validator: (value) {
                       return null;
@@ -78,7 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: AppSizes.small),
                   CTAButton(
                     text: "Already have an account? Login",
-                    onPressed: () {},
+                    onPressed: () => Navigator.pop(context),
                     isPrimary: false,
                   ),
 

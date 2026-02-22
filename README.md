@@ -1,6 +1,8 @@
 # Air Query
 An **unofficial** mobile app for Air University students to post and answer campus related questions in a smart and organized way.
 
+[![License](https://img.shields.io/badge/License-blue.svg)](LICENSE.md)
+
 # Tech Stack
 - Flutter
 - Bloc (for State Management)
