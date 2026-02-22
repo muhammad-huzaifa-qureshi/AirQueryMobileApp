@@ -16,6 +16,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordController = TextEditingController();
 
   @override
+  void dispose() {
+    _idController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Register")),
@@ -54,7 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       prefixIcon: Icon(Icons.email_outlined),
                       suffixText: "@students.au.edu.pk",
                     ),
-                    validator: AuthValidators.validateAuId
+                    validator: AuthValidators.validateAuId,
                   ),
                   const SizedBox(height: AppSpacings.small),
 
@@ -67,7 +74,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       hintText: "Min. 8 characters",
                       prefixIcon: Icon(Icons.lock_outline),
                     ),
-                    validator: AuthValidators.validatePassword
+                    validator: AuthValidators.validatePassword,
                   ),
 
                   // buttons
