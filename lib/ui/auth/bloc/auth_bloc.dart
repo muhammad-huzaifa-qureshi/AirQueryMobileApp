@@ -4,7 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(const AuthInitial()) {
-    on<LoginRequested>((event, emit) {
+    // TODO: on app started
+    on<AppStarted>((event, emit) {
+      emit(const AuthUnauthenticated());
+    });
+    // Login
+    on<LoginRequested>((event, emit) async {
       emit(const AuthLoading());
       // TODO: api call
     });

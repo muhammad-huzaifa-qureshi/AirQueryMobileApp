@@ -4,6 +4,7 @@ import 'package:air_query/ui/auth/bloc/auth_bloc.dart';
 import 'package:air_query/ui/auth/bloc/auth_state.dart';
 import 'package:air_query/ui/auth/login_screen.dart';
 import 'package:air_query/ui/home/home_screen.dart';
+import 'package:air_query/ui/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,11 +22,19 @@ class AirQuery extends StatelessWidget {
       // start destination decider
       home: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
+          if (state is AuthInitial) {
+            return const SplashScreen();
+          }
+          if (state is AuthLoading) {
+            return const SplashScreen();
+          }
           if (state is AuthAuthenticated) {
             return const HomeScreen();
-          } else {
+          }
+          if (state is AuthUnauthenticated || state is AuthError) {
             return const LoginScreen();
           }
+          return const LoginScreen();
         },
       ),
     );
