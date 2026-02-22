@@ -1,7 +1,11 @@
-import 'package:air_query/core/constants/app_sizes.dart';
+import 'package:air_query/core/constants/app_spacings.dart';
 import 'package:air_query/core/routing/app_routes.dart';
+import 'package:air_query/core/utils/auth_validators.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
+import 'package:air_query/ui/auth/bloc/auth_bloc.dart';
+import 'package:air_query/ui/auth/bloc/auth_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: .all(AppSizes.medium),
+            padding: .all(AppSpacings.medium),
             child: Form(
               key: _formKey,
               child: Column(
@@ -34,13 +38,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: Theme.of(context).textTheme.displayLarge,
                     textAlign: .center,
                   ),
-                  const SizedBox(height: AppSizes.small),
+                  const SizedBox(height: AppSpacings.small),
                   Text(
                     "Unofficial platform for Air University Pakistan Students' Queries!",
                     style: Theme.of(context).textTheme.bodyMedium,
                     textAlign: .center,
                   ),
-                  const SizedBox(height: AppSizes.large),
+                  const SizedBox(height: AppSpacings.large),
 
                   // id field
                   TextFormField(
@@ -53,11 +57,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       prefixIcon: Icon(Icons.email_outlined),
                       suffixText: "@students.au.edu.pk",
                     ),
-                    validator: (value) {
-                      return null;
-                    },
+                    validator: AuthValidators.validateAuId,
                   ),
-                  const SizedBox(height: AppSizes.small),
+                  const SizedBox(height: AppSpacings.small),
 
                   // password field
                   TextFormField(
@@ -67,22 +69,33 @@ class _LoginScreenState extends State<LoginScreen> {
                       labelText: "Password",
                       prefixIcon: Icon(Icons.lock_outline),
                     ),
-                    validator: (value) {
-                      return null;
-                    },
+                    validator: AuthValidators.validatePassword,
                   ),
 
                   // buttons
-                  const SizedBox(height: AppSizes.large),
-                  CTAButton(text: "Login", onPressed: () {}),
-                  const SizedBox(height: AppSizes.small),
+                  const SizedBox(height: AppSpacings.large),
+                  CTAButton(
+                    text: "Login",
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        context.read<AuthBloc>().add(
+                          LoginRequested(
+                            "${_idController.text.trim()}@students.au.edu.pk",
+                            _passwordController.text.trim(),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                  const SizedBox(height: AppSpacings.small),
                   CTAButton(
                     text: "New? Make a free account!",
-                    onPressed: () => Navigator.pushNamed(context, AppRoutes.register),
+                    onPressed: () =>
+                        Navigator.pushNamed(context, AppRoutes.register),
                     isPrimary: false,
                   ),
 
-                  const SizedBox(height: AppSizes.medium),
+                  const SizedBox(height: AppSpacings.medium),
                   Text(
                     "Developed by an Airian, for the Airians 💌",
                     style: Theme.of(context).textTheme.bodyMedium,

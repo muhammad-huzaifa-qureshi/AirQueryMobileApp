@@ -1,4 +1,5 @@
-import 'package:air_query/core/constants/app_sizes.dart';
+import 'package:air_query/core/constants/app_spacings.dart';
+import 'package:air_query/core/utils/auth_validators.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: .all(AppSizes.medium),
+            padding: .all(AppSpacings.medium),
             child: Form(
               key: _formKey,
               child: Column(
@@ -34,13 +35,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: Theme.of(context).textTheme.displayLarge,
                     textAlign: .center,
                   ),
-                  const SizedBox(height: AppSizes.small),
+                  const SizedBox(height: AppSpacings.small),
                   Text(
                     "Your data is stored in Cloud securely. Passwords are encrypted!",
                     style: Theme.of(context).textTheme.bodyMedium,
                     textAlign: .center,
                   ),
-                  const SizedBox(height: AppSizes.large),
+                  const SizedBox(height: AppSpacings.large),
 
                   // id field
                   TextFormField(
@@ -53,11 +54,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       prefixIcon: Icon(Icons.email_outlined),
                       suffixText: "@students.au.edu.pk",
                     ),
-                    validator: (value) {
-                      return null;
-                    },
+                    validator: AuthValidators.validateAuId
                   ),
-                  const SizedBox(height: AppSizes.small),
+                  const SizedBox(height: AppSpacings.small),
 
                   // password field
                   TextFormField(
@@ -68,22 +67,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       hintText: "Min. 8 characters",
                       prefixIcon: Icon(Icons.lock_outline),
                     ),
-                    validator: (value) {
-                      return null;
-                    },
+                    validator: AuthValidators.validatePassword
                   ),
 
                   // buttons
-                  const SizedBox(height: AppSizes.large),
+                  const SizedBox(height: AppSpacings.large),
                   CTAButton(text: "Register", onPressed: () {}),
-                  const SizedBox(height: AppSizes.small),
+                  const SizedBox(height: AppSpacings.small),
                   CTAButton(
                     text: "Already have an account? Login",
                     onPressed: () => Navigator.pop(context),
                     isPrimary: false,
                   ),
 
-                  const SizedBox(height: AppSizes.medium),
+                  const SizedBox(height: AppSpacings.medium),
                   Text(
                     "Developed by an Airian, for the Airians 💌",
                     style: Theme.of(context).textTheme.bodyMedium,
