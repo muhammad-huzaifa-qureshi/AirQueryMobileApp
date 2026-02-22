@@ -2,14 +2,14 @@ import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _idController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -17,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Register"),),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -29,13 +30,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   // header
                   Text(
-                    "Welcome to Air Query",
+                    "Create Your Account",
                     style: Theme.of(context).textTheme.displayLarge,
                     textAlign: .center,
                   ),
                   const SizedBox(height: AppSizes.small),
                   Text(
-                    "Unofficial platform for Air University Pakistan Students' Queries!",
+                    "Your data is stored in Cloud securely. Passwords are encrypted!",
                     style: Theme.of(context).textTheme.bodyMedium,
                     textAlign: .center,
                   ),
@@ -63,6 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     keyboardType: .text,
                     decoration: const InputDecoration(
                       labelText: "Password",
+                      hintText: "Min. 8 characters",
                       prefixIcon: Icon(Icons.lock_outline),
                     ),
                     validator: (value) {
@@ -72,10 +74,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   // buttons
                   const SizedBox(height: AppSizes.large),
-                  CTAButton(text: "Login", onPressed: () {}),
+                  CTAButton(text: "Register", onPressed: () {}),
                   const SizedBox(height: AppSizes.small),
                   CTAButton(
-                    text: "New? Make a free account!",
+                    text: "Already have an account? Login",
                     onPressed: () {},
                     isPrimary: false,
                   ),

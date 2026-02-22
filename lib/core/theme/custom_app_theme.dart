@@ -38,6 +38,8 @@ class CustomAppTheme {
       errorBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: AppColors.error, width: 1.5),
       ),
+
+      prefixIconColor: AppColors.primary,
     ),
 
     // text theme

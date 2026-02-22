@@ -49,7 +49,7 @@ class CTAButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(100),
           side: (isPrimary || _isInactive)
               ? BorderSide.none
-              : BorderSide(color: fgColor, width: 2),
+              : BorderSide(color: fgColor, width: 1),
         ),
       ),
       child: isLoading

@@ -1,3 +1,4 @@
+import 'package:air_query/core/routing/app_router.dart';
 import 'package:air_query/core/theme/custom_app_theme.dart';
 import 'package:air_query/ui/auth/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ class AirQuery extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Air Query",
       home: LoginScreen(),
+      routes: AppRouter.routes,
       theme: CustomAppTheme.darkTheme,
     );
   }
