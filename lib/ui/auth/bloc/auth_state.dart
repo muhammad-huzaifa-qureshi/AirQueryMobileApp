@@ -1,14 +1,34 @@
 import 'package:equatable/equatable.dart';
 
-class AuthState extends Equatable {
-  final int count;
-
-  const AuthState({required this.count});
+abstract class AuthState extends Equatable {
+  const AuthState();
 
   @override
-  List<Object?> get props => [count];
+  List<Object?> get props => [];
+}
 
-  AuthState copyWith({int? count}) {
-    return AuthState(count: count ?? this.count);
-  }
+// possible states of Auth
+class AuthInitial extends AuthState {
+  const AuthInitial();
+}
+
+class AuthLoading extends AuthState {
+  const AuthLoading();
+}
+
+class AuthAuthenticated extends AuthState {
+  const AuthAuthenticated();
+}
+
+class AuthUnauthenticated extends AuthState {
+  const AuthUnauthenticated();
+}
+
+class AuthError extends AuthState {
+  final String message;
+
+  const AuthError(this.message);
+
+  @override
+  List<Object?> get props => [message];
 }
