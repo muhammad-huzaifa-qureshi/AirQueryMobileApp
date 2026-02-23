@@ -21,13 +21,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           email: event.email,
           password: event.password,
         );
+
         if (user != null) {
-          emit(AuthAuthenticated());
+          if (user.emailVerified) {
+            emit(AuthAuthenticated());
+          } else {
+            emit(AuthEmailNotVerified());
+          }
         } else {
           emit(const AuthUnauthenticated());
         }
       } catch (e) {
-        // Catch FirebaseAuthException or general errors
         emit(
           AuthError(
             e is FirebaseAuthException

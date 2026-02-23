@@ -24,6 +24,10 @@ class AuthUnauthenticated extends AuthState {
   const AuthUnauthenticated();
 }
 
+class AuthEmailNotVerified extends AuthState {
+  const AuthEmailNotVerified();
+}
+
 class AuthError extends AuthState {
   final String message;
 

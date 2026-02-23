@@ -3,6 +3,7 @@ import 'package:air_query/core/theme/custom_app_theme.dart';
 import 'package:air_query/ui/auth/bloc/auth_bloc.dart';
 import 'package:air_query/ui/auth/bloc/auth_state.dart';
 import 'package:air_query/ui/auth/login_screen.dart';
+import 'package:air_query/ui/auth/verify_email_screen.dart';
 import 'package:air_query/ui/home/home_screen.dart';
 import 'package:air_query/ui/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,9 @@ class AirQuery extends StatelessWidget {
           }
           if (state is AuthUnauthenticated || state is AuthError) {
             return const LoginScreen();
+          }
+          if (state is AuthEmailNotVerified){
+            return const VerifyEmailScreen();
           }
           return const LoginScreen();
         },
