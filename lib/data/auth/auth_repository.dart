@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthRepository {
   final _firebaseAuth = FirebaseAuth.instance;
 
+  User? get currentUser => _firebaseAuth.currentUser;
+
   // (let bloc catch exceptions - don't handle it here)
 
   // login
@@ -24,5 +26,13 @@ class AuthRepository {
       password: password,
     );
     return userCred.user;
+  }
+
+  // send email verification
+  Future<void> sendEmailVerification() async {
+    final user = _firebaseAuth.currentUser;
+    if (user == null) return;
+    await user.reload();
+    await user.sendEmailVerification();
   }
 }

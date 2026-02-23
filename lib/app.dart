@@ -1,11 +1,8 @@
 import 'package:air_query/core/routing/app_router.dart';
+import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/theme/custom_app_theme.dart';
 import 'package:air_query/ui/auth/bloc/auth_bloc.dart';
 import 'package:air_query/ui/auth/bloc/auth_state.dart';
-import 'package:air_query/ui/auth/login_screen.dart';
-import 'package:air_query/ui/auth/verify_email_screen.dart';
-import 'package:air_query/ui/home/home_screen.dart';
-import 'package:air_query/ui/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,30 +11,31 @@ class AirQuery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // todo: issue here
+    final authState = context.read<AuthBloc>().state;
+
+    String initialScreen;
+
+    if (authState is AuthInitial || authState is AuthLoading) {
+      initialScreen = AppRoutes.splash;
+    } else if (authState is AuthAuthenticated) {
+      initialScreen = AppRoutes.home;
+    } else if (authState is AuthUnauthenticated) {
+      print("here");
+      initialScreen = AppRoutes.login;
+      print("here2");
+    } else if (authState is AuthEmailNotVerified) {
+      initialScreen = AppRoutes.emailVerify;
+    } else {
+      initialScreen = AppRoutes.login;
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Air Query",
       routes: AppRouter.routes,
       theme: CustomAppTheme.darkTheme,
-
-      // start destination decider
-      home: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is AuthInitial) {
-            return const SplashScreen();
-          }
-          if (state is AuthAuthenticated) {
-            return const HomeScreen();
-          }
-          if (state is AuthUnauthenticated || state is AuthError) {
-            return const LoginScreen();
-          }
-          if (state is AuthEmailNotVerified){
-            return const VerifyEmailScreen();
-          }
-          return const LoginScreen();
-        },
-      ),
+      initialRoute: initialScreen,
     );
   }
 }

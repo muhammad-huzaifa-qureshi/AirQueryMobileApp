@@ -32,12 +32,12 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is AuthAuthenticated) {
+          if (state is AuthEmailNotVerified) {
             Navigator.pushNamedAndRemoveUntil(
-              context,
-              AppRoutes.home,
-                  (route) => false,
-            );
+              context, AppRoutes.emailVerify, (route) => false);
+          }
+          if (state is AuthAuthenticated){
+            Navigator.pushNamedAndRemoveUntil(context, AppRoutes.home, (route) => false,);
           }
           if (state is AuthError) {
             ScaffoldMessenger.of(
@@ -115,7 +115,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   builder: (context, isLoading) {
                     return CTAButton(
                       text: isLoading ? "wait..." : "Login",
-                      onPressed: isLoading ? null : () {
+                      onPressed: isLoading
+                          ? null
+                          : () {
                         if (_formKey.currentState!.validate()) {
                           context.read<AuthBloc>().add(
                             LoginRequested(
@@ -126,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       },
                     );
-                  }
+                  },
                 ),
                 const SizedBox(height: AppSpacings.small),
                 CTAButton(
