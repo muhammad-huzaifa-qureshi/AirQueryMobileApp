@@ -109,11 +109,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // buttons
                 const SizedBox(height: AppSpacings.large),
-                BlocBuilder<AuthBloc, AuthState>(
-                  builder: (context, state) {
+                BlocSelector<AuthBloc, AuthState, bool>(
+                  selector: (state) => state is AuthLoading,
+                  builder: (context, isLoading) {
                     return CTAButton(
-                      text: state is AuthLoading ? "wait..." : "Login",
-                      onPressed: state is AuthLoading ? null : () {
+                      text: isLoading ? "wait..." : "Login",
+                      onPressed: isLoading ? null : () {
                         if (_formKey.currentState!.validate()) {
                           context.read<AuthBloc>().add(
                             LoginRequested(
@@ -124,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       },
                     );
-                  },
+                  }
                 ),
                 const SizedBox(height: AppSpacings.small),
                 CTAButton(
