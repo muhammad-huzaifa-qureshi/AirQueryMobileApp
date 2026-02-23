@@ -25,9 +25,6 @@ class AirQuery extends StatelessWidget {
           if (state is AuthInitial) {
             return const SplashScreen();
           }
-          if (state is AuthLoading) {
-            return const SplashScreen();
-          }
           if (state is AuthAuthenticated) {
             return const HomeScreen();
           }
