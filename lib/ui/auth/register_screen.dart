@@ -69,6 +69,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   TextFormField(
                     controller: _passwordController,
                     keyboardType: .text,
+                    obscureText: true,
                     decoration: const InputDecoration(
                       labelText: "Password",
                       hintText: "Min. 8 characters",

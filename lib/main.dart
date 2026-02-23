@@ -1,3 +1,4 @@
+import 'package:air_query/data/auth/auth_repository.dart';
 import 'package:air_query/ui/auth/bloc/auth_bloc.dart';
 import 'package:air_query/ui/auth/bloc/auth_event.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,7 +13,7 @@ void main() async {
 
   runApp(
     BlocProvider(
-      create: (_) => AuthBloc()..add(const AppStarted()),
+      create: (_) => AuthBloc(AuthRepository())..add(const AppStarted()),
       child: const AirQuery(),
     ),
   );
