@@ -1,21 +1,21 @@
+import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/core/constants/app_spacings.dart';
 import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/utils/auth_validators.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
-import 'package:air_query/ui/auth/bloc/auth_event.dart';
+import 'package:air_query/ui/auth/notifier/auth_notifier.dart';
+import 'package:air_query/ui/auth/notifier/auth_status.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'bloc/auth_bloc.dart';
-import 'bloc/auth_state.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RegisterScreen extends StatefulWidget {
+class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _idController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -29,39 +29,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(authProvider, (prev, next) {
+      if (next is AsyncData<AuthStatus>) {
+        if (next.value == AuthStatus.emailNotVerified) {
+          Navigator.pushNamedAndRemoveUntil(
+            context, AppRoutes.emailVerify, (route) => false);
+        }
+      }
+      if (next is AsyncError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(next.error.toString())),
+        );
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(title: Text("Register")),
-      body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is AuthEmailNotVerified) {
-            Navigator.pushNamedAndRemoveUntil(
-              context, AppRoutes.emailVerify, (route) => false,);
-          }
-          if (state is AuthEmailNotVerified) {
-            Navigator.pushNamedAndRemoveUntil(
-              context, AppRoutes.emailVerify, (route) => false,);
-          }
-          if (state is AuthError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
-          }
-        },
-        child: _buildForm(context),
-      ),
+      body: _buildForm(context),
     );
   }
 
   Widget _buildForm(BuildContext context) {
+    final isLoading = ref.watch(
+      authProvider.select((value) => value.isLoading),
+    );
+
     return SafeArea(
       child: Center(
         child: SingleChildScrollView(
-          padding: .all(AppSpacings.medium),
+          padding: EdgeInsets.all(AppSpacings.medium),
           child: Form(
             key: _formKey,
             child: Column(
-              mainAxisAlignment: .center,
-              crossAxisAlignment: .stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // header
                 Text(
@@ -70,7 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       .of(context)
                       .textTheme
                       .displayLarge,
-                  textAlign: .center,
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: AppSpacings.small),
                 Text(
@@ -79,20 +80,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       .of(context)
                       .textTheme
                       .bodyMedium,
-                  textAlign: .center,
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: AppSpacings.large),
 
                 // id field
                 TextFormField(
                   controller: _idController,
-                  keyboardType: .number,
-                  textInputAction: .next,
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.next,
                   decoration: const InputDecoration(
                     labelText: "AU Email",
                     hintText: "eg: 000000",
                     prefixIcon: Icon(Icons.email_outlined),
-                    suffixText: "@students.au.edu.pk",
+                    suffixText: BusinessConstants.auEmailDomain,
                   ),
                   validator: AuthValidators.validateAuId,
                 ),
@@ -101,7 +102,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 // password field
                 TextFormField(
                   controller: _passwordController,
-                  keyboardType: .text,
+                  keyboardType: TextInputType.text,
                   obscureText: true,
                   decoration: const InputDecoration(
                     labelText: "Password",
@@ -113,24 +114,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                 // buttons
                 const SizedBox(height: AppSpacings.large),
-                BlocSelector<AuthBloc, AuthState, bool>(
-                  selector: (state) => state is AuthLoading,
-                  builder: (context, isLoading) {
-                    return CTAButton(
-                      text: isLoading ? "wait..." : "Register",
-                      onPressed: isLoading
-                          ? null
-                          : () {
-                        if (_formKey.currentState!.validate()) {
-                          context.read<AuthBloc>().add(
-                            RegisterRequested(
-                              "${_idController.text.trim()}@students.au.edu.pk",
-                              _passwordController.text.trim(),
-                            ),
-                          );
-                        }
-                      },
-                    );
+                CTAButton(
+                  text: isLoading ? "wait..." : "Register",
+                  onPressed: isLoading
+                      ? null
+                      : () {
+                    if (_formKey.currentState!.validate()) {
+                      ref.read(authProvider.notifier).register(
+                        email:
+                            "${_idController.text.trim()}${BusinessConstants.auEmailDomain}",
+                        password: _passwordController.text.trim(),
+                      );
+                    }
                   },
                 ),
                 const SizedBox(height: AppSpacings.small),
@@ -147,7 +142,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       .of(context)
                       .textTheme
                       .bodyMedium,
-                  textAlign: .center,
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),

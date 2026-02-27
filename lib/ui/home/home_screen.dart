@@ -1,3 +1,4 @@
+import 'package:air_query/data/auth/auth_repository.dart';
 import 'package:flutter/cupertino.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -5,6 +6,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthRepository().signOut();
     return const Text("home");
   }
 }

@@ -13,9 +13,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # for BLOC
-  flutter_bloc: ^9.1.1
-  equatable: ^2.0.8
+  # riverpod
+  flutter_riverpod: ^3.2.1
 
   #  rename_app: ^1.6.5
   #  flutter_launcher_icons: ^0.14.4
