@@ -74,9 +74,6 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   }
 
   Widget _buildBody(BuildContext context) {
-    final isLoading = ref.watch(
-      authProvider.select((value) => value.isLoading),
-    );
 
     return SafeArea(
       child: Center(
@@ -121,17 +118,24 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
               // Buttons
               const SizedBox(height: AppSpacings.large),
-              CTAButton(
-                text: isLoading
-                    ? "Sending..."
-                    : _cooldownRemaining > 0
-                        ? "Resend in ${_cooldownRemaining}s"
-                        : _resetSent
-                            ? "Resend Link"
-                            : "Send Reset Link",
-                onPressed: (isLoading || _cooldownRemaining > 0)
-                    ? null
-                    : _sendResetEmail,
+              Consumer(
+                builder: (context, ref, _) {
+                  final isLoading = ref.watch(
+                    authProvider.select((value) => value.isLoading),
+                  );
+                  return CTAButton(
+                    text: isLoading
+                        ? "Sending..."
+                        : _cooldownRemaining > 0
+                            ? "Resend in ${_cooldownRemaining}s"
+                            : _resetSent
+                                ? "Resend Link"
+                                : "Send Reset Link",
+                    onPressed: (isLoading || _cooldownRemaining > 0)
+                        ? null
+                        : _sendResetEmail,
+                  );
+                },
               ),
               const SizedBox(height: AppSpacings.small),
               CTAButton(

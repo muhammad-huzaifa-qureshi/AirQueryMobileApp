@@ -3,6 +3,7 @@ import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/core/constants/app_spacings.dart';
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/routing/app_routes.dart';
+import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
 import 'package:air_query/ui/auth/notifier/auth_notifier.dart';
 import 'package:air_query/ui/auth/notifier/auth_status.dart';
@@ -76,9 +77,6 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
   }
 
   Widget _buildBody(BuildContext context) {
-    final isLoading = ref.watch(
-      authProvider.select((value) => value.isLoading),
-    );
 
     return SafeArea(
       child: Center(
@@ -89,10 +87,10 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // Header
-              const Icon(
+              Icon(
                 Icons.mark_email_unread_outlined,
                 size: AppSizes.heroIcon,
-                color: Colors.white70,
+                color: AppColors.primary,
               ),
               const SizedBox(height: AppSpacings.large),
               Text(
@@ -109,33 +107,46 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
               const SizedBox(height: AppSpacings.vLarge),
 
               // Buttons
-              CTAButton(
-                text: isLoading ? "Checking..." : "I've Verified My Email",
-                onPressed: isLoading
-                    ? null
-                    : () => ref
-                        .read(authProvider.notifier)
-                        .checkEmailVerification(),
-              ),
-              const SizedBox(height: AppSpacings.medium),
-              CTAButton(
-                text: _cooldownRemaining > 0
-                    ? "Resend Link in ${_cooldownRemaining}s"
-                    : "Resend Verification Email",
-                onPressed:
-                    (isLoading || _cooldownRemaining > 0) ? null : _resendEmail,
-                isPrimary: false,
-              ),
-              const SizedBox(height: AppSpacings.small),
-              CTAButton(
-                text: "Back to Login",
-                onPressed: () => Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  AppRoutes.login,
-                  (route) => false,
-                ),
-                isPrimary: false,
-                isDanger: true,
+              Consumer(
+                builder: (context, ref, _) {
+                  final isLoading = ref.watch(
+                    authProvider.select((value) => value.isLoading),
+                  );
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      CTAButton(
+                        text: isLoading ? "Checking..." : "I've Verified My Email",
+                        onPressed: isLoading
+                            ? null
+                            : () => ref
+                                .read(authProvider.notifier)
+                                .checkEmailVerification(),
+                      ),
+                      const SizedBox(height: AppSpacings.medium),
+                      CTAButton(
+                        text: _cooldownRemaining > 0
+                            ? "Resend Link in ${_cooldownRemaining}s"
+                            : "Resend Verification Email",
+                        onPressed: (isLoading || _cooldownRemaining > 0)
+                            ? null
+                            : _resendEmail,
+                        isPrimary: false,
+                      ),
+                      const SizedBox(height: AppSpacings.small),
+                      CTAButton(
+                        text: "Back to Login",
+                        onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          AppRoutes.login,
+                          (route) => false,
+                        ),
+                        isPrimary: false,
+                        isDanger: true,
+                      ),
+                    ],
+                  );
+                },
               ),
             ],
           ),

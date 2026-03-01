@@ -19,6 +19,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _idController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _obscurePassword = true;
 
   @override
   void dispose() {
@@ -50,9 +51,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   Widget _buildForm(BuildContext context) {
-    final isLoading = ref.watch(
-      authProvider.select((value) => value.isLoading),
-    );
 
     return SafeArea(
       child: Center(
@@ -103,36 +101,57 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 TextFormField(
                   controller: _passwordController,
                   keyboardType: TextInputType.text,
-                  obscureText: true,
-                  decoration: const InputDecoration(
+                  obscureText: _obscurePassword,
+                  decoration: InputDecoration(
                     labelText: "Password",
                     hintText: "Min. 8 characters",
-                    prefixIcon: Icon(Icons.lock_outline),
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword
+                            ? Icons.visibility_off_outlined
+                            : Icons.visibility_outlined,
+                      ),
+                      onPressed: () =>
+                          setState(() => _obscurePassword = !_obscurePassword),
+                    ),
                   ),
                   validator: AuthValidators.validatePassword,
                 ),
 
                 // buttons
                 const SizedBox(height: AppSpacings.large),
-                CTAButton(
-                  text: isLoading ? "wait..." : "Register",
-                  onPressed: isLoading
-                      ? null
-                      : () {
-                    if (_formKey.currentState!.validate()) {
-                      ref.read(authProvider.notifier).register(
-                        email:
-                            "${_idController.text.trim()}${BusinessConstants.auEmailDomain}",
-                        password: _passwordController.text.trim(),
-                      );
-                    }
+                Consumer(
+                  builder: (context, ref, _) {
+                    final isLoading = ref.watch(
+                      authProvider.select((value) => value.isLoading),
+                    );
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        CTAButton(
+                          text: isLoading ? "wait..." : "Register",
+                          onPressed: isLoading
+                              ? null
+                              : () {
+                                  if (_formKey.currentState!.validate()) {
+                                    FocusScope.of(context).unfocus();
+                                    ref.read(authProvider.notifier).register(
+                                          email: "${_idController.text.trim()}${BusinessConstants.auEmailDomain}",
+                                          password: _passwordController.text.trim(),
+                                        );
+                                  }
+                                },
+                        ),
+                        const SizedBox(height: AppSpacings.small),
+                        CTAButton(
+                          text: "Already have an account? Login",
+                          onPressed: () => Navigator.pop(context),
+                          isPrimary: false,
+                        ),
+                      ],
+                    );
                   },
-                ),
-                const SizedBox(height: AppSpacings.small),
-                CTAButton(
-                  text: "Already have an account? Login",
-                  onPressed: () => Navigator.pop(context),
-                  isPrimary: false,
                 ),
 
                 const SizedBox(height: AppSpacings.medium),
