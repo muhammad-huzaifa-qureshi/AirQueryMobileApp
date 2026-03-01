@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final authProvider =
-    AsyncNotifierProvider<AuthNotifier, AuthStatus>(AuthNotifier.new);
+AsyncNotifierProvider<AuthNotifier, AuthStatus>(AuthNotifier.new);
 
 class AuthNotifier extends AsyncNotifier<AuthStatus> {
   late final AuthRepository _authRepository;
@@ -143,10 +143,7 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
       if (user.emailVerified) {
         state = const AsyncData(AuthStatus.authenticated);
       } else {
-        state = AsyncError(
-          'Email not verified yet. Please check your inbox and spam folder.',
-          StackTrace.current,
-        );
+        state = const AsyncData(AuthStatus.emailNotVerified);
       }
     } on FirebaseException catch (e) {
       state = AsyncError(
@@ -160,8 +157,21 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
     state = const AsyncLoading();
 
     try {
+      final user = await _authRepository.reloadAndGetUser();
+
+      if (user == null) {
+        state = const AsyncData(AuthStatus.unauthenticated);
+        return;
+      }
+
+      // If already verified, no need to resend
+      if (user.emailVerified) {
+        state = const AsyncData(AuthStatus.authenticated);
+        return;
+      }
+
       await _authRepository.sendEmailVerification();
-      state = AsyncData(state.value ?? AuthStatus.emailNotVerified);
+      state = const AsyncData(AuthStatus.emailNotVerified);
     } on FirebaseException catch (e) {
       state = AsyncError(
         e.message ?? 'Failed to resend email, please try again!',
