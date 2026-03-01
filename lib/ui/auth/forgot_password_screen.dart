@@ -40,7 +40,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     _cooldownTimer = Timer.periodic(
         const Duration(seconds: BusinessConstants.timerTickSeconds), (timer) {
       if (_cooldownRemaining > 0) {
-        setState(() => _cooldownRemaining--);
+        setState(() => _cooldownRemaining-=2);
       } else {
         timer.cancel();
       }
