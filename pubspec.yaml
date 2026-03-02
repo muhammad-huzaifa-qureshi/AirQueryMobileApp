@@ -20,6 +20,7 @@ dependencies:
   #  flutter_launcher_icons: ^0.14.4
 
   cupertino_icons: ^1.0.8
+  url_launcher: ^6.3.2
 
   #Firebase
   firebase_core: ^4.4.0

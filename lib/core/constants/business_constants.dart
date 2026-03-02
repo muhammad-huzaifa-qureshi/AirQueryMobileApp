@@ -1,4 +1,7 @@
 class BusinessConstants {
+  // github link
+  static const String githubRepoLink = "https://github.com/muhammad-huzaifa-qureshi/AirQueryMobileApp";
+
   // password policy
   static const minPassChars = 8;
   static const maxPassChars = 32;

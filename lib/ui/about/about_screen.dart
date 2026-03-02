@@ -1,0 +1,140 @@
+import 'package:air_query/core/constants/app_spacings.dart';
+import 'package:air_query/core/constants/business_constants.dart';
+import 'package:air_query/core/theme/app_colors.dart';
+import 'package:air_query/core/widgets/cta_button.dart';
+import 'package:air_query/ui/about/about_card.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+class AboutScreen extends StatelessWidget {
+  const AboutScreen({super.key});
+
+  Future<void> _launchGithub() async {
+    final uri = Uri.parse(BusinessConstants.githubRepoLink);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('About Air Query')),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(AppSpacings.medium),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Header
+              Text(
+                'Air Query',
+                style: Theme.of(context).textTheme.displayLarge,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: AppSpacings.small),
+              Text(
+                'Community Driven Wisdom',
+                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+
+              SizedBox(height: AppSpacings.large),
+
+              // Mission Card
+              AboutCard(
+                borderColor: AppColors.primary,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'The Mission',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppColors.primary),
+                    ),
+                    SizedBox(height: AppSpacings.small),
+                    Text(
+                      'Air Query is an unofficial platform designed specifically for Air University students. It provides a focused space to post and answer campus-related questions, helping students navigate university life through peer-to-peer support.',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    SizedBox(height: AppSpacings.medium),
+                    Text(
+                      'Open Source & Collaborative',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppColors.primary),
+                    ),
+                    SizedBox(height: AppSpacings.small),
+                    Text(
+                      'This project is built for collaboration. We encourage students and developers to contribute, learn, and improve the platform together.',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    SizedBox(height: AppSpacings.medium),
+                    CTAButton(
+                      text: "View on GitHub",
+                      onPressed: _launchGithub,
+                      isPrimary: false,
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: AppSpacings.large),
+
+              // Author Card
+              AboutCard(
+                borderColor: AppColors.whitish,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Made with ❤ by',
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.whitish),
+                    ),
+                    SizedBox(height: AppSpacings.small),
+                    Text(
+                      'Muhammad Huzaifa Qureshi',
+                      style: Theme.of(context).textTheme.titleLarge,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: AppSpacings.small),
+                    Text(
+                      'BS Software Engineering Student',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: AppSpacings.large),
+
+              // Disclaimer Card
+              AboutCard(
+                borderColor: AppColors.whitish,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Disclaimer',
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.whitish),
+                    ),
+                    SizedBox(height: AppSpacings.small),
+                    Text(
+                      'This application is an independent project and is NOT affiliated with, endorsed by, or officially associated with Air University. All references to the institution are for identification purposes only.',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: AppSpacings.large),
+
+              // Copyright footer
+              Text(
+                '© 2026 Air Query. All rights reserved.',
+                style: Theme.of(context).textTheme.labelMedium,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: AppSpacings.medium),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

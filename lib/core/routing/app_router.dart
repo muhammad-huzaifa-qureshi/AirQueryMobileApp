@@ -1,4 +1,5 @@
 import 'package:air_query/core/routing/app_routes.dart';
+import 'package:air_query/ui/about/about_screen.dart';
 import 'package:air_query/ui/auth/login_screen.dart';
 import 'package:air_query/ui/auth/register_screen.dart';
 import 'package:air_query/ui/auth/verify_email_screen.dart';
@@ -16,6 +17,9 @@ class AppRouter {
     AppRoutes.forgotPassword: (_) => const ForgotPasswordScreen(),
 
     // home
-    AppRoutes.home: (_) => const HomeScreen()
+    AppRoutes.home: (_) => const HomeScreen(),
+
+    // about
+    AppRoutes.about: (_) => const AboutScreen()
   };
 }

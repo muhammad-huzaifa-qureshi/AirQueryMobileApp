@@ -8,4 +8,7 @@ class AppRoutes {
 
   // home
   static const home = "home";
+
+  // about
+  static const about = "about";
 }
