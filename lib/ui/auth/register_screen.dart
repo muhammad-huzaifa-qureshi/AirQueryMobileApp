@@ -34,13 +34,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       if (next is AsyncData<AuthStatus>) {
         if (next.value == AuthStatus.emailNotVerified) {
           Navigator.pushNamedAndRemoveUntil(
-            context, AppRoutes.emailVerify, (route) => false);
+            context,
+            AppRoutes.emailVerify,
+            (route) => false,
+          );
         }
       }
       if (next is AsyncError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.error.toString())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error.toString())));
       }
     });
 
@@ -51,7 +54,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   Widget _buildForm(BuildContext context) {
-
     return SafeArea(
       child: Center(
         child: SingleChildScrollView(
@@ -65,19 +67,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 // header
                 Text(
                   "Create Your Account",
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .displayLarge,
+                  style: Theme.of(context).textTheme.displayLarge,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: AppSpacings.small),
                 Text(
                   "Your data is stored in Cloud securely. Passwords are encrypted!",
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .bodyMedium,
+                  style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: AppSpacings.large),
@@ -136,9 +132,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               : () {
                                   if (_formKey.currentState!.validate()) {
                                     FocusScope.of(context).unfocus();
-                                    ref.read(authProvider.notifier).register(
-                                          email: "${_idController.text.trim()}${BusinessConstants.auEmailDomain}",
-                                          password: _passwordController.text.trim(),
+                                    ref
+                                        .read(authProvider.notifier)
+                                        .register(
+                                          id: _idController.text.trim(),
+                                          password: _passwordController.text
+                                              .trim(),
                                         );
                                   }
                                 },
@@ -157,10 +156,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 const SizedBox(height: AppSpacings.medium),
                 Text(
                   "Developed by an Airian, for the Airians 💌",
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .bodyMedium,
+                  style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
               ],

@@ -21,7 +21,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _idController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
-
+  
   @override
   void dispose() {
     _idController.dispose();
@@ -59,7 +59,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Widget _buildForm(BuildContext context) {
-
     return SafeArea(
       child: Center(
         child: SingleChildScrollView(
@@ -122,13 +121,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () => Navigator.pushNamed(
-                      context,
-                      AppRoutes.forgotPassword,
-                    ),
+                    onPressed: () =>
+                        Navigator.pushNamed(context, AppRoutes.forgotPassword),
                     child: Text(
                       "Forgot password?",
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.error),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.copyWith(color: AppColors.error),
                     ),
                   ),
                 ),
@@ -150,9 +149,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               : () {
                                   if (_formKey.currentState!.validate()) {
                                     FocusScope.of(context).unfocus();
-                                    ref.read(authProvider.notifier).login(
-                                          email: "${_idController.text.trim()}${BusinessConstants.auEmailDomain}",
-                                          password: _passwordController.text.trim(),
+                                    ref
+                                        .read(authProvider.notifier)
+                                        .login(
+                                          id: _idController.text.trim(),
+                                          password: _passwordController.text
+                                              .trim(),
                                         );
                                   }
                                 },
@@ -160,7 +162,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         const SizedBox(height: AppSpacings.small),
                         CTAButton(
                           text: "New? Make a free account!",
-                          onPressed: () => Navigator.pushNamed(context, AppRoutes.register),
+                          onPressed: () =>
+                              Navigator.pushNamed(context, AppRoutes.register),
                           isPrimary: false,
                         ),
                       ],

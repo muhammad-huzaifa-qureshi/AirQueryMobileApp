@@ -1,7 +1,6 @@
 import 'package:air_query/core/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
-
-import '../../core/constants/app_spacings.dart';
+import '../../../core/constants/app_spacings.dart';
 
 class AboutCard extends StatelessWidget {
   final Color backgroundColor = AppColors.blackish;
@@ -9,11 +8,7 @@ class AboutCard extends StatelessWidget {
   final double radius = AppSpacings.medium;
   final Widget child;
 
-  AboutCard({
-    super.key,
-    required this.child,
-    required this.borderColor,
-  });
+  AboutCard({super.key, required this.child, required this.borderColor});
 
   @override
   Widget build(BuildContext context) {

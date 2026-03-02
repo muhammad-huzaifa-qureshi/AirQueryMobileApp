@@ -18,7 +18,7 @@ class ForgotPasswordScreen extends ConsumerStatefulWidget {
 class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final _idController = TextEditingController();
-  
+
   bool _resetSent = false;
   Timer? _cooldownTimer;
   int _cooldownRemaining = 0;
@@ -38,21 +38,23 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
     _cooldownTimer?.cancel();
     _cooldownTimer = Timer.periodic(
-        const Duration(seconds: BusinessConstants.timerTickSeconds), (timer) {
-      if (_cooldownRemaining > 0) {
-        setState(() => _cooldownRemaining-=2);
-      } else {
-        timer.cancel();
-      }
-    });
+      const Duration(seconds: BusinessConstants.timerTickSeconds),
+      (timer) {
+        if (_cooldownRemaining > 0) {
+          setState(() => _cooldownRemaining -= 2);
+        } else {
+          timer.cancel();
+        }
+      },
+    );
   }
 
   void _sendResetEmail() {
     if (_formKey.currentState!.validate()) {
       FocusScope.of(context).unfocus();
-      ref.read(authProvider.notifier).sendPasswordReset(
-            "${_idController.text.trim()}${BusinessConstants.auEmailDomain}",
-          );
+      ref
+          .read(authProvider.notifier)
+          .sendPasswordReset(_idController.text.trim());
       _startCooldown();
     }
   }
@@ -61,9 +63,9 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     ref.listen(authProvider, (prev, next) {
       if (next is AsyncError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.error.toString())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error.toString())));
       }
     });
 
@@ -74,7 +76,6 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   }
 
   Widget _buildBody(BuildContext context) {
-
     return SafeArea(
       child: Center(
         child: SingleChildScrollView(
@@ -127,10 +128,10 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                     text: isLoading
                         ? "Sending..."
                         : _cooldownRemaining > 0
-                            ? "Resend in ${_cooldownRemaining}s"
-                            : _resetSent
-                                ? "Resend Link"
-                                : "Send Reset Link",
+                        ? "Resend in ${_cooldownRemaining}s"
+                        : _resetSent
+                        ? "Resend Link"
+                        : "Send Reset Link",
                     onPressed: (isLoading || _cooldownRemaining > 0)
                         ? null
                         : _sendResetEmail,
