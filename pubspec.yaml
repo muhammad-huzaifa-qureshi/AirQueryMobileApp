@@ -21,6 +21,7 @@ dependencies:
 
   cupertino_icons: ^1.0.8
   url_launcher: ^6.3.2
+  intl: ^0.20.2 # for time formatting
 
   #Firebase
   firebase_core: ^4.4.0

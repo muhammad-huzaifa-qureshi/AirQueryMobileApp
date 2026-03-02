@@ -14,7 +14,7 @@ class AirQuery extends ConsumerWidget {
       title: "Air Query",
       routes: AppRouter.routes,
       theme: CustomAppTheme.darkTheme,
-      initialRoute: AppRoutes.splash,
+      initialRoute: AppRoutes.home,
     );
   }
 }
