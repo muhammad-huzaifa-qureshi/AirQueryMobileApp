@@ -85,6 +85,7 @@ Fields     : campus (ASC), postedAt (DESC)
 - Implement Rate Limiting (high priority)
 - Introduce a **"Report Query"** feature for better moderation
 - Add **notifications** when a user’s query receives a response
+- Add **Filters** on Home Feed (like date, response count, etc.)
 - Implement **automatic deletion of queries** after 30 days
 - Introduce **change password** functionality
 - Add **profile picture support** for user accounts
