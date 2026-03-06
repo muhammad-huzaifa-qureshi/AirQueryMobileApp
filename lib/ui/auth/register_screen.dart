@@ -72,7 +72,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 ),
                 const SizedBox(height: AppSpacings.small),
                 Text(
-                  "Your data is stored in Cloud securely. Passwords are encrypted!",
+                  "Your information is protected: cloud-secured data, private email, and encrypted passwords.",
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),

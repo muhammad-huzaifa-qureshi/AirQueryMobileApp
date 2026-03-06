@@ -82,6 +82,7 @@ Fields     : campus (ASC), postedAt (DESC)
 ```
 
 # What’s Coming Next
+- Implement Rate Limiting (high priority)
 - Introduce a **"Report Query"** feature for better moderation
 - Add **notifications** when a user’s query receives a response
 - Implement **automatic deletion of queries** after 30 days

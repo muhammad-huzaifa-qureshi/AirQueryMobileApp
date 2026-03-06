@@ -1,8 +1,8 @@
 import 'package:air_query/core/constants/business_constants.dart';
-import 'package:air_query/data/auth/auth_repository.dart';
 import 'package:air_query/ui/auth/notifier/auth_status.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../repositories/auth/auth_repository.dart';
 
 final authProvider =
 AsyncNotifierProvider<AuthNotifier, AuthStatus>(AuthNotifier.new);
@@ -12,7 +12,7 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
 
   @override
   Future<AuthStatus> build() async {
-    _authRepository = ref.read(authRepositoryProvider);
+    _authRepository = AuthRepository();
 
     final user = _authRepository.currentUser;
 
