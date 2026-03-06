@@ -1,10 +1,10 @@
 import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/ui/about/about_screen.dart';
+import 'package:air_query/ui/auth/forgot_password_screen.dart';
 import 'package:air_query/ui/auth/login_screen.dart';
 import 'package:air_query/ui/auth/register_screen.dart';
 import 'package:air_query/ui/auth/verify_email_screen.dart';
-import 'package:air_query/ui/auth/forgot_password_screen.dart';
-import 'package:air_query/ui/home/home_screen.dart';
+import 'package:air_query/ui/main/main_screen.dart';
 import 'package:air_query/ui/splash/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -17,9 +17,9 @@ class AppRouter {
     AppRoutes.forgotPassword: (_) => const ForgotPasswordScreen(),
 
     // home
-    AppRoutes.home: (_) => const HomeScreen(),
+    AppRoutes.home: (_) => const MainScreen(),
 
     // about
-    AppRoutes.about: (_) => const AboutScreen()
+    AppRoutes.about: (_) => const AboutScreen(),
   };
 }
