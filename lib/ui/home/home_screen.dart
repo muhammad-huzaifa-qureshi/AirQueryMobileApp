@@ -109,16 +109,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             physics: const AlwaysScrollableScrollPhysics(),
             // to enable pull to refresh all time
             padding: const .all(AppSpacings.medium),
-            itemCount: state.queries.length + (state.isLoadingMore ? 1 : 0),
+            itemCount: state.queries.length + (state.isLoadingMore ? 1 : 0) + 1,
+            // +1 for hint text added
             itemBuilder: (context, index) {
+              // hint text
+              if (index == 0) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: AppSpacings.small),
+                  child: Center(
+                    child: Text(
+                      "Pull down to refresh feed!",
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                );
+              }
               // Bottom loader
-              if (index == state.queries.length) {
+              if (index == state.queries.length + 1) {
                 return const Padding(
                   padding: .symmetric(vertical: AppSpacings.medium),
                   child: Center(child: CircularProgressIndicator()),
                 );
               }
-              return QueryCard(query: state.queries[index]);
+
+              return QueryCard(query: state.queries[index - 1]);
             },
           ),
         );
