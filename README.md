@@ -68,6 +68,15 @@ All Firestore reads and writes are disabled. Use Cloud Functions for all databas
 }
 ```
 
+## Platform Stats — `platformStats/global`
+
+| Field | Type | Description |
+|---|---|---|
+| `totalQueriesPosted` | Int | Total queries posted across all campuses |
+| `totalQueriesResolved` | Int | Total queries resolved across all campuses |
+| `totalResponses` | Int | Total responses posted across all campuses |
+
+
 ## Notes
 - `postedBy.name` is **denormalized** for read efficiency. Name changes will not reflect on old posts by design.
 - `responseCount` is **incremented via Cloud Function** on each new response — avoids a full subcollection count query.
