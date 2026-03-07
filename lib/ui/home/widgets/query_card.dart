@@ -1,6 +1,7 @@
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/utils/format_time.dart';
+import 'package:air_query/repositories/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
 import '../../../models/query_model.dart';
 
@@ -11,6 +12,10 @@ class QueryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // check if query is user's own
+    final currentUserId = AuthRepository().currentUser?.uid;
+    final isOwnQuery = currentUserId == query.postedByUid;
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: AppSizes.small),
       padding: const EdgeInsets.all(AppSizes.medium),
@@ -54,21 +59,32 @@ class QueryCard extends StatelessWidget {
 
           const SizedBox(height: AppSizes.medium),
 
-          // Response count + comments button
+          // Bottom row
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
                 '${query.responseCount}',
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.whitish),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelMedium,
               ),
-              const SizedBox(width: AppSizes.vSmall),
+              const SizedBox(width: AppSizes.minute),
               IconButton(
                 color: AppColors.whitish,
                 onPressed: () {},
                 icon: const Icon(Icons.comment),
                 tooltip: "Responses",
               ),
+              if (isOwnQuery) ...[
+                const Spacer(),
+                IconButton(
+                  color: AppColors.error,
+                  onPressed: () {},
+                  icon: const Icon(Icons.delete_outline),
+                  tooltip: "Delete",
+                ),
+              ],
             ],
           ),
         ],

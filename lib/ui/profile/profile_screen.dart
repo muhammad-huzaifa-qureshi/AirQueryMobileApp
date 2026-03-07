@@ -75,9 +75,7 @@ class ProfileScreen extends ConsumerWidget {
           // Pull hint
           Text(
             "Pull down to refresh profile!",
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall,
+            style: Theme.of(context).textTheme.bodySmall,
             textAlign: TextAlign.center,
           ),
 
@@ -91,7 +89,10 @@ class ProfileScreen extends ConsumerWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: AppColors.blackish,
-                border: Border.all(color: AppColors.primary, width: AppSizes.minute),
+                border: Border.all(
+                  color: AppColors.primary,
+                  width: AppSizes.minute,
+                ),
               ),
               child: Center(
                 child: Text(
@@ -189,8 +190,12 @@ class ProfileScreen extends ConsumerWidget {
               ),
             ],
           ),
-          SizedBox(height: AppSizes.large,),
-          CTAButton(text: "Edit Profile", onPressed: (){}, isPrimary: false)
+
+          // CTAs
+          SizedBox(height: AppSizes.large),
+          CTAButton(text: "My Queries", onPressed: () {}),
+          SizedBox(height: AppSizes.small),
+          CTAButton(text: "Edit Profile", onPressed: () {}, isPrimary: false),
         ],
       ),
     );
