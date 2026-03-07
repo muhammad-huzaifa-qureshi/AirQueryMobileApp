@@ -17,7 +17,7 @@ export const getQueries = onCall(async (request) => {
   if (!userSnap.exists) {
     throw new HttpsError(
       "not-found",
-      "Account Data not found. Please contact support."
+      "Please set your Profile First!"
     );
   }
 

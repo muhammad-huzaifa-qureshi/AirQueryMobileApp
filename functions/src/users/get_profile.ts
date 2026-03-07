@@ -14,10 +14,17 @@ export const getProfile = onCall(async (request) => {
   const userSnap = await db.collection("users").doc(uid).get();
 
   if (!userSnap.exists) {
-    throw new HttpsError(
-      "not-found",
-      "Account not found. Please contact support."
-    );
+    // No doc yet — return empty profile
+    return {
+      uid,
+      name: "",
+      campus: "",
+      semester: "",
+      queriesPosted: 0,
+      queriesAnswered: 0,
+      queriesResolved: 0,
+      profileComplete: false,
+    };
   }
 
   const data = userSnap.data();

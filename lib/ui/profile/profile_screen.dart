@@ -6,6 +6,7 @@ import 'package:air_query/ui/profile/widgets/info_row.dart';
 import 'package:air_query/ui/profile/widgets/stat_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../core/theme/app_colors.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -52,6 +53,22 @@ class ProfileScreen extends ConsumerWidget {
             }
 
             if (state.user != null) {
+              // profile incomplete — redirect to setup
+              if (!state.user!.profileComplete) {
+                return Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text("Complete your profile to get started!"),
+                      const SizedBox(height: AppSizes.medium),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text("Complete Profile"),
+                      ),
+                    ],
+                  ),
+                );
+              }
               return RefreshIndicator(
                 onRefresh: ref.read(profileProvider.notifier).fetchProfile,
                 child: _buildContent(context, state.user!),
