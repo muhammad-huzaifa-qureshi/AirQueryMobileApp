@@ -83,7 +83,7 @@ class CustomAppTheme {
       titleMedium: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        color: AppColors.whitish.withValues(alpha: 0.7),
+        color: AppColors.greyish,
       ),
 
       // Standard Reading Text
@@ -101,7 +101,7 @@ class CustomAppTheme {
       bodySmall: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.normal,
-        color: AppColors.whitish.withValues(alpha: 0.6),
+        color: AppColors.greyish,
       ),
 
       // Buttons and Metadata
