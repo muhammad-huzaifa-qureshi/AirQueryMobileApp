@@ -1,7 +1,6 @@
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
-import 'package:air_query/ui/auth/notifier/current_user_provider.dart';
 import 'package:air_query/ui/home/notifier/home_notifier.dart';
 import 'package:air_query/ui/home/widgets/query_card.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +38,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     // for detecting if its own query
-    final currentUId = ref.read(currentUidProvider);
+    final currentUId = ref.read(homeProvider.notifier).currentUserID;
 
     // Snackbar
     ref.listen(homeProvider.select((s) => s.error), (_, error) {

@@ -1,3 +1,4 @@
+import 'package:air_query/repositories/auth/auth_repository.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../repositories/queries/queries_repository.dart';
@@ -10,10 +11,12 @@ final homeProvider = NotifierProvider<HomeNotifier, HomeQueriesState>(
 
 class HomeNotifier extends Notifier<HomeQueriesState> {
   late final QueriesRepository _repository;
+  late final String? currentUserID;
 
   @override
   HomeQueriesState build() {
     _repository = QueriesRepository();
+    currentUserID = AuthRepository().currentUser?.uid;
 
     // schedule after build completes
     Future.microtask(fetchInitial);
