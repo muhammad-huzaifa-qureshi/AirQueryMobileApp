@@ -1,5 +1,5 @@
 import 'package:air_query/core/constants/business_constants.dart';
-import 'package:air_query/core/constants/app_spacings.dart';
+import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/utils/auth_validators.dart';
@@ -62,7 +62,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return SafeArea(
       child: Center(
         child: SingleChildScrollView(
-          padding: .all(AppSpacings.medium),
+          padding: .all(AppSizes.medium),
           child: Form(
             key: _formKey,
             child: Column(
@@ -75,13 +75,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   style: Theme.of(context).textTheme.displayLarge,
                   textAlign: .center,
                 ),
-                const SizedBox(height: AppSpacings.small),
+                const SizedBox(height: AppSizes.small),
                 Text(
                   "Unofficial platform for Air University Pakistan Students' Queries!",
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: .center,
                 ),
-                const SizedBox(height: AppSpacings.large),
+                const SizedBox(height: AppSizes.large),
 
                 // id field
                 TextFormField(
@@ -96,7 +96,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   validator: AuthValidators.validateAuId,
                 ),
-                const SizedBox(height: AppSpacings.small),
+                const SizedBox(height: AppSizes.small),
 
                 // password field
                 TextFormField(
@@ -133,7 +133,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
 
                 // buttons
-                const SizedBox(height: AppSpacings.large),
+                const SizedBox(height: AppSizes.large),
                 Consumer(
                   builder: (context, ref, _) {
                     final isLoading = ref.watch(
@@ -159,7 +159,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   }
                                 },
                         ),
-                        const SizedBox(height: AppSpacings.small),
+                        const SizedBox(height: AppSizes.small),
                         CTAButton(
                           text: "New? Make a free account!",
                           onPressed: () =>
@@ -171,7 +171,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   },
                 ),
 
-                const SizedBox(height: AppSpacings.medium),
+                const SizedBox(height: AppSizes.medium),
                 Text(
                   "Developed by an Airian, for the Airians 💌",
                   style: Theme.of(context).textTheme.bodyMedium,

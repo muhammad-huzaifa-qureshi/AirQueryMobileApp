@@ -1,7 +1,6 @@
 import 'dart:async';
-import 'package:air_query/core/constants/business_constants.dart';
-import 'package:air_query/core/constants/app_spacings.dart';
 import 'package:air_query/core/constants/app_sizes.dart';
+import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
@@ -81,7 +80,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
     return SafeArea(
       child: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpacings.medium),
+          padding: const EdgeInsets.all(AppSizes.medium),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -92,19 +91,19 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
                 size: AppSizes.heroIcon,
                 color: AppColors.primary,
               ),
-              const SizedBox(height: AppSpacings.large),
+              const SizedBox(height: AppSizes.large),
               Text(
                 "Verify Your Email",
                 style: Theme.of(context).textTheme.displayLarge,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: AppSpacings.small),
+              const SizedBox(height: AppSizes.small),
               Text(
                 "A verification link has been sent to your AU email. Please click the link to verify your account.\n\nDon't forget to check your spam folder!",
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: AppSpacings.vLarge),
+              const SizedBox(height: AppSizes.vLarge),
 
               // Buttons
               Consumer(
@@ -123,7 +122,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
                                 .read(authProvider.notifier)
                                 .checkEmailVerification(),
                       ),
-                      const SizedBox(height: AppSpacings.medium),
+                      const SizedBox(height: AppSizes.medium),
                       CTAButton(
                         text: _cooldownRemaining > 0
                             ? "Resend Link in ${_cooldownRemaining}s"
@@ -133,7 +132,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
                             : _resendEmail,
                         isPrimary: false,
                       ),
-                      const SizedBox(height: AppSpacings.small),
+                      const SizedBox(height: AppSizes.small),
                       CTAButton(
                         text: "Back to Login",
                         onPressed: () => Navigator.pushNamedAndRemoveUntil(

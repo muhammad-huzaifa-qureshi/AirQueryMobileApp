@@ -1,5 +1,5 @@
 import 'package:air_query/core/constants/business_constants.dart';
-import 'package:air_query/core/constants/app_spacings.dart';
+import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/utils/auth_validators.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
@@ -57,7 +57,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     return SafeArea(
       child: Center(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(AppSpacings.medium),
+          padding: EdgeInsets.all(AppSizes.medium),
           child: Form(
             key: _formKey,
             child: Column(
@@ -70,13 +70,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   style: Theme.of(context).textTheme.displayLarge,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: AppSpacings.small),
+                const SizedBox(height: AppSizes.small),
                 Text(
                   "Your information is protected: cloud-secured data, private email, and encrypted passwords.",
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: AppSpacings.large),
+                const SizedBox(height: AppSizes.large),
 
                 // id field
                 TextFormField(
@@ -91,7 +91,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   validator: AuthValidators.validateAuId,
                 ),
-                const SizedBox(height: AppSpacings.small),
+                const SizedBox(height: AppSizes.small),
 
                 // password field
                 TextFormField(
@@ -116,7 +116,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 ),
 
                 // buttons
-                const SizedBox(height: AppSpacings.large),
+                const SizedBox(height: AppSizes.large),
                 Consumer(
                   builder: (context, ref, _) {
                     final isLoading = ref.watch(
@@ -142,7 +142,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   }
                                 },
                         ),
-                        const SizedBox(height: AppSpacings.small),
+                        const SizedBox(height: AppSizes.small),
                         CTAButton(
                           text: "Already have an account? Login",
                           onPressed: () => Navigator.pop(context),
@@ -153,7 +153,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   },
                 ),
 
-                const SizedBox(height: AppSpacings.medium),
+                const SizedBox(height: AppSizes.medium),
                 Text(
                   "Developed by an Airian, for the Airians 💌",
                   style: Theme.of(context).textTheme.bodyMedium,

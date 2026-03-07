@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:air_query/core/constants/business_constants.dart';
-import 'package:air_query/core/constants/app_spacings.dart';
+import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/utils/auth_validators.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
 import 'package:air_query/ui/auth/notifier/auth_notifier.dart';
@@ -79,7 +79,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     return SafeArea(
       child: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpacings.medium),
+          padding: const EdgeInsets.all(AppSizes.medium),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -90,7 +90,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                 style: Theme.of(context).textTheme.displayLarge,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: AppSpacings.small),
+              const SizedBox(height: AppSizes.small),
               Text(
                 _resetSent
                     ? "If an account exists, a reset link has been sent to your email. Please check your spam folder too."
@@ -98,7 +98,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: AppSpacings.large),
+              const SizedBox(height: AppSizes.large),
 
               // Form
               Form(
@@ -118,7 +118,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               ),
 
               // Buttons
-              const SizedBox(height: AppSpacings.large),
+              const SizedBox(height: AppSizes.large),
               Consumer(
                 builder: (context, ref, _) {
                   final isLoading = ref.watch(
@@ -138,7 +138,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                   );
                 },
               ),
-              const SizedBox(height: AppSpacings.small),
+              const SizedBox(height: AppSizes.small),
               CTAButton(
                 text: "Back to Login",
                 onPressed: () => Navigator.pop(context),

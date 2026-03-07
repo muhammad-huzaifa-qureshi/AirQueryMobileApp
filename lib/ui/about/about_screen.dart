@@ -1,4 +1,4 @@
-import 'package:air_query/core/constants/app_spacings.dart';
+import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
@@ -20,7 +20,7 @@ class AboutScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('About Air Query')),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(AppSpacings.medium),
+          padding: EdgeInsets.all(AppSizes.medium),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -30,14 +30,14 @@ class AboutScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.displayLarge,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: AppSpacings.small),
+              SizedBox(height: AppSizes.small),
               Text(
                 'Community Driven Wisdom',
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
               ),
 
-              SizedBox(height: AppSpacings.large),
+              SizedBox(height: AppSizes.large),
 
               // Mission Card
               AboutCard(
@@ -49,22 +49,22 @@ class AboutScreen extends StatelessWidget {
                       'The Mission',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppColors.primary),
                     ),
-                    SizedBox(height: AppSpacings.small),
+                    SizedBox(height: AppSizes.small),
                     Text(
                       'Air Query is an unofficial platform designed specifically for Air University students. It provides a focused space to post and answer campus-related questions, helping students navigate university life through peer-to-peer support.',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    SizedBox(height: AppSpacings.medium),
+                    SizedBox(height: AppSizes.medium),
                     Text(
                       'Open Source & Collaborative',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppColors.primary),
                     ),
-                    SizedBox(height: AppSpacings.small),
+                    SizedBox(height: AppSizes.small),
                     Text(
                       'This project is built for collaboration. We encourage students and developers to contribute, learn, and improve the platform together.',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    SizedBox(height: AppSpacings.medium),
+                    SizedBox(height: AppSizes.medium),
                     CTAButton(
                       text: "View on GitHub",
                       onPressed: _launchGithub,
@@ -74,7 +74,7 @@ class AboutScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: AppSpacings.large),
+              SizedBox(height: AppSizes.large),
 
               // Author Card
               AboutCard(
@@ -86,13 +86,13 @@ class AboutScreen extends StatelessWidget {
                       'Made with ❤ by',
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.whitish),
                     ),
-                    SizedBox(height: AppSpacings.small),
+                    SizedBox(height: AppSizes.small),
                     Text(
                       'Muhammad Huzaifa Qureshi',
                       style: Theme.of(context).textTheme.titleLarge,
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: AppSpacings.small),
+                    SizedBox(height: AppSizes.small),
                     Text(
                       'BS Software Engineering Student',
                       style: Theme.of(context).textTheme.bodyMedium,
@@ -101,7 +101,7 @@ class AboutScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: AppSpacings.large),
+              SizedBox(height: AppSizes.large),
 
               // Disclaimer Card
               AboutCard(
@@ -113,7 +113,7 @@ class AboutScreen extends StatelessWidget {
                       'Disclaimer',
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.whitish),
                     ),
-                    SizedBox(height: AppSpacings.small),
+                    SizedBox(height: AppSizes.small),
                     Text(
                       'This application is an independent project and is NOT affiliated with, endorsed by, or officially associated with Air University. All references to the institution are for identification purposes only.',
                       style: Theme.of(context).textTheme.bodySmall,
@@ -122,7 +122,7 @@ class AboutScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: AppSpacings.large),
+              SizedBox(height: AppSizes.large),
 
               // Copyright footer
               Text(
@@ -130,7 +130,7 @@ class AboutScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelMedium,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: AppSpacings.medium),
+              SizedBox(height: AppSizes.medium),
             ],
           ),
         ),

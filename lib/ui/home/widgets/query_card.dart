@@ -1,4 +1,4 @@
-import 'package:air_query/core/constants/app_spacings.dart';
+import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/utils/format_time.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +12,12 @@ class QueryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: AppSpacings.small),
-      padding: const EdgeInsets.all(AppSpacings.medium),
+      margin: const EdgeInsets.symmetric(vertical: AppSizes.small),
+      padding: const EdgeInsets.all(AppSizes.medium),
 
       decoration: BoxDecoration(
         color: AppColors.blackish,
-        borderRadius: BorderRadius.circular(AppSpacings.medium),
+        borderRadius: BorderRadius.circular(AppSizes.medium),
         boxShadow: [
           BoxShadow(
             color: AppColors.primary,
@@ -44,7 +44,7 @@ class QueryCard extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: AppSpacings.small),
+          const SizedBox(height: AppSizes.small),
 
           // Description
           Text(
@@ -52,7 +52,7 @@ class QueryCard extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium,
           ),
 
-          const SizedBox(height: AppSpacings.medium),
+          const SizedBox(height: AppSizes.medium),
 
           // Response count + comments button
           Row(
@@ -62,7 +62,7 @@ class QueryCard extends StatelessWidget {
                 '${query.responseCount}',
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.whitish),
               ),
-              const SizedBox(width: AppSpacings.vSmall),
+              const SizedBox(width: AppSizes.vSmall),
               IconButton(
                 color: AppColors.whitish,
                 onPressed: () {},

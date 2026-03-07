@@ -1,4 +1,4 @@
-import 'package:air_query/core/constants/app_spacings.dart';
+import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/ui/home/notifier/home_notifier.dart';
@@ -100,7 +100,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Text("Failed to load queries."),
-                const SizedBox(height: AppSpacings.small),
+                const SizedBox(height: AppSizes.small),
                 ElevatedButton(
                   onPressed: () =>
                       ref.read(homeProvider.notifier).fetchInitial(),
@@ -118,14 +118,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             controller: _scrollController,
             physics: const AlwaysScrollableScrollPhysics(),
             // to enable pull to refresh all time
-            padding: const .all(AppSpacings.medium),
+            padding: const .all(AppSizes.medium),
             itemCount: state.queries.length + (state.isLoadingMore ? 1 : 0) + 1,
             // +1 for hint text added
             itemBuilder: (context, index) {
               // hint text
               if (index == 0) {
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: AppSpacings.small),
+                  padding: const EdgeInsets.only(bottom: AppSizes.small),
                   child: Center(
                     child: Text(
                       "Pull down to refresh feed!",
@@ -137,7 +137,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               // Bottom loader
               if (index == state.queries.length + 1) {
                 return const Padding(
-                  padding: .symmetric(vertical: AppSpacings.medium),
+                  padding: .symmetric(vertical: AppSizes.medium),
                   child: Center(child: CircularProgressIndicator()),
                 );
               }
