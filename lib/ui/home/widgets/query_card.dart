@@ -1,21 +1,18 @@
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/utils/format_time.dart';
-import 'package:air_query/repositories/auth/auth_repository.dart';
 import 'package:flutter/material.dart';
+
 import '../../../models/query_model.dart';
 
 class QueryCard extends StatelessWidget {
   final QueryModel query;
+  final bool isOwnQuery;
 
-  const QueryCard({super.key, required this.query});
+  const QueryCard({super.key, required this.query, required this.isOwnQuery});
 
   @override
   Widget build(BuildContext context) {
-    // check if query is user's own
-    final currentUserId = AuthRepository().currentUser?.uid;
-    final isOwnQuery = currentUserId == query.postedByUid;
-
     return Container(
       margin: const EdgeInsets.symmetric(vertical: AppSizes.small),
       padding: const EdgeInsets.all(AppSizes.medium),

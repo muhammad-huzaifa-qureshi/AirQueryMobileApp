@@ -1,6 +1,7 @@
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
+import 'package:air_query/ui/auth/notifier/current_user_provider.dart';
 import 'package:air_query/ui/home/notifier/home_notifier.dart';
 import 'package:air_query/ui/home/widgets/query_card.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // for detecting if its own query
+    final currentUId = ref.read(currentUidProvider);
+
     // Snackbar
     ref.listen(homeProvider.select((s) => s.error), (_, error) {
       if (error != null) {
@@ -72,11 +76,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         tooltip: "Post a Query",
         child: const Icon(Icons.add),
       ),
-      body: SafeArea(child: _buildBody()),
+      body: SafeArea(child: _buildBody(currentUId)),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(String? currentUId) {
     return Consumer(
       builder: (context, ref, _) {
         final state = ref.watch(homeProvider);
@@ -142,7 +146,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 );
               }
 
-              return QueryCard(query: state.queries[index - 1]);
+              return QueryCard(
+                isOwnQuery: state.queries[index - 1].postedByUid == currentUId,
+                query: state.queries[index - 1],
+              );
             },
           ),
         );
