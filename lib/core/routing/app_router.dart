@@ -1,5 +1,6 @@
 import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/ui/about/about_screen.dart';
+import 'package:air_query/ui/app_stats/platform_stats_screen.dart';
 import 'package:air_query/ui/auth/forgot_password_screen.dart';
 import 'package:air_query/ui/auth/login_screen.dart';
 import 'package:air_query/ui/auth/register_screen.dart';
@@ -21,5 +22,6 @@ class AppRouter {
 
     // about
     AppRoutes.about: (_) => const AboutScreen(),
+    AppRoutes.platformStats: (_) => const PlatformStatsScreen(),
   };
 }

@@ -8,3 +8,4 @@ setGlobalOptions({maxInstances: 2, region: "asia-south1"});
 export {getQueries} from "./queries/get_queries";
 export {getProfile} from "./users/get_profile";
 export {updateProfile} from "./users/update_profile";
+export {getPlatformStats} from "./stats/get_platform_stats";

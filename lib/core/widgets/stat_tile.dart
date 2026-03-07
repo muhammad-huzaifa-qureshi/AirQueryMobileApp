@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import '../../../core/constants/app_sizes.dart';
 import '../../../core/theme/app_colors.dart';
 
-class StatTile extends StatelessWidget {
+class StatBox extends StatelessWidget {
   final String label;
   final int value;
 
-  const StatTile({super.key, required this.label, required this.value});
+  const StatBox({super.key, required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {

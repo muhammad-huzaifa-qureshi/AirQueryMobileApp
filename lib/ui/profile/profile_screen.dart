@@ -3,11 +3,11 @@ import 'package:air_query/core/widgets/cta_button.dart';
 import 'package:air_query/models/user_model.dart';
 import 'package:air_query/ui/profile/notifier/profile_notifier.dart';
 import 'package:air_query/ui/profile/widgets/info_row.dart';
-import 'package:air_query/ui/profile/widgets/stat_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/theme/app_colors.dart';
+import '../../core/widgets/stat_tile.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -195,15 +195,15 @@ class ProfileScreen extends ConsumerWidget {
           Row(
             children: [
               Expanded(
-                child: StatTile(label: "Posted", value: user.queriesPosted),
+                child: StatBox(label: "Posted", value: user.queriesPosted),
               ),
               const SizedBox(width: AppSizes.medium),
               Expanded(
-                child: StatTile(label: "Answered", value: user.queriesAnswered),
+                child: StatBox(label: "Answered", value: user.queriesAnswered),
               ),
               const SizedBox(width: AppSizes.medium),
               Expanded(
-                child: StatTile(label: "Resolved", value: user.queriesResolved),
+                child: StatBox(label: "Resolved", value: user.queriesResolved),
               ),
             ],
           ),
