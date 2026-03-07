@@ -78,8 +78,8 @@ class QueryCard extends StatelessWidget {
                 IconButton(
                   color: AppColors.error,
                   onPressed: () {},
-                  icon: const Icon(Icons.delete_outline),
-                  tooltip: "Delete",
+                  icon: const Icon(Icons.more_horiz),
+                  tooltip: "Menu",
                 ),
               ],
             ],
