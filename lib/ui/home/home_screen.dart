@@ -51,10 +51,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         title: const Text("Air Query"),
         actions: [
           IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.leaderboard_outlined),
+            tooltip: "Our Stats",
+          ),
+          IconButton(
             onPressed: () => Navigator.pushNamed(context, AppRoutes.about),
             icon: const Icon(Icons.info_outline),
+            tooltip: "About Us",
           ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.settings),
+            tooltip: "Settings",
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
