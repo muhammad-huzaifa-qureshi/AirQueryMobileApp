@@ -7,6 +7,14 @@ export const updateProfile = onCall(async (request) => {
     throw new HttpsError("unauthenticated", "Please log in to continue.");
   }
 
+  // Email verification check
+  if (!request.auth.token.email_verified) {
+    throw new HttpsError(
+      "failed-precondition",
+      "Please verify your email to continue."
+    );
+  }
+
   const uid = request.auth.uid;
   const db = admin.firestore();
 

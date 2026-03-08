@@ -1,12 +1,7 @@
-import {onCall, HttpsError} from "firebase-functions/v2/https";
+import {onCall} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
-export const getPlatformStats = onCall(async (request) => {
-  // Auth guard
-  if (!request.auth) {
-    throw new HttpsError("unauthenticated", "Please log in to continue.");
-  }
-
+export const getPlatformStats = onCall(async () => {
   const db = admin.firestore();
 
   const snap = await db.collection("platformStats").doc("global").get();
