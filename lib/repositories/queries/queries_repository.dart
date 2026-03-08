@@ -20,6 +20,19 @@ class QueriesRepository {
     required bool postToAllCampuses,
   }) async {
     final callable = _functions.httpsCallable('postQuery');
-    await callable.call({'description': description, 'postToAll': postToAllCampuses});
+    await callable.call({
+      'description': description,
+      'postToAll': postToAllCampuses,
+    });
+  }
+
+  Future<void> deleteQuery({required String queryId}) async {
+    final callable = _functions.httpsCallable('deleteQuery');
+    await callable.call({'queryId': queryId});
+  }
+
+  Future<void> resolveQuery({required String queryId}) async {
+    final callable = _functions.httpsCallable('resolveQuery');
+    await callable.call({'queryId': queryId});
   }
 }
