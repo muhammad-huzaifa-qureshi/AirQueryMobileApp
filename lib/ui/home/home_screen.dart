@@ -72,7 +72,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => Navigator.pushNamed(context, AppRoutes.postQuery),
         tooltip: "Post a Query",
         child: const Icon(Icons.add),
       ),

@@ -17,4 +17,8 @@ class BusinessConstants {
 
   // user full name
   static const nameMinChars = 3;
+
+  // query len
+  static const minQueryLen = 10;
+  static const maxQueryLen = 500;
 }

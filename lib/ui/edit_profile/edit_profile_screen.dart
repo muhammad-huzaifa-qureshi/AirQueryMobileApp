@@ -154,7 +154,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     if (name.length < BusinessConstants.nameMinChars) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Name must contain at least 3 characters!"),
+          content: Text("Name must contain at least ${BusinessConstants.nameMinChars} characters!"),
         ),
       );
       return;
