@@ -1,0 +1,44 @@
+import {onCall, HttpsError} from "firebase-functions/v2/https";
+import * as admin from "firebase-admin";
+
+export const deleteQuery = onCall(async (request) => {
+  // Auth guard
+  if (!request.auth) {
+    throw new HttpsError("unauthenticated", "Please log in to continue.");
+  }
+
+  // Email verification check
+  if (!request.auth.token.email_verified) {
+    throw new HttpsError(
+      "failed-precondition",
+      "Please verify your email to continue."
+    );
+  }
+
+  const uid = request.auth.uid;
+  const db = admin.firestore();
+  const {queryId} = request.data;
+
+  if (!queryId) {
+    throw new HttpsError("invalid-argument", "Query ID is required.");
+  }
+
+  // Fetch query doc
+  const querySnap = await db.collection("queries").doc(queryId).get();
+  if (!querySnap.exists) {
+    throw new HttpsError("not-found", "Query not found.");
+  }
+
+  // Ownership check
+  if (querySnap.data()?.postedBy?.uid !== uid) {
+    throw new HttpsError(
+      "permission-denied",
+      "You can only delete your own queries."
+    );
+  }
+
+  // Delete query
+  await db.collection("queries").doc(queryId).delete();
+
+  return {success: true};
+});
