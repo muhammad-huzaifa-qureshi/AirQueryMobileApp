@@ -5,9 +5,9 @@ An **unofficial** mobile app for Air University students to post and answer camp
 
 # Tech Stack
 - Flutter
-- Bloc (for State Management)
+- Riverpod (for State Management)
 - Firebase
-- Python (Cloud Functions)
+- TypeScript (Cloud Functions)
 - 
 # Firebase Services Used
 - Authentication

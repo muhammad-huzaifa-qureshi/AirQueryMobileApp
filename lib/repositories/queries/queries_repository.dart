@@ -14,4 +14,12 @@ class QueriesRepository {
       return QueryModel.fromMap(map, map['id']);
     }).toList();
   }
+
+  Future<void> postQuery({
+    required String description,
+    required bool postToAllCampuses,
+  }) async {
+    final callable = _functions.httpsCallable('postQuery');
+    await callable.call({'description': description, 'postToAll': postToAllCampuses});
+  }
 }
