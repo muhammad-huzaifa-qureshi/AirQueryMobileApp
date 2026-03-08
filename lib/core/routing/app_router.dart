@@ -5,7 +5,9 @@ import 'package:air_query/ui/auth/forgot_password_screen.dart';
 import 'package:air_query/ui/auth/login_screen.dart';
 import 'package:air_query/ui/auth/register_screen.dart';
 import 'package:air_query/ui/auth/verify_email_screen.dart';
+import 'package:air_query/ui/edit_profile/edit_profile_screen.dart';
 import 'package:air_query/ui/main/main_screen.dart';
+import 'package:air_query/ui/profile/profile_screen.dart';
 import 'package:air_query/ui/splash/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -23,5 +25,9 @@ class AppRouter {
     // about
     AppRoutes.about: (_) => const AboutScreen(),
     AppRoutes.platformStats: (_) => const PlatformStatsScreen(),
+
+    // profile
+    AppRoutes.profile: (_) => const ProfileScreen(),
+    AppRoutes.editProfile: (_) => const EditProfileScreen(),
   };
 }

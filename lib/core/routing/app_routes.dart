@@ -12,4 +12,8 @@ class AppRoutes {
   // about
   static const about = "about";
   static const platformStats = "platform-stats";
+
+  // profile
+  static const profile = "profile";
+  static const editProfile = "edit-profile";
 }
