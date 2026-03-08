@@ -1,4 +1,5 @@
 import 'package:air_query/core/constants/app_sizes.dart';
+import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
 import 'package:air_query/models/user_model.dart';
 import 'package:air_query/ui/profile/notifier/profile_notifier.dart';
@@ -62,7 +63,8 @@ class ProfileScreen extends ConsumerWidget {
                       const Text("Complete your profile to get started!"),
                       const SizedBox(height: AppSizes.medium),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () =>
+                            Navigator.pushNamed(context, AppRoutes.editProfile),
                         child: Text("Complete Profile"),
                       ),
                     ],
@@ -212,7 +214,12 @@ class ProfileScreen extends ConsumerWidget {
           SizedBox(height: AppSizes.large),
           CTAButton(text: "My Queries", onPressed: () {}),
           SizedBox(height: AppSizes.small),
-          CTAButton(text: "Edit Profile", onPressed: () {}, isPrimary: false),
+          CTAButton(
+            text: "Edit Profile",
+            onPressed: () =>
+                Navigator.pushNamed(context, AppRoutes.editProfile),
+            isPrimary: false,
+          ),
         ],
       ),
     );

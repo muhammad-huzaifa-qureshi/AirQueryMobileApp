@@ -14,4 +14,7 @@ class BusinessConstants {
 
   // pagination
   static const queryFetchLimit = 10;
+
+  // user full name
+  static const nameMinChars = 3;
 }
