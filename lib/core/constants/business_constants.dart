@@ -1,6 +1,7 @@
 class BusinessConstants {
   // github link
-  static const String githubRepoLink = "https://github.com/muhammad-huzaifa-qureshi/AirQueryMobileApp";
+  static const String githubRepoLink =
+      "https://github.com/muhammad-huzaifa-qureshi/AirQueryMobileApp";
 
   // password policy
   static const minPassChars = 8;
@@ -10,4 +11,7 @@ class BusinessConstants {
   static const resendCooldownSeconds = 60;
   static const auEmailDomain = '@students.au.edu.pk';
   static const timerTickSeconds = 2;
+
+  // pagination
+  static const queryFetchLimit = 10;
 }
