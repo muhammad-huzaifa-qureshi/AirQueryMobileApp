@@ -29,10 +29,12 @@ export const updateProfile = onCall(async (request) => {
   }
 
   // Build update map with only provided fields
-  const updates: Record<string, string> = {};
+  const updates: Record<string, unknown> = {};
+
   if (name) updates.name = name;
   if (semester) updates.semester = semester;
   if (campus) updates.campus = campus;
+  updates.profileComplete = true;
 
   // Create or update — merge handles both cases
   await db.collection("users").doc(uid).set(updates, {merge: true});

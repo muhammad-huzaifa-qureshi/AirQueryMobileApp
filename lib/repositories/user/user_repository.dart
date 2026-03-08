@@ -11,4 +11,13 @@ class UserRepository {
     final data = Map<String, dynamic>.from(result.data as Map);
     return UserModel.fromMap(data);
   }
+
+  Future<void> updateProfile({
+    required String name,
+    required String campus,
+    required String semester,
+  }) async {
+    final callable = _functions.httpsCallable('updateProfile');
+    await callable.call({'name': name, 'campus': campus, 'semester': semester});
+  }
 }
