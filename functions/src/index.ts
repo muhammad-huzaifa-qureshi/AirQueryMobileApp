@@ -9,3 +9,4 @@ export {getQueries} from "./queries/get_queries";
 export {getProfile} from "./users/get_profile";
 export {updateProfile} from "./users/update_profile";
 export {getPlatformStats} from "./stats/get_platform_stats";
+export {postQuery} from "./queries/post_query"
