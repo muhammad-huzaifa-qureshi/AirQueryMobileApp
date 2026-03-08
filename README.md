@@ -36,13 +36,13 @@ All Firestore reads and writes are disabled. Use Cloud Functions for all databas
 
 ## Queries — `queries/{queryId}`
 
-| Field | Type | Description |
-|---|---|---|
-| `description` | String | The query content |
-| `campus` | String | Campus this query belongs to |
-| `postedBy` | Map | Author info (see below) |
-| `postedAt` | Timestamp | When the query was posted |
-| `responseCount` | Int | Total number of responses |
+| Field | Type | Description                                 |
+|---|---|---------------------------------------------|
+| `description` | String | The query content                           |
+| `campus` | String | Campus this query belongs to **(can be "All")** |
+| `postedBy` | Map | Author info (see below)                     |
+| `postedAt` | Timestamp | When the query was posted                   |
+| `responseCount` | Int | Total number of responses                   |
 
 **`postedBy` map:**
 ```
@@ -92,6 +92,7 @@ Fields     : campus (ASC), postedAt (DESC)
 
 # What’s Coming Next
 - Implement Rate Limiting (high priority)
+- Implement a user friendly message when offline rather than current "UNAVAILABLE" error.
 - Introduce a **"Report Query"** feature for better moderation
 - Add **notifications** when a user’s query receives a response
 - Add **Filters** on Home Feed (like date, response count, etc.)

@@ -48,7 +48,8 @@ export const getQueries = onCall(async (request) => {
   // Build query
   let q = db
     .collection("queries")
-    .where("campus", "==", campus)
+    // only filter where campus is "All" or user's campus
+    .where("campus", "in", [campus, "All"])
     .orderBy("postedAt", "desc")
     .limit(Constants.fetchLimit);
 
