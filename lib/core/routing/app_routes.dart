@@ -16,4 +16,7 @@ class AppRoutes {
   // profile
   static const profile = "profile";
   static const editProfile = "edit-profile";
+
+  // post
+  static const postQuery = "post-query";
 }
