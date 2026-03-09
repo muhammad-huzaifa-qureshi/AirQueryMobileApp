@@ -38,11 +38,14 @@ export const updateProfile = onCall(async (request) => {
   }
 
   // Validate semester range
-  if (semester !== undefined && (semester < 1 || semester > 8)) {
-    throw new HttpsError(
-      "invalid-argument",
-      "Semester must be between 1 and 8."
-    );
+  if (semester !== undefined) {
+    const semNum = parseInt(semester, 10);
+    if (isNaN(semNum) || semNum < 1 || semNum > 8) {
+      throw new HttpsError(
+        "invalid-argument",
+        "Semester must be between 1 and 8."
+      );
+    }
   }
 
   // Validate campus
