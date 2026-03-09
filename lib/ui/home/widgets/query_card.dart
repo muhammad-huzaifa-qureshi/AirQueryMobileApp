@@ -3,16 +3,26 @@ import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/utils/format_time.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/query_colors.dart';
 import '../../../models/query_model.dart';
 
 class QueryCard extends StatelessWidget {
   final QueryModel query;
   final bool isOwnQuery;
+  final int colorIndex;
 
-  const QueryCard({super.key, required this.query, required this.isOwnQuery});
+  const QueryCard({
+    super.key,
+    required this.query,
+    required this.isOwnQuery,
+    required this.colorIndex,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final strokeColor =
+        QueryColors.strokes[colorIndex % QueryColors.strokes.length];
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: AppSizes.small),
       padding: const EdgeInsets.all(AppSizes.medium),
@@ -22,7 +32,7 @@ class QueryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppSizes.medium),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary,
+            color: strokeColor,
             blurRadius: 1,
             offset: const Offset(1, 2),
           ),
@@ -36,7 +46,7 @@ class QueryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                isOwnQuery? "Me" : query.postedByName,
+                isOwnQuery ? "Me" : query.postedByName,
                 style: Theme.of(context).textTheme.labelLarge,
               ),
               Text(
@@ -62,9 +72,7 @@ class QueryCard extends StatelessWidget {
             children: [
               Text(
                 '${query.responseCount}',
-                style: Theme.of(
-                  context,
-                ).textTheme.labelMedium,
+                style: Theme.of(context).textTheme.labelMedium,
               ),
               const SizedBox(width: AppSizes.minute),
               IconButton(

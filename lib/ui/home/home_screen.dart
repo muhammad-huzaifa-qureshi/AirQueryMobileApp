@@ -149,6 +149,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               return QueryCard(
                 isOwnQuery: state.queries[index - 1].postedByUid == currentUId,
                 query: state.queries[index - 1],
+                colorIndex: index - 1,
               );
             },
           ),
