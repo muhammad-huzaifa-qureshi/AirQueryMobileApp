@@ -14,6 +14,11 @@ class AboutScreen extends StatelessWidget {
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
+  Future<void> _launchAuthorLinkedin() async {
+    final uri = Uri.parse(BusinessConstants.authorLinkedin);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +52,9 @@ class AboutScreen extends StatelessWidget {
                   children: [
                     Text(
                       'The Mission',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppColors.primary),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: AppColors.primary,
+                      ),
                     ),
                     SizedBox(height: AppSizes.small),
                     Text(
@@ -57,7 +64,9 @@ class AboutScreen extends StatelessWidget {
                     SizedBox(height: AppSizes.medium),
                     Text(
                       'Open Source & Collaborative',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppColors.primary),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: AppColors.primary,
+                      ),
                     ),
                     SizedBox(height: AppSizes.small),
                     Text(
@@ -78,24 +87,34 @@ class AboutScreen extends StatelessWidget {
 
               // Author Card
               AboutCard(
-                borderColor: AppColors.whitish,
+                borderColor: AppColors.primary,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
                       'Made with ❤ by',
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.whitish),
+                      textAlign: .center,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: AppColors.whitish,
+                      ),
                     ),
                     SizedBox(height: AppSizes.small),
                     Text(
                       'Muhammad Huzaifa Qureshi',
                       style: Theme.of(context).textTheme.titleLarge,
-                      textAlign: TextAlign.center,
+                      textAlign: .center,
                     ),
                     SizedBox(height: AppSizes.small),
                     Text(
                       'BS Software Engineering Student',
+                      textAlign: .center,
                       style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    SizedBox(height: AppSizes.medium),
+                    CTAButton(
+                      text: "Connect on Linkedin",
+                      isPrimary: false,
+                      onPressed: _launchAuthorLinkedin,
                     ),
                   ],
                 ),
@@ -111,7 +130,9 @@ class AboutScreen extends StatelessWidget {
                   children: [
                     Text(
                       'Disclaimer',
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.whitish),
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: AppColors.whitish,
+                      ),
                     ),
                     SizedBox(height: AppSizes.small),
                     Text(
