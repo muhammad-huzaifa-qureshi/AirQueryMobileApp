@@ -8,4 +8,15 @@ export class Constants {
   // query len
   static readonly minQueryLen = 10;
   static readonly maxQueryLen = 500;
+
+  // campuses
+  static readonly campuses = [
+    "Islamabad E9 Campus",
+    "Islamabad H11 Campus",
+    "Multan Campus",
+    "Kamra Campus",
+    "Karachi Campus",
+    "Kharian Campus",
+    "Bahu Campus",
+  ];
 }

@@ -37,6 +37,22 @@ export const updateProfile = onCall(async (request) => {
     );
   }
 
+  // Validate semester range
+  if (semester !== undefined && (semester < 1 || semester > 8)) {
+    throw new HttpsError(
+      "invalid-argument",
+      "Semester must be between 1 and 8."
+    );
+  }
+
+  // Validate campus
+  if (campus !== undefined && !Constants.campuses.includes(campus)) {
+    throw new HttpsError(
+      "invalid-argument",
+      "Invalid campus selected."
+    );
+  }
+
   // Build update map with only provided fields
   const updates: Record<string, unknown> = {};
 
