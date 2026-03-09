@@ -6,7 +6,7 @@ import '../../../repositories/queries/queries_repository.dart';
 import 'home_query_state.dart';
 
 // Provider
-final homeProvider = NotifierProvider<HomeNotifier, HomeQueriesState>(
+final homeProvider = NotifierProvider.autoDispose<HomeNotifier, HomeQueriesState>(
   HomeNotifier.new,
 );
 
