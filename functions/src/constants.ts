@@ -7,5 +7,5 @@ export class Constants {
 
   // query len
   static readonly minQueryLen = 10;
-  static readonly maxQueryLen = 10;
+  static readonly maxQueryLen = 500;
 }

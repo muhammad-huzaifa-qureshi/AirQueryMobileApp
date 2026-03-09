@@ -19,24 +19,24 @@ export const postQuery = onCall(async (request) => {
   const uid = request.auth.uid;
   const db = admin.firestore();
   const {description, postToAll} = request.data;
-  const trimmedDescripion = description.trim();
+  const trimmedDescription = description.trim();
 
   // Validate
-  if (trimmedDescripion === "") {
+  if (trimmedDescription === "") {
     throw new HttpsError(
       "invalid-argument",
       "Please provide a description for your query."
     );
   }
 
-  if (trimmedDescripion.length < Constants.minQueryLen) {
+  if (trimmedDescription.length < Constants.minQueryLen) {
     throw new HttpsError(
       "invalid-argument",
       `Query must be at least ${Constants.minQueryLen} characters.`
     );
   }
 
-  if (trimmedDescripion.length > Constants.maxQueryLen) {
+  if (trimmedDescription.length > Constants.maxQueryLen) {
     throw new HttpsError(
       "invalid-argument",
       `Query must be less than ${Constants.maxQueryLen} characters.`
@@ -61,7 +61,7 @@ export const postQuery = onCall(async (request) => {
   const campus = postToAll ? "All" : userData.campus;
 
   await db.collection("queries").add({
-    description: trimmedDescripion,
+    description: trimmedDescription,
     campus,
     postedBy: {uid, name: userData.name},
     postedAt: admin.firestore.FieldValue.serverTimestamp(),
