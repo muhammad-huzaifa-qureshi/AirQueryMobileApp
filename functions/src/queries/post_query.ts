@@ -1,5 +1,6 @@
 import {onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
+import {Constants} from "../constants";
 
 export const postQuery = onCall(async (request) => {
   // Auth guard
@@ -18,12 +19,27 @@ export const postQuery = onCall(async (request) => {
   const uid = request.auth.uid;
   const db = admin.firestore();
   const {description, postToAll} = request.data;
+  const trimmedDescripion = description.trim();
 
   // Validate
-  if (!description || description.trim() === "") {
+  if (trimmedDescripion === "") {
     throw new HttpsError(
       "invalid-argument",
       "Please provide a description for your query."
+    );
+  }
+
+  if (trimmedDescripion.length < Constants.minQueryLen) {
+    throw new HttpsError(
+      "invalid-argument",
+      `Query must be at least ${Constants.minQueryLen} characters.`
+    );
+  }
+
+  if (trimmedDescripion.length > Constants.maxQueryLen) {
+    throw new HttpsError(
+      "invalid-argument",
+      `Query must be less than ${Constants.maxQueryLen} characters.`
     );
   }
 
@@ -45,7 +61,7 @@ export const postQuery = onCall(async (request) => {
   const campus = postToAll ? "All" : userData.campus;
 
   await db.collection("queries").add({
-    description: description.trim(),
+    description: trimmedDescripion,
     campus,
     postedBy: {uid, name: userData.name},
     postedAt: admin.firestore.FieldValue.serverTimestamp(),

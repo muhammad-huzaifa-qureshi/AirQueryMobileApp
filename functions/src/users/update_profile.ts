@@ -1,5 +1,6 @@
 import {onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
+import {Constants} from "../constants";
 
 export const updateProfile = onCall(async (request) => {
   // Auth guard
@@ -25,6 +26,14 @@ export const updateProfile = onCall(async (request) => {
     throw new HttpsError(
       "invalid-argument",
       "Please provide at least one field to update."
+    );
+  }
+
+  // name min. 3 chars allowed
+  if (name.length < Constants.nameMinChars) {
+    throw new HttpsError(
+      "invalid-argument",
+      `Name must contain at least ${Constants.nameMinChars} characters!`
     );
   }
 
