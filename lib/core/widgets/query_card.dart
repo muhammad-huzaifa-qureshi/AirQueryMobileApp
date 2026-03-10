@@ -3,8 +3,8 @@ import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/utils/format_time.dart';
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/query_colors.dart';
-import '../../../models/query_model.dart';
+import '../theme/query_colors.dart';
+import '../../models/query_model.dart';
 
 class QueryCard extends StatelessWidget {
   final QueryModel query;
@@ -20,7 +20,7 @@ class QueryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final strokeColor =
+    final queryColor =
         QueryColors.strokes[colorIndex % QueryColors.strokes.length];
 
     return Container(
@@ -32,7 +32,7 @@ class QueryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppSizes.medium),
         boxShadow: [
           BoxShadow(
-            color: strokeColor,
+            color: queryColor,
             blurRadius: 1,
             offset: const Offset(1, 2),
           ),
@@ -47,11 +47,11 @@ class QueryCard extends StatelessWidget {
             children: [
               Text(
                 isOwnQuery ? "Me" : query.postedByName,
-                style: Theme.of(context).textTheme.labelLarge,
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(color: queryColor),
               ),
               Text(
                 formatTime(query.postedAt),
-                style: Theme.of(context).textTheme.labelSmall,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(color: queryColor),
               ),
             ],
           ),
@@ -84,7 +84,7 @@ class QueryCard extends StatelessWidget {
               if (isOwnQuery) ...[
                 const Spacer(),
                 IconButton(
-                  color: AppColors.error,
+                  color: AppColors.whitish,
                   onPressed: () {},
                   icon: const Icon(Icons.more_horiz),
                   tooltip: "Menu",
