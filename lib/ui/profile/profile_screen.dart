@@ -212,7 +212,10 @@ class ProfileScreen extends ConsumerWidget {
 
           // CTAs
           SizedBox(height: AppSizes.large),
-          CTAButton(text: "My Queries", onPressed: () {}),
+          CTAButton(
+            text: "My Queries",
+            onPressed: () => Navigator.pushNamed(context, AppRoutes.myQueries),
+          ),
           SizedBox(height: AppSizes.small),
           CTAButton(
             text: "Edit Profile",

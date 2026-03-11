@@ -89,6 +89,10 @@ All Firestore reads and writes are disabled. Use Cloud Functions for all databas
 Collection : queries
 Fields     : campus (ASC), postedAt (DESC)
 ```
+```
+Collection : queries
+Fields     : postedBy.uid (ASC), postedAt (DESC)
+```
 
 # What’s Coming Next
 - Implement Rate Limiting (high priority)

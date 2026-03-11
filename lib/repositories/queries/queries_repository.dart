@@ -35,4 +35,15 @@ class QueriesRepository {
     final callable = _functions.httpsCallable('resolveQuery');
     await callable.call({'queryId': queryId});
   }
+
+  Future<List<QueryModel>> fetchMyQueries({String? startAfterId}) async {
+    final callable = _functions.httpsCallable('getMyQueries');
+    final result = await callable.call({'startAfter': startAfterId});
+
+    final data = result.data['queries'] as List;
+    return data.map((q) {
+      final map = Map<String, dynamic>.from(q as Map);
+      return QueryModel.fromMap(map, map['id']);
+    }).toList();
+  }
 }

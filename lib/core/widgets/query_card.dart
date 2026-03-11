@@ -46,7 +46,7 @@ class QueryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                isOwnQuery ? "Me" : query.postedByName,
+                isOwnQuery ? "${query.postedByName} (You)" : query.postedByName,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(color: queryColor),
               ),
               Text(

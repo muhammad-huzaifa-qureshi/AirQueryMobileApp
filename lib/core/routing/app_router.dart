@@ -7,6 +7,7 @@ import 'package:air_query/ui/auth/register_screen.dart';
 import 'package:air_query/ui/auth/verify_email_screen.dart';
 import 'package:air_query/ui/edit_profile/edit_profile_screen.dart';
 import 'package:air_query/ui/main/main_screen.dart';
+import 'package:air_query/ui/my_queries/my_queries_screen.dart';
 import 'package:air_query/ui/post_query/post_query_screen.dart';
 import 'package:air_query/ui/profile/profile_screen.dart';
 import 'package:air_query/ui/splash/splash_screen.dart';
@@ -30,6 +31,7 @@ class AppRouter {
     // profile
     AppRoutes.profile: (_) => const ProfileScreen(),
     AppRoutes.editProfile: (_) => const EditProfileScreen(),
+    AppRoutes.myQueries: (_) => const MyQueriesScreen(),
 
     // post
     AppRoutes.postQuery: (_) => const PostQueryScreen(),

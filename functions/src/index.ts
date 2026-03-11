@@ -12,3 +12,4 @@ export {getPlatformStats} from "./stats/get_platform_stats";
 export {postQuery} from "./queries/post_query";
 export {deleteQuery} from "./queries/delete_query";
 export {resolveQuery} from "./queries/resolve_query";
+export {getMyQueries} from "./queries/get_my_queries";
