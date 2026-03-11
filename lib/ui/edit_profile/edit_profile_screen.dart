@@ -160,6 +160,15 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       return;
     }
 
+    if (name.length > BusinessConstants.nameMaxChars) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Name must not exceed ${BusinessConstants.nameMaxChars} characters!"),
+        ),
+      );
+      return;
+    }
+
     // Check if anything actually changed
     final user = ref.read(profileProvider).user;
     if (user != null &&

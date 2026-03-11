@@ -29,11 +29,18 @@ export const updateProfile = onCall(async (request) => {
     );
   }
 
-  // name min. 3 chars allowed
+  // name checks
   if (name.length < Constants.nameMinChars) {
     throw new HttpsError(
       "invalid-argument",
       `Name must contain at least ${Constants.nameMinChars} characters!`
+    );
+  }
+
+  if (name.length > Constants.nameMaxChars) {
+    throw new HttpsError(
+      "invalid-argument",
+      `Name must not exceed ${Constants.nameMaxChars} characters!`
     );
   }
 

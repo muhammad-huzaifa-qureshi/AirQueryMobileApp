@@ -4,6 +4,7 @@ export class Constants {
 
   // user full name
   static readonly nameMinChars = 3;
+  static readonly nameMaxChars = 30;
 
   // query len
   static readonly minQueryLen = 10;
