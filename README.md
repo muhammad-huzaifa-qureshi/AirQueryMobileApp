@@ -85,6 +85,7 @@ All Firestore reads and writes are disabled. Use Cloud Functions for all databas
 - Upon `Resolution`, query will be deleted.
 
 ##  Required Firestore Index
+### Composite Indexes
 ```
 Collection : queries
 Fields     : campus (ASC), postedAt (DESC)
@@ -92,6 +93,12 @@ Fields     : campus (ASC), postedAt (DESC)
 ```
 Collection : queries
 Fields     : postedBy.uid (ASC), postedAt (DESC)
+```
+### Single Field Exemptions
+```
+Collection Group : responses
+Field            : postedBy.uid (ASC)
+Scope            : Collection group
 ```
 
 # What’s Coming Next
