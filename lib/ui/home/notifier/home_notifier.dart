@@ -6,9 +6,10 @@ import '../../../repositories/queries/queries_repository.dart';
 import 'home_query_state.dart';
 
 // Provider
-final homeProvider = NotifierProvider.autoDispose<HomeNotifier, HomeQueriesState>(
-  HomeNotifier.new,
-);
+final homeProvider =
+    NotifierProvider.autoDispose<HomeNotifier, HomeQueriesState>(
+      HomeNotifier.new,
+    );
 
 class HomeNotifier extends Notifier<HomeQueriesState> {
   late final QueriesRepository _repository;
@@ -32,7 +33,7 @@ class HomeNotifier extends Notifier<HomeQueriesState> {
       state = state.copyWith(
         queries: queries,
         isLoading: false,
-        hasMore: queries.length == BusinessConstants.queryFetchLimit
+        hasMore: queries.length == BusinessConstants.queryFetchLimit,
       );
     } catch (e) {
       final message = e is FirebaseFunctionsException
@@ -65,12 +66,45 @@ class HomeNotifier extends Notifier<HomeQueriesState> {
     state = const HomeQueriesState(isLoading: true);
     try {
       final queries = await _repository.fetchQueries();
-      state = HomeQueriesState(queries: queries, hasMore: queries.length == BusinessConstants.queryFetchLimit);
+      state = HomeQueriesState(
+        queries: queries,
+        hasMore: queries.length == BusinessConstants.queryFetchLimit,
+      );
     } catch (e) {
       final message = e is FirebaseFunctionsException
           ? e.message ?? 'Something went wrong.'
           : 'Something went wrong.';
       state = HomeQueriesState(error: message);
+    }
+  }
+
+  Future<void> deleteQuery(String queryId) async {
+    try {
+      await _repository.deleteQuery(queryId: queryId);
+      state = state.copyWith(
+        queries: state.queries.where((q) => q.id != queryId).toList(),
+        clearError: true,
+      );
+    } catch (e) {
+      final message = e is FirebaseFunctionsException
+          ? e.message ?? 'Something went wrong.'
+          : 'Something went wrong.';
+      state = state.copyWith(error: message);
+    }
+  }
+
+  Future<void> resolveQuery(String queryId) async {
+    try {
+      await _repository.resolveQuery(queryId: queryId);
+      state = state.copyWith(
+        queries: state.queries.where((q) => q.id != queryId).toList(),
+        clearError: true,
+      );
+    } catch (e) {
+      final message = e is FirebaseFunctionsException
+          ? e.message ?? 'Something went wrong.'
+          : 'Something went wrong.';
+      state = state.copyWith(error: message);
     }
   }
 }

@@ -62,6 +62,30 @@ class MyQueriesNotifier extends Notifier<MyQueriesState> {
     }
   }
 
+  Future<void> deleteQuery(String queryId) async {
+    try {
+      await _repository.deleteQuery(queryId: queryId);
+      state = state.copyWith(
+        queries: state.queries.where((q) => q.id != queryId).toList(),
+        clearError: true,
+      );
+    } catch (e) {
+      state = state.copyWith(error: _errorMessage(e));
+    }
+  }
+
+  Future<void> resolveQuery(String queryId) async {
+    try {
+      await _repository.resolveQuery(queryId: queryId);
+      state = state.copyWith(
+        queries: state.queries.where((q) => q.id != queryId).toList(),
+        clearError: true,
+      );
+    } catch (e) {
+      state = state.copyWith(error: _errorMessage(e));
+    }
+  }
+
   String _errorMessage(Object e) => e is FirebaseFunctionsException
       ? e.message ?? 'Something went wrong.'
       : 'Something went wrong.';

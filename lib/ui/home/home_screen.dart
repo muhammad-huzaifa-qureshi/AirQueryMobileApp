@@ -152,10 +152,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 );
               }
 
+              final query = state.queries[index - 1];
+
               return QueryCard(
-                isOwnQuery: state.queries[index - 1].postedByUid == currentUId,
-                query: state.queries[index - 1],
+                isOwnQuery: query.postedByUid == currentUId,
+                query: query,
                 colorIndex: index - 1,
+                onDelete: query.postedByUid == currentUId
+                    ? () =>
+                          ref.read(homeProvider.notifier).deleteQuery(query.id)
+                    : null,
+                onResolve: query.postedByUid == currentUId
+                    ? () =>
+                          ref.read(homeProvider.notifier).resolveQuery(query.id)
+                    : null,
               );
             },
           ),

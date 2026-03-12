@@ -128,10 +128,16 @@ class _MyQueriesScreenState extends ConsumerState<MyQueriesScreen> {
                 );
               }
 
+              final query = state.queries[index - 1];
+
               return QueryCard(
-                query: state.queries[index - 1],
+                query: query,
                 isOwnQuery: true,
                 colorIndex: index - 1,
+                onDelete: () =>
+                    ref.read(myQueriesProvider.notifier).deleteQuery(query.id),
+                onResolve: () =>
+                    ref.read(myQueriesProvider.notifier).resolveQuery(query.id),
               );
             },
           ),

@@ -3,6 +3,7 @@ import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
 import 'package:air_query/ui/home/notifier/home_notifier.dart';
+import 'package:air_query/ui/my_queries/notifier/my_queries_notifier.dart';
 import 'package:air_query/ui/post_query/notifier/post_query_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,7 +39,9 @@ class _PostQueryScreenState extends ConsumerState<PostQueryScreen> {
     // On success — refresh feed + pop screen
     ref.listen(postQueryProvider.select((s) => s.success), (_, success) {
       if (success) {
+        // refresh both (home and my feed) screens queries
         ref.read(homeProvider.notifier).refresh();
+        ref.read(myQueriesProvider.notifier).refresh();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text("Query posted!"),
