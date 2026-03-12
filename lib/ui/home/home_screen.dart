@@ -142,7 +142,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               if (index == state.queries.length + 1) {
                 return const Padding(
                   padding: .symmetric(vertical: AppSizes.medium),
-                  child: Center(child: CircularProgressIndicator()),
+                  child: Center(
+                    child: SizedBox(
+                      width: AppSizes.medium,
+                      height: AppSizes.medium,
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
                 );
               }
 

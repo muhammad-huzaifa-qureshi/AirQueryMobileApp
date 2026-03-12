@@ -5,6 +5,8 @@ import 'package:air_query/ui/my_queries/notifier/my_queries_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/routing/app_routes.dart';
+
 class MyQueriesScreen extends ConsumerStatefulWidget {
   const MyQueriesScreen({super.key});
 
@@ -46,6 +48,11 @@ class _MyQueriesScreenState extends ConsumerState<MyQueriesScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text("My Queries")),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.pushNamed(context, AppRoutes.postQuery),
+        tooltip: "Post a new Query",
+        child: const Icon(Icons.add),
+      ),
       body: SafeArea(child: _buildBody()),
     );
   }
@@ -111,7 +118,13 @@ class _MyQueriesScreenState extends ConsumerState<MyQueriesScreen> {
               if (index == state.queries.length + 1) {
                 return const Padding(
                   padding: EdgeInsets.symmetric(vertical: AppSizes.medium),
-                  child: Center(child: CircularProgressIndicator()),
+                  child: Center(
+                    child: SizedBox(
+                      width: AppSizes.medium,
+                      height: AppSizes.medium,
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
                 );
               }
 
