@@ -25,4 +25,8 @@ class BusinessConstants {
   // query len
   static const minQueryLen = 10;
   static const maxQueryLen = 500;
+
+  // response len
+  static const minResponseLen = 1;
+  static const maxResponseLen = 100;
 }

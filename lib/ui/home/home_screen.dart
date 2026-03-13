@@ -15,10 +15,13 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   final _scrollController = ScrollController();
+  late final String? _currentUId;
 
   @override
   void initState() {
     super.initState();
+    // for detecting if its own query
+    _currentUId = ref.read(homeProvider.notifier).currentUserID;
     _scrollController.addListener(_onScroll);
   }
 
@@ -37,9 +40,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // for detecting if its own query
-    final currentUId = ref.read(homeProvider.notifier).currentUserID;
-
     // Snackbar
     ref.listen(homeProvider.select((s) => s.error), (_, error) {
       if (error != null) {
@@ -76,11 +76,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         tooltip: "Post a Query",
         child: const Icon(Icons.add),
       ),
-      body: SafeArea(child: _buildBody(currentUId)),
+      body: SafeArea(child: _buildBody()),
     );
   }
 
-  Widget _buildBody(String? currentUId) {
+  Widget _buildBody() {
     return Consumer(
       builder: (context, ref, _) {
         final state = ref.watch(homeProvider);
@@ -155,14 +155,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               final query = state.queries[index - 1];
 
               return QueryCard(
-                isOwnQuery: query.postedByUid == currentUId,
+                isOwnQuery: query.postedByUid == _currentUId,
                 query: query,
                 colorIndex: index - 1,
-                onDelete: query.postedByUid == currentUId
+                onDelete: query.postedByUid == _currentUId
                     ? () =>
                           ref.read(homeProvider.notifier).deleteQuery(query.id)
                     : null,
-                onResolve: query.postedByUid == currentUId
+                onResolve: query.postedByUid == _currentUId
                     ? () =>
                           ref.read(homeProvider.notifier).resolveQuery(query.id)
                     : null,
