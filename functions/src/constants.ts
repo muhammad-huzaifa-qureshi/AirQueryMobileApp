@@ -10,6 +10,10 @@ export class Constants {
   static readonly minQueryLen = 10;
   static readonly maxQueryLen = 500;
 
+  // response len
+  static readonly minRespLen = 1;
+  static readonly maxRespLen = 100;
+
   // campuses
   static readonly campuses = [
     "Islamabad E9 Campus",
