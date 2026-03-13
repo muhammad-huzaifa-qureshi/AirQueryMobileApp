@@ -1,4 +1,4 @@
-import {onCall, HttpsError} from "firebase-functions/v2/https";
+import { onCall, HttpsError } from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
 export const deleteQuery = onCall(async (request) => {
@@ -17,14 +17,16 @@ export const deleteQuery = onCall(async (request) => {
 
   const uid = request.auth.uid;
   const db = admin.firestore();
-  const {queryId} = request.data;
+  const { queryId } = request.data;
 
   if (!queryId) {
     throw new HttpsError("invalid-argument", "Query ID is required.");
   }
 
   // Fetch query doc
-  const querySnap = await db.collection("queries").doc(queryId).get();
+  const queryRef = db.collection("queries").doc(queryId);
+  const querySnap = await queryRef.get();
+  
   if (!querySnap.exists) {
     throw new HttpsError("not-found", "Query not found.");
   }
@@ -37,8 +39,17 @@ export const deleteQuery = onCall(async (request) => {
     );
   }
 
+  // Delete all responses in subcollection (chunked for 500+ responses)
+  const responsesSnap = await queryRef.collection("responses").get();
+  const chunkSize = 499;
+  for (let i = 0; i < responsesSnap.docs.length; i += chunkSize) {
+    const batch = db.batch();
+    responsesSnap.docs.slice(i, i + chunkSize).forEach((doc) => batch.delete(doc.ref));
+    await batch.commit();
+  }
+
   // Delete query
   await db.collection("queries").doc(queryId).delete();
 
-  return {success: true};
+  return { success: true };
 });
