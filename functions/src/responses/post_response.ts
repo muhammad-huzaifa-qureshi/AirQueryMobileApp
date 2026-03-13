@@ -9,7 +9,9 @@ export const postResponse = onCall(async (request) => {
   }
 
   if (!request.auth.token.email_verified) {
-    throw new HttpsError("failed-precondition", "Please verify your email to continue.");
+    throw new HttpsError(
+      "failed-precondition",
+      "Please verify your email to continue.");
   }
 
   const uid = request.auth.uid;
@@ -65,11 +67,11 @@ export const postResponse = onCall(async (request) => {
       responseCount: admin.firestore.FieldValue.increment(1),
     });
     tx.update(statsRef, {
-        totalResponses: admin.firestore.FieldValue.increment(1),
-    })
+      totalResponses: admin.firestore.FieldValue.increment(1),
+    });
     tx.update(userRef, {
-        queriesAnswered: admin.firestore.FieldValue.increment(1),
-    })
+      queriesAnswered: admin.firestore.FieldValue.increment(1),
+    });
   });
 
   return {success: true};
