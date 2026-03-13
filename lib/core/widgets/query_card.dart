@@ -1,6 +1,7 @@
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/utils/format_time.dart';
+import 'package:air_query/core/widgets/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import '../theme/query_colors.dart';
 import '../../models/query_model.dart';
@@ -105,15 +106,20 @@ class QueryCard extends StatelessWidget {
                   tooltip: "Menu",
                   onSelected: (action) async {
                     if (action == _QueryAction.delete) {
-                      final confirmed = await _confirm(
+                      final confirmed = await ConfirmDialog.show(
                         context,
-                        "This query will be permanently deleted.",
+                        content: 'This query will be permanently deleted.',
+                        cancelColor: AppColors.primary,
+                        confirmColor: AppColors.error,
                       );
                       if (confirmed) onDelete?.call();
                     } else if (action == _QueryAction.resolve) {
-                      final confirmed = await _confirm(
+                      final confirmed = await ConfirmDialog.show(
                         context,
-                        "Mark this query as resolved?",
+                        content:
+                            "Mark this query as resolved? Once resolved, it will no longer appear in your profile.",
+                        cancelColor: AppColors.primary,
+                        confirmColor: AppColors.error,
                       );
                       if (confirmed) onResolve?.call();
                     }
@@ -141,29 +147,5 @@ class QueryCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Future<bool> _confirm(BuildContext context, String message) async {
-    return await showDialog<bool>(
-          context: context,
-          builder: (_) => AlertDialog(
-            title: const Text("Are you sure?"),
-            content: Text(message),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: const Text("Cancel"),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: Text(
-                  "Confirm",
-                  style: TextStyle(color: AppColors.error),
-                ),
-              ),
-            ],
-          ),
-        ) ??
-        false;
   }
 }
