@@ -2,6 +2,7 @@ import {onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 import {Constants} from "../constants";
 
+/** Posts a new query and increments user and platform counters atomically. */
 export const postQuery = onCall(async (request) => {
   // Auth guard
   if (!request.auth) {
@@ -57,25 +58,29 @@ export const postQuery = onCall(async (request) => {
     );
   }
 
-  // Build query doc
   const campus = postToAll ? "All" : userData.campus;
 
-  await db.collection("queries").add({
-    description: trimmedDescription,
-    campus,
-    postedBy: {uid, name: userData.name},
-    postedAt: admin.firestore.FieldValue.serverTimestamp(),
-    responseCount: 0,
-  });
+  const queryRef = db.collection("queries").doc();
+  const userRef = db.collection("users").doc(uid);
+  const statsRef = db.collection("platformStats").doc("global");
 
-  // Increment counters
-  await db.collection("users").doc(uid).update({
-    queriesPosted: admin.firestore.FieldValue.increment(1),
+  await db.runTransaction(async (tx) => {
+    tx.set(queryRef, {
+      description: trimmedDescription,
+      campus,
+      postedBy: {uid, name: userData.name},
+      postedAt: admin.firestore.FieldValue.serverTimestamp(),
+      responseCount: 0,
+    });
+    tx.update(userRef, {
+      queriesPosted: admin.firestore.FieldValue.increment(1),
+    });
+    tx.set(
+      statsRef,
+      {totalQueriesPosted: admin.firestore.FieldValue.increment(1)},
+      {merge: true}
+    );
   });
-  await db.collection("platformStats").doc("global").set(
-    {totalQueriesPosted: admin.firestore.FieldValue.increment(1)},
-    {merge: true}
-  );
 
   return {success: true};
 });
