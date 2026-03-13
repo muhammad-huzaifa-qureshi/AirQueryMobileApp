@@ -10,8 +10,11 @@ import 'package:air_query/ui/main/main_screen.dart';
 import 'package:air_query/ui/my_queries/my_queries_screen.dart';
 import 'package:air_query/ui/post_query/post_query_screen.dart';
 import 'package:air_query/ui/profile/profile_screen.dart';
+import 'package:air_query/ui/responses/responses_screen.dart';
 import 'package:air_query/ui/splash/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
+
+import '../../models/query_model.dart';
 
 class AppRouter {
   static Map<String, WidgetBuilder> routes = {
@@ -35,5 +38,11 @@ class AppRouter {
 
     // post
     AppRoutes.postQuery: (_) => const PostQueryScreen(),
+
+    // Responses
+    AppRoutes.responses: (context) {
+      final query = ModalRoute.of(context)!.settings.arguments as QueryModel;
+      return ResponsesScreen(query: query);
+    },
   };
 }

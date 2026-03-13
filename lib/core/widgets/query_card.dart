@@ -1,4 +1,5 @@
 import 'package:air_query/core/constants/app_sizes.dart';
+import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/utils/format_time.dart';
 import 'package:air_query/core/widgets/confirm_dialog.dart';
@@ -28,7 +29,7 @@ class QueryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final queryColor =
-    QueryColors.strokes[colorIndex % QueryColors.strokes.length];
+        QueryColors.strokes[colorIndex % QueryColors.strokes.length];
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: AppSizes.small),
@@ -57,26 +58,18 @@ class QueryCard extends StatelessWidget {
                   isOwnQuery
                       ? "${query.postedByName} (Me)"
                       : query.postedByName,
-                  style: Theme
-                      .of(
+                  style: Theme.of(
                     context,
-                  )
-                      .textTheme
-                      .labelLarge
-                      ?.copyWith(color: queryColor),
+                  ).textTheme.labelLarge?.copyWith(color: queryColor),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
                 formatTime(query.postedAt),
-                style: Theme
-                    .of(
+                style: Theme.of(
                   context,
-                )
-                    .textTheme
-                    .labelSmall
-                    ?.copyWith(color: queryColor),
+                ).textTheme.labelSmall?.copyWith(color: queryColor),
               ),
             ],
           ),
@@ -86,10 +79,7 @@ class QueryCard extends StatelessWidget {
           // Description
           Text(
             query.description,
-            style: Theme
-                .of(context)
-                .textTheme
-                .bodyMedium,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
 
           const SizedBox(height: AppSizes.medium),
@@ -100,22 +90,20 @@ class QueryCard extends StatelessWidget {
             children: [
               Text(
                 '${query.responseCount}',
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .labelMedium,
+                style: Theme.of(context).textTheme.labelMedium,
               ),
               const SizedBox(width: AppSizes.minute),
               IconButton(
                 color: AppColors.whitish,
-                onPressed: () {},
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  AppRoutes.responses,
+                  arguments: query,
+                ),
                 icon: const Icon(Icons.comment),
                 tooltip: "Responses",
               ),
-              if (isOwnQuery) ...[
-                const Spacer(),
-                _buildMenu(context)
-              ],
+              if (isOwnQuery) ...[const Spacer(), _buildMenu(context)],
             ],
           ),
         ],
@@ -141,23 +129,19 @@ class QueryCard extends StatelessWidget {
           final confirmed = await ConfirmDialog.show(
             context,
             content:
-            "Mark this query as resolved? Once resolved, it will no longer appear in your profile.",
+                "Mark this query as resolved? Once resolved, it will no longer appear in your profile.",
             cancelColor: AppColors.primary,
             confirmColor: AppColors.error,
           );
           if (confirmed) onResolve?.call();
         }
       },
-      itemBuilder: (_) =>
-      [
+      itemBuilder: (_) => [
         PopupMenuItem(
           value: _QueryAction.resolve,
           child: Row(
             children: [
-              Icon(
-                Icons.check_circle_outline,
-                size: AppSizes.mediumIcon,
-              ),
+              Icon(Icons.check_circle_outline, size: AppSizes.mediumIcon),
               SizedBox(width: AppSizes.vSmall),
               Text("Mark as Resolved"),
             ],
@@ -173,10 +157,7 @@ class QueryCard extends StatelessWidget {
                 size: AppSizes.mediumIcon,
               ),
               SizedBox(width: AppSizes.vSmall),
-              Text(
-                "Delete",
-                style: TextStyle(color: AppColors.error),
-              ),
+              Text("Delete", style: TextStyle(color: AppColors.error)),
             ],
           ),
         ),

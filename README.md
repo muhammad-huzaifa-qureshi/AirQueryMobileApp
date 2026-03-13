@@ -105,10 +105,9 @@ Scope            : Collection group
 - Implement Rate Limiting (high priority)
 - Implement a user friendly message when offline rather than current "UNAVAILABLE" error.
 - Introduce a **"Report Query"** feature for better moderation
-- Add **notifications** when a user’s query receives a response
+- Add **notifications tab**
 - Add **Filters** on Home Feed (like date, response count, etc.)
 - Implement **automatic deletion of queries** after 30 days
-- Introduce **change password** functionality
 - Add **profile picture support** for user accounts
 - Enhance the overall **user experience** and interaction flow
 - Improve the app’s **UI and visual aesthetics**

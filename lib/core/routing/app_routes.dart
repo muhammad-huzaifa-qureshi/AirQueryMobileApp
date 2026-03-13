@@ -20,4 +20,7 @@ class AppRoutes {
 
   // post
   static const postQuery = "post-query";
+
+  // Responses
+  static const responses = "responses";
 }
