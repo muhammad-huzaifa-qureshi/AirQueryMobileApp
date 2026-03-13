@@ -28,7 +28,7 @@ class QueryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final queryColor =
-        QueryColors.strokes[colorIndex % QueryColors.strokes.length];
+    QueryColors.strokes[colorIndex % QueryColors.strokes.length];
 
     return Container(
       margin: const EdgeInsets.symmetric(vertical: AppSizes.small),
@@ -57,18 +57,26 @@ class QueryCard extends StatelessWidget {
                   isOwnQuery
                       ? "${query.postedByName} (Me)"
                       : query.postedByName,
-                  style: Theme.of(
+                  style: Theme
+                      .of(
                     context,
-                  ).textTheme.labelLarge?.copyWith(color: queryColor),
+                  )
+                      .textTheme
+                      .labelLarge
+                      ?.copyWith(color: queryColor),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
                 formatTime(query.postedAt),
-                style: Theme.of(
+                style: Theme
+                    .of(
                   context,
-                ).textTheme.labelSmall?.copyWith(color: queryColor),
+                )
+                    .textTheme
+                    .labelSmall
+                    ?.copyWith(color: queryColor),
               ),
             ],
           ),
@@ -78,7 +86,10 @@ class QueryCard extends StatelessWidget {
           // Description
           Text(
             query.description,
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme
+                .of(context)
+                .textTheme
+                .bodyMedium,
           ),
 
           const SizedBox(height: AppSizes.medium),
@@ -89,7 +100,10 @@ class QueryCard extends StatelessWidget {
             children: [
               Text(
                 '${query.responseCount}',
-                style: Theme.of(context).textTheme.labelMedium,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .labelMedium,
               ),
               const SizedBox(width: AppSizes.minute),
               IconButton(
@@ -100,52 +114,73 @@ class QueryCard extends StatelessWidget {
               ),
               if (isOwnQuery) ...[
                 const Spacer(),
-                PopupMenuButton<_QueryAction>(
-                  color: AppColors.blackish,
-                  icon: Icon(Icons.more_horiz, color: AppColors.whitish),
-                  tooltip: "Menu",
-                  onSelected: (action) async {
-                    if (action == _QueryAction.delete) {
-                      final confirmed = await ConfirmDialog.show(
-                        context,
-                        content: 'This query will be permanently deleted.',
-                        cancelColor: AppColors.primary,
-                        confirmColor: AppColors.error,
-                      );
-                      if (confirmed) onDelete?.call();
-                    } else if (action == _QueryAction.resolve) {
-                      final confirmed = await ConfirmDialog.show(
-                        context,
-                        content:
-                            "Mark this query as resolved? Once resolved, it will no longer appear in your profile.",
-                        cancelColor: AppColors.primary,
-                        confirmColor: AppColors.error,
-                      );
-                      if (confirmed) onResolve?.call();
-                    }
-                  },
-                  itemBuilder: (_) => [
-                    PopupMenuItem(
-                      value: _QueryAction.resolve,
-                      child: Text(
-                        "Mark as Resolved",
-                        style: TextStyle(color: AppColors.primary),
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: _QueryAction.delete,
-                      child: Text(
-                        "Delete",
-                        style: TextStyle(color: AppColors.error),
-                      ),
-                    ),
-                  ],
-                ),
+                _buildMenu(context)
               ],
             ],
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildMenu(BuildContext context) {
+    return PopupMenuButton<_QueryAction>(
+      color: AppColors.blackish,
+      icon: Icon(Icons.more_horiz, color: AppColors.whitish),
+      tooltip: "Menu",
+      onSelected: (action) async {
+        if (action == _QueryAction.delete) {
+          final confirmed = await ConfirmDialog.show(
+            context,
+            content: 'This query will be permanently deleted.',
+            cancelColor: AppColors.primary,
+            confirmColor: AppColors.error,
+          );
+          if (confirmed) onDelete?.call();
+        } else if (action == _QueryAction.resolve) {
+          final confirmed = await ConfirmDialog.show(
+            context,
+            content:
+            "Mark this query as resolved? Once resolved, it will no longer appear in your profile.",
+            cancelColor: AppColors.primary,
+            confirmColor: AppColors.error,
+          );
+          if (confirmed) onResolve?.call();
+        }
+      },
+      itemBuilder: (_) =>
+      [
+        PopupMenuItem(
+          value: _QueryAction.resolve,
+          child: Row(
+            children: [
+              Icon(
+                Icons.check_circle_outline,
+                size: AppSizes.mediumIcon,
+              ),
+              SizedBox(width: AppSizes.vSmall),
+              Text("Mark as Resolved"),
+            ],
+          ),
+        ),
+        PopupMenuItem(
+          value: _QueryAction.delete,
+          child: Row(
+            children: [
+              Icon(
+                Icons.delete_forever_outlined,
+                color: AppColors.error,
+                size: AppSizes.mediumIcon,
+              ),
+              SizedBox(width: AppSizes.vSmall),
+              Text(
+                "Delete",
+                style: TextStyle(color: AppColors.error),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
