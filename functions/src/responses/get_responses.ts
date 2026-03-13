@@ -31,7 +31,7 @@ export const getResponses = onCall(async (request) => {
 
   let q = queryRef
     .collection("responses")
-    .orderBy("postedAt", "asc")
+    .orderBy("postedAt", "desc")
     .limit(Constants.fetchLimit);
 
   if (startAfter) {
