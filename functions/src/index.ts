@@ -13,3 +13,5 @@ export {postQuery} from "./queries/post_query";
 export {deleteQuery} from "./queries/delete_query";
 export {resolveQuery} from "./queries/resolve_query";
 export {getMyQueries} from "./queries/get_my_queries";
+export {postResponse} from "./responses/post_response";
+export {deleteResponse} from "./responses/delete_response";
