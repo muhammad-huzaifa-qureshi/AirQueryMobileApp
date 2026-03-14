@@ -73,8 +73,14 @@ class QueryCard extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: AppSizes.vSmall),
+          // campus
+          Text(
+            "For ${query.campus == "All" ? "All Campuses" : query.campus}",
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(color: queryColor),
+          ),
 
-          const SizedBox(height: AppSizes.small),
+          const SizedBox(height: AppSizes.medium),
 
           // Description
           Text(
