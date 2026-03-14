@@ -1,4 +1,4 @@
-import { onCall, HttpsError } from "firebase-functions/v2/https";
+import {onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
 export const resolveQuery = onCall(async (request) => {
@@ -17,7 +17,7 @@ export const resolveQuery = onCall(async (request) => {
 
   const uid = request.auth.uid;
   const db = admin.firestore();
-  const { queryId } = request.data;
+  const {queryId} = request.data;
 
   if (!queryId) {
     throw new HttpsError("invalid-argument", "Query ID is required.");
@@ -62,5 +62,5 @@ export const resolveQuery = onCall(async (request) => {
     totalQueriesResolved: admin.firestore.FieldValue.increment(1),
   });
 
-  return { success: true };
+  return {success: true};
 });
