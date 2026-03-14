@@ -22,17 +22,16 @@ All Firestore reads and writes are disabled. Use Cloud Functions for all databas
 
 ## Users — `users/{uid}`
 
-| Field | Type | Description |
-|---|---|---|
-| `uid` | String | Firebase Auth UID |
-| `name` | String | Display name |
-| `campus` | String | User's campus |
-| `semester` | String | Current semester |
-| `createdAt` | Timestamp | Account creation time |
-| `queriesPosted` | Int | Total queries posted |
-| `queriesAnswered` | Int | Total queries answered |
-| `queriesResolved` | Int | Total queries marked resolved |
-| `profileComplete` | Boolean | Whether profile setup is done |
+| Field             | Type   | Description                                       |
+|-------------------|--------|---------------------------------------------------|
+| `name`            | String | Display name                                      |
+| `campus`          | String | User's campus                                     |
+| `semester`        | String | Current semester                                  |
+| `queriesPosted`   | Int    | Total queries posted                              |
+| `queriesAnswered` | Int    | Total queries answered                            |
+| `queriesResolved` | Int    | Total queries marked resolved                     |
+| `fcmToken`        | String | For Firebase Cloud Messaging                      |
+| `profileComplete` | bool   | True when name, campus and semester is first set. |
 
 ## Queries — `queries/{queryId}`
 
