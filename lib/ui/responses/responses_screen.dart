@@ -1,16 +1,15 @@
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/core/theme/app_colors.dart';
-import 'package:air_query/models/query_model.dart';
 import 'package:air_query/ui/responses/notifier/responses_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/response_card.dart';
 
 class ResponsesScreen extends ConsumerStatefulWidget {
-  final QueryModel query;
+  final String queryId;
 
-  const ResponsesScreen({super.key, required this.query});
+  const ResponsesScreen({super.key, required this.queryId});
 
   @override
   ConsumerState<ResponsesScreen> createState() => _QueryDetailScreenState();
@@ -25,7 +24,7 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
   void initState() {
     super.initState();
     _currentUserId = ref
-        .read(responsesProvider(widget.query.id).notifier)
+        .read(responsesProvider(widget.queryId).notifier)
         .currentUserID;
     _scrollController.addListener(_onScroll);
   }
@@ -40,7 +39,7 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
   void _onScroll() {
     final pos = _scrollController.position;
     if (pos.pixels >= pos.maxScrollExtent - 200) {
-      ref.read(responsesProvider(widget.query.id).notifier).fetchMore();
+      ref.read(responsesProvider(widget.queryId).notifier).fetchMore();
     }
   }
 
@@ -60,14 +59,14 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
     }
     _responseController.clear();
     ref
-        .read(responsesProvider(widget.query.id).notifier)
+        .read(responsesProvider(widget.queryId).notifier)
         .postResponse(description);
   }
 
   @override
   Widget build(BuildContext context) {
     // Snackbar on error
-    ref.listen(responsesProvider(widget.query.id).select((s) => s.error), (
+    ref.listen(responsesProvider(widget.queryId).select((s) => s.error), (
       _,
       error,
     ) {
@@ -95,7 +94,7 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
   Widget _buildBody() {
     return Consumer(
       builder: (context, ref, _) {
-        final state = ref.watch(responsesProvider(widget.query.id));
+        final state = ref.watch(responsesProvider(widget.queryId));
 
         if (state.isLoading) {
           return const Center(child: CircularProgressIndicator());
@@ -114,7 +113,7 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
                 const SizedBox(height: AppSizes.small),
                 ElevatedButton(
                   onPressed: () => ref
-                      .read(responsesProvider(widget.query.id).notifier)
+                      .read(responsesProvider(widget.queryId).notifier)
                       .fetchInitial(),
                   child: const Text("Retry"),
                 ),
@@ -126,7 +125,7 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
         // normal state
         return RefreshIndicator(
           onRefresh: () =>
-              ref.read(responsesProvider(widget.query.id).notifier).refresh(),
+              ref.read(responsesProvider(widget.queryId).notifier).refresh(),
           child: ListView.builder(
             controller: _scrollController,
             physics: const AlwaysScrollableScrollPhysics(),
@@ -155,7 +154,7 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
                 isOwn: isOwn,
                 onDelete: isOwn
                     ? () => ref
-                          .read(responsesProvider(widget.query.id).notifier)
+                          .read(responsesProvider(widget.queryId).notifier)
                           .deleteResponse(response.id)
                     : null,
               );
@@ -170,7 +169,7 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
     return Consumer(
       builder: (context, ref, _) {
         final isPosting = ref.watch(
-          responsesProvider(widget.query.id).select((s) => s.isLoading),
+          responsesProvider(widget.queryId).select((s) => s.isLoading),
         );
 
         final bottomInset = MediaQuery.of(context).viewInsets.bottom;

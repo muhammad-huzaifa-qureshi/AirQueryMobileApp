@@ -2,7 +2,8 @@ import {onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 import {Constants} from "../constants";
 
-/** Posts a response to a query and increments responseCount. */
+/** Posts a response to a query and increments responseCount.
+ * Also notifies the query owner*/
 export const postResponse = onCall(async (request) => {
   if (!request.auth) {
     throw new HttpsError("unauthenticated", "Please log in to continue.");
@@ -44,6 +45,13 @@ export const postResponse = onCall(async (request) => {
     throw new HttpsError("not-found", "Query not found.");
   }
 
+  const queryData = querySnap.data();
+  const queryOwnerUid = queryData?.postedBy?.uid;
+
+  if (!queryOwnerUid) {
+    throw new HttpsError("internal", "Query owner missing.");
+  }
+
   // Fetch user info
   const userSnap = await db.collection("users").doc(uid).get();
   if (!userSnap.exists) {
@@ -73,6 +81,32 @@ export const postResponse = onCall(async (request) => {
       queriesAnswered: admin.firestore.FieldValue.increment(1),
     });
   });
+
+  // just log the error and return true no matters if sent or not
+  try {
+    const ownerSnap = await db
+      .collection("users")
+      .doc(queryOwnerUid)
+      .get();
+
+    const ownerToken = ownerSnap.data()?.fcmToken;
+
+    if (ownerToken) {
+      await admin.messaging().send({
+        token: ownerToken,
+        notification: {
+          title: "New Response",
+          body: `${userName} replied to your query.`,
+        },
+        data: {
+          type: "new_response",
+          queryId,
+        },
+      });
+    }
+  } catch (e) {
+    console.error("Notification failed:", e);
+  }
 
   return {success: true};
 });

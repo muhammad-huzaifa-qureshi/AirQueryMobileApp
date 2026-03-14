@@ -3,6 +3,7 @@ import 'package:air_query/ui/auth/notifier/auth_status.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../repositories/auth/auth_repository.dart';
+import '../../../services/fcm_service.dart';
 
 final authProvider =
 AsyncNotifierProvider<AuthNotifier, AuthStatus>(AuthNotifier.new);
@@ -61,6 +62,7 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
         state = const AsyncData(AuthStatus.emailNotVerified);
       } else {
         state = const AsyncData(AuthStatus.authenticated);
+        FcmService().init();
       }
     } catch (e) {
       state = AsyncError(
@@ -142,7 +144,9 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
       }
 
       if (user.emailVerified) {
+        await user.getIdToken(true); // force refresh the JWT (to get verify email status in request to cloud functions)
         state = const AsyncData(AuthStatus.authenticated);
+        FcmService().init();
       } else {
         state = const AsyncData(AuthStatus.emailNotVerified);
       }

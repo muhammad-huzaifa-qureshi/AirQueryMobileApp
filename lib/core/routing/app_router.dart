@@ -14,8 +14,6 @@ import 'package:air_query/ui/responses/responses_screen.dart';
 import 'package:air_query/ui/splash/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../models/query_model.dart';
-
 class AppRouter {
   static Map<String, WidgetBuilder> routes = {
     AppRoutes.splash: (_) => const SplashScreen(),
@@ -41,8 +39,8 @@ class AppRouter {
 
     // Responses
     AppRoutes.responses: (context) {
-      final query = ModalRoute.of(context)!.settings.arguments as QueryModel;
-      return ResponsesScreen(query: query);
+      final queryId = ModalRoute.of(context)!.settings.arguments as String;
+      return ResponsesScreen(queryId: queryId,);
     },
   };
 }

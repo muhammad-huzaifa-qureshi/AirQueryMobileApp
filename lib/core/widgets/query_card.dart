@@ -98,7 +98,7 @@ class QueryCard extends StatelessWidget {
                 onPressed: () => Navigator.pushNamed(
                   context,
                   AppRoutes.responses,
-                  arguments: query,
+                  arguments: query.id,
                 ),
                 icon: const Icon(Icons.comment),
                 tooltip: "Responses",

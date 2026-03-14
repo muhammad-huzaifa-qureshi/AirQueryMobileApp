@@ -1,15 +1,38 @@
 import 'package:air_query/core/routing/app_router.dart';
-import 'package:air_query/core/routing/app_routes.dart';
-import 'package:air_query/core/theme/custom_app_theme.dart';
+import 'package:air_query/services/notification_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'core/routing/app_routes.dart';
+import 'core/theme/custom_app_theme.dart';
 
-class AirQuery extends ConsumerWidget {
+final navigatorKey = GlobalKey<NavigatorState>();
+
+class AirQuery extends StatefulWidget {
   const AirQuery({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<AirQuery> createState() => _AirQueryState();
+}
+
+class _AirQueryState extends State<AirQuery> {
+  late final NotificationService _notificationService;
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationService = NotificationService(navigatorKey);
+    _notificationService.init();
+  }
+
+  @override
+  void dispose() {
+    _notificationService.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       title: "Air Query",
       routes: AppRouter.routes,
