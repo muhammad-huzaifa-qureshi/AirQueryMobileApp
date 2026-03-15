@@ -20,7 +20,7 @@ export const deleteResponse = onCall(async (request) => {
   if (!queryId || !responseId) {
     throw new HttpsError(
       "invalid-argument",
-      "Query ID and Response ID are required.");
+      "Query ID and Response ID are missing, please try again!");
   }
 
   const queryRef = db.collection("queries").doc(queryId);

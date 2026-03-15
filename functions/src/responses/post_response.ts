@@ -21,7 +21,9 @@ export const postResponse = onCall(async (request) => {
   const {queryId, description} = request.data;
 
   if (!queryId) {
-    throw new HttpsError("invalid-argument", "Query ID is required.");
+    throw new HttpsError(
+      "invalid-argument",
+      "Query ID is missing, please try again!");
   }
 
   if (!description || description.trim().length < Constants.minRespLen) {

@@ -20,7 +20,7 @@ export const getResponses = onCall(async (request) => {
   if (!queryId) {
     throw new HttpsError(
       "invalid-argument",
-      "Query ID is required.");
+      "Query ID is missing, please try again!");
   }
 
   const queryRef = db.collection("queries").doc(queryId);

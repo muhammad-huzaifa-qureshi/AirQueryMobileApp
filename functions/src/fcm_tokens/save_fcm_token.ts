@@ -14,7 +14,9 @@ export const saveFcmToken = onCall(async (request) => {
 
   const {token} = request.data;
   if (!token) {
-    throw new HttpsError("invalid-argument", "Token is required.");
+    throw new HttpsError(
+      "invalid-argument",
+      "FCM token missing, please retry!");
   }
 
   await admin.firestore()

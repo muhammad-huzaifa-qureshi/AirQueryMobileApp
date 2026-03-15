@@ -20,7 +20,9 @@ export const deleteQuery = onCall(async (request) => {
   const {queryId} = request.data;
 
   if (!queryId) {
-    throw new HttpsError("invalid-argument", "Query ID is required.");
+    throw new HttpsError(
+      "invalid-argument",
+      "Query ID is missing, please try again!");
   }
 
   // Fetch query doc
