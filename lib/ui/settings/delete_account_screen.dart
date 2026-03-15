@@ -4,7 +4,6 @@ import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/widgets/confirm_dialog.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
 import 'package:air_query/ui/auth/notifier/auth_notifier.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -39,6 +38,7 @@ class _DeleteAccountScreenState extends ConsumerState<DeleteAccountScreen> {
   }
 
   Future<void> _onDelete() async {
+    // validate answer
     final answer = int.tryParse(_controller.text);
     if (answer != product) {
       ScaffoldMessenger.of(
@@ -47,26 +47,26 @@ class _DeleteAccountScreenState extends ConsumerState<DeleteAccountScreen> {
       return;
     }
 
-    if (!context.mounted) return;
+    // confirm dialog
     final confirm = await ConfirmDialog.show(
       context,
       content: "This action is irreversible!",
       confirmText: "Delete",
       confirmColor: AppColors.error,
     );
-    if (confirm) {
-      await ref.read(authProvider.notifier).deleteAccount();
-      if (context.mounted) {
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          AppRoutes.login,
-          (route) => false,
-        );
-      }
+
+    if (confirm != true) return;
+
+    // delete account
+    await ref.read(authProvider.notifier).deleteAccount();
+
+    // navigate to login + show success
+    if (mounted) {
+      Navigator.pushNamedAndRemoveUntil(context, AppRoutes.login, (_) => false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Account Deleted Successfully!")),
+      );
     }
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Account Deleted Successfully!")));
   }
 
   @override

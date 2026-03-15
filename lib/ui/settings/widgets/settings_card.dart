@@ -1,6 +1,5 @@
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SettingsCard extends StatelessWidget {

@@ -1,10 +1,7 @@
 import 'package:air_query/core/constants/app_sizes.dart';
-import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/core/theme/app_colors.dart';
-import 'package:air_query/core/widgets/cta_button.dart';
 import 'package:air_query/ui/about/widgets/about_card.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
