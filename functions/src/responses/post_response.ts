@@ -58,7 +58,7 @@ export const postResponse = onCall(async (request) => {
     throw new HttpsError("not-found", "User not found.");
   }
 
-  const userName = userSnap.data()?.name as string;
+  const userName = userSnap.data()?.name as string ?? "";
 
   // Write response + increment count atomically
   const responseRef = queryRef.collection("responses").doc();
@@ -83,29 +83,31 @@ export const postResponse = onCall(async (request) => {
   });
 
   // just log the error and return true no matters if sent or not
-  try {
-    const ownerSnap = await db
-      .collection("users")
-      .doc(queryOwnerUid)
-      .get();
+  if (queryOwnerUid != uid) {
+    try {
+      const ownerSnap = await db
+        .collection("users")
+        .doc(queryOwnerUid)
+        .get();
 
-    const ownerToken = ownerSnap.data()?.fcmToken;
+      const ownerToken = ownerSnap.data()?.fcmToken;
 
-    if (ownerToken) {
-      await admin.messaging().send({
-        token: ownerToken,
-        notification: {
-          title: "New Response",
-          body: `${userName} replied to your query.`,
-        },
-        data: {
-          type: "new_response",
-          queryId,
-        },
-      });
+      if (ownerToken) {
+        await admin.messaging().send({
+          token: ownerToken,
+          notification: {
+            title: "New Response",
+            body: `${userName} replied to your query.`,
+          },
+          data: {
+            type: "new_response",
+            queryId,
+          },
+        });
+      }
+    } catch (e) {
+      console.error("Notification failed:", e);
     }
-  } catch (e) {
-    console.error("Notification failed:", e);
   }
 
   return {success: true};
