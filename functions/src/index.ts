@@ -19,3 +19,4 @@ export {getResponses} from "./responses/get_responses";
 export {saveFcmToken} from "./fcm_tokens/save_fcm_token";
 export {deleteFcmToken} from "./fcm_tokens/delete_fcm_token";
 export {deleteAccount} from "./users/delete_account";
+export {getOtherUserProfile} from "./users/get_other_user_profile";

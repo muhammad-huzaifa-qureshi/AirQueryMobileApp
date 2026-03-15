@@ -20,4 +20,13 @@ class UserRepository {
     final callable = _functions.httpsCallable('updateProfile');
     await callable.call({'name': name, 'campus': campus, 'semester': semester});
   }
+
+  // for other user profile
+  Future<UserModel> fetchOtherUserProfile(String uid) async {
+    final callable = _functions.httpsCallable('getOtherUserProfile');
+    final result = await callable.call({'uid': uid});
+
+    final data = Map<String, dynamic>.from(result.data as Map);
+    return UserModel.fromMap(data);
+  }
 }
