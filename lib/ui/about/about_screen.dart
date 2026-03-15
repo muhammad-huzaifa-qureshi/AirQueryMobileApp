@@ -122,7 +122,7 @@ class AboutScreen extends StatelessWidget {
 
               // Copyright footer
               Text(
-                '© 2026 Air Query. All rights reserved.',
+                '© ${DateTime.now().year} Air Query. All rights reserved.',
                 style: Theme.of(context).textTheme.labelMedium,
                 textAlign: TextAlign.center,
               ),
