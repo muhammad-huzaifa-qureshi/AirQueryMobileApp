@@ -9,16 +9,6 @@ import 'package:url_launcher/url_launcher.dart';
 class AboutScreen extends StatelessWidget {
   const AboutScreen({super.key});
 
-  Future<void> _launchGithub() async {
-    final uri = Uri.parse(BusinessConstants.githubRepoLink);
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
-  }
-
-  Future<void> _launchAuthorLinkedin() async {
-    final uri = Uri.parse(BusinessConstants.authorLinkedin);
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,12 +63,6 @@ class AboutScreen extends StatelessWidget {
                       'This project is built for collaboration. We encourage students and developers to contribute, learn, and improve the platform together.',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    SizedBox(height: AppSizes.medium),
-                    CTAButton(
-                      text: "View on GitHub",
-                      onPressed: _launchGithub,
-                      isPrimary: false,
-                    ),
                   ],
                 ),
               ),
@@ -109,12 +93,6 @@ class AboutScreen extends StatelessWidget {
                       'BS Software Engineering Student',
                       textAlign: .center,
                       style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    SizedBox(height: AppSizes.medium),
-                    CTAButton(
-                      text: "Connect on Linkedin",
-                      isPrimary: false,
-                      onPressed: _launchAuthorLinkedin,
                     ),
                   ],
                 ),

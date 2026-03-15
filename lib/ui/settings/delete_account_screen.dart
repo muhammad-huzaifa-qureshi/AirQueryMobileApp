@@ -118,6 +118,7 @@ class _DeleteAccountScreenState extends ConsumerState<DeleteAccountScreen> {
               TextField(
                 keyboardType: .number,
                 controller: _controller,
+                textInputAction: .done,
                 decoration: InputDecoration(
                   labelText: "Product",
                   prefixIcon: Icon(Icons.help_outline),

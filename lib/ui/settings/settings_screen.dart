@@ -6,9 +6,22 @@ import 'package:air_query/ui/auth/notifier/auth_notifier.dart';
 import 'package:air_query/ui/settings/widgets/settings_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../core/constants/business_constants.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
+
+  Future<void> _launchGithub() async {
+    final uri = Uri.parse(BusinessConstants.githubRepoLink);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  Future<void> _launchAuthorLinkedin() async {
+    final uri = Uri.parse(BusinessConstants.authorLinkedin);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,6 +43,34 @@ class SettingsScreen extends ConsumerWidget {
           padding: const .all(AppSizes.medium),
           child: Column(
             children: [
+              // section 1
+              SettingsCard(
+                text: "About Us",
+                icon: Icon(Icons.info_outline),
+                onTap: () => Navigator.pushNamed(context, AppRoutes.about),
+              ),
+              SettingsCard(
+                text: "Platform Stats",
+                icon: Icon(Icons.leaderboard_outlined),
+                onTap: () =>
+                    Navigator.pushNamed(context, AppRoutes.platformStats),
+              ),
+              SizedBox(height: AppSizes.vLarge),
+
+              // section 2
+              SettingsCard(
+                text: "GitHub Repository",
+                icon: Icon(Icons.code),
+                onTap: _launchGithub,
+              ),
+              SettingsCard(
+                text: "Connect on Linkedin",
+                icon: Icon(Icons.handshake_outlined),
+                onTap: _launchAuthorLinkedin,
+              ),
+
+              // section 3
+              SizedBox(height: AppSizes.vLarge),
               SettingsCard(
                 text: "Reset Password",
                 icon: Icon(Icons.lock_reset_outlined),
