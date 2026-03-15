@@ -1,3 +1,4 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepository {
@@ -48,7 +49,15 @@ class AuthRepository {
   }
 
   // sign out
-  void signOut(){
+  void signOut() {
     _firebaseAuth.signOut();
+  }
+
+  // delete account
+  Future<void> deleteAccount() async {
+    final callable = FirebaseFunctions.instanceFor(
+      region: "asia-south1",
+    ).httpsCallable('deleteAccount');
+    await callable.call();
   }
 }

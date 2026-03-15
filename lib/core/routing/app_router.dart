@@ -11,6 +11,8 @@ import 'package:air_query/ui/my_queries/my_queries_screen.dart';
 import 'package:air_query/ui/post_query/post_query_screen.dart';
 import 'package:air_query/ui/profile/profile_screen.dart';
 import 'package:air_query/ui/responses/responses_screen.dart';
+import 'package:air_query/ui/settings/delete_account_screen.dart';
+import 'package:air_query/ui/settings/settings_screen.dart';
 import 'package:air_query/ui/splash/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -42,5 +44,9 @@ class AppRouter {
       final queryId = ModalRoute.of(context)!.settings.arguments as String;
       return ResponsesScreen(queryId: queryId,);
     },
+
+    // settings
+    AppRoutes.settings: (_) => const SettingsScreen(),
+    AppRoutes.deleteAccount: (_) => const DeleteAccountScreen()
   };
 }

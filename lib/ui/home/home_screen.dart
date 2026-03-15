@@ -65,7 +65,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             tooltip: "About Us",
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () => Navigator.pushNamed(context, AppRoutes.settings),
             icon: const Icon(Icons.settings),
             tooltip: "Settings",
           ),

@@ -23,4 +23,8 @@ class AppRoutes {
 
   // Responses
   static const responses = "responses";
+
+  // settings
+  static const settings = "settings";
+  static const deleteAccount = "delete-account";
 }

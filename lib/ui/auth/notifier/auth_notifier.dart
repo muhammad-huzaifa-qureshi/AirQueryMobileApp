@@ -1,12 +1,14 @@
 import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/ui/auth/notifier/auth_status.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../repositories/auth/auth_repository.dart';
 import '../../../services/fcm_service.dart';
 
-final authProvider =
-AsyncNotifierProvider<AuthNotifier, AuthStatus>(AuthNotifier.new);
+final authProvider = AsyncNotifierProvider<AuthNotifier, AuthStatus>(
+  AuthNotifier.new,
+);
 
 class AuthNotifier extends AsyncNotifier<AuthStatus> {
   late final AuthRepository _authRepository;
@@ -30,10 +32,7 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
         : AuthStatus.emailNotVerified;
   }
 
-  Future<void> login({
-    required String id,
-    required String password,
-  }) async {
+  Future<void> login({required String id, required String password}) async {
     state = const AsyncLoading();
 
     try {
@@ -74,10 +73,7 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
     }
   }
 
-  Future<void> register({
-    required String id,
-    required String password,
-  }) async {
+  Future<void> register({required String id, required String password}) async {
     state = const AsyncLoading();
 
     try {
@@ -117,7 +113,9 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
     state = const AsyncLoading();
 
     try {
-      await _authRepository.sendPasswordResetEmail(email: "$id${BusinessConstants.auEmailDomain}");
+      await _authRepository.sendPasswordResetEmail(
+        email: "$id${BusinessConstants.auEmailDomain}",
+      );
       state = AsyncData(state.value ?? AuthStatus.unauthenticated);
     } on FirebaseException catch (e) {
       state = AsyncError(
@@ -144,7 +142,9 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
       }
 
       if (user.emailVerified) {
-        await user.getIdToken(true); // force refresh the JWT (to get verify email status in request to cloud functions)
+        await user.getIdToken(
+          true,
+        ); // force refresh the JWT (to get verify email status in request to cloud functions)
         state = const AsyncData(AuthStatus.authenticated);
         FcmService().init();
       } else {
@@ -185,6 +185,43 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
     } catch (e) {
       state = AsyncError(
         'Failed to resend email, please try again!',
+        StackTrace.current,
+      );
+    }
+  }
+
+  // logout
+  Future<void> signOut() async {
+    try {
+      state = const AsyncLoading();
+      _authRepository.signOut();
+      state = const AsyncData(AuthStatus.unauthenticated);
+    } on FirebaseException catch (e) {
+      state = AsyncError(
+        e.message ?? 'Sign out failed , please try again!',
+        StackTrace.current,
+      );
+    } catch (e) {
+      state = AsyncError(
+        'Sign out failed, please try again!',
+        StackTrace.current,
+      );
+    }
+  }
+
+  Future<void> deleteAccount() async {
+    state = const AsyncLoading();
+    try {
+      await _authRepository.deleteAccount();
+      state = const AsyncData(AuthStatus.unauthenticated);
+    } on FirebaseFunctionsException catch (e) {
+      state = AsyncError(
+        e.message ?? 'Account deletion failed, please try again!',
+        StackTrace.current,
+      );
+    } catch (e) {
+      state = AsyncError(
+        'Account deletion failed, please try again!',
         StackTrace.current,
       );
     }
