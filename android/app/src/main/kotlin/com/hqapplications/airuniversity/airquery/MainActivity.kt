@@ -1,4 +1,4 @@
-package com.hqapps.airuniversity.airquery
+package com.hqapplications.airuniversity.airquery
 
 import io.flutter.embedding.android.FlutterActivity
 
