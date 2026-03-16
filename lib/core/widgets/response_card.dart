@@ -1,7 +1,9 @@
+import 'package:air_query/ui/other_user_profile/show_user_profile_card.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/response_model.dart';
 import '../constants/app_sizes.dart';
+import '../routing/app_routes.dart';
 import '../theme/app_colors.dart';
 import '../utils/format_time.dart';
 import 'confirm_dialog.dart';
@@ -30,13 +32,21 @@ class ResponseCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                child: Text(
-                  isOwn
-                      ? "${response.postedByName} (Me)"
-                      : response.postedByName,
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppColors.primary),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                child: GestureDetector(
+                  onTap: isOwn
+                      ? () => Navigator.pushNamed(context, AppRoutes.profile)
+                      : () =>
+                            showUserProfileCard(context, response.postedByUid),
+                  child: Text(
+                    isOwn
+                        ? "${response.postedByName} (Me)"
+                        : response.postedByName,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelMedium?.copyWith(color: AppColors.primary),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
               Row(

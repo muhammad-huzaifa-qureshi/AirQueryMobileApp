@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/theme/app_colors.dart';
-import '../../core/widgets/stat_tile.dart';
+import '../../core/widgets/stat_box.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});

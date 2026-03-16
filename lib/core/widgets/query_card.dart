@@ -3,6 +3,7 @@ import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/utils/format_time.dart';
 import 'package:air_query/core/widgets/confirm_dialog.dart';
+import 'package:air_query/ui/other_user_profile/show_user_profile_card.dart';
 import 'package:flutter/material.dart';
 import '../theme/query_colors.dart';
 import '../../models/query_model.dart';
@@ -54,15 +55,20 @@ class QueryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                child: Text(
-                  isOwnQuery
-                      ? "${query.postedByName} (Me)"
-                      : query.postedByName,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.labelLarge?.copyWith(color: queryColor),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                child: GestureDetector(
+                  onTap: isOwnQuery
+                      ? () => Navigator.pushNamed(context, AppRoutes.profile)
+                      : () => showUserProfileCard(context, query.postedByUid),
+                  child: Text(
+                    isOwnQuery
+                        ? "${query.postedByName} (Me)"
+                        : query.postedByName,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelLarge?.copyWith(color: queryColor),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
               Text(
@@ -77,7 +83,9 @@ class QueryCard extends StatelessWidget {
           // campus
           Text(
             "For ${query.campus == "All" ? "All Campuses" : query.campus}",
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(color: queryColor),
+            style: Theme.of(
+              context,
+            ).textTheme.labelSmall?.copyWith(color: queryColor),
           ),
 
           const SizedBox(height: AppSizes.medium),

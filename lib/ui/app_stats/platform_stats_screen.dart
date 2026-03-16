@@ -1,5 +1,5 @@
 import 'package:air_query/core/constants/app_sizes.dart';
-import 'package:air_query/core/widgets/stat_tile.dart';
+import 'package:air_query/core/widgets/stat_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/app_colors.dart';
