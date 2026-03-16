@@ -25,7 +25,6 @@ class FcmService {
     await _functions.httpsCallable('saveFcmToken').call({'token': token});
   }
 
-  // todo: call this on logout
   Future<void> deleteToken() async {
 
     await _tokenRefreshSub?.cancel();

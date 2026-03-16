@@ -155,6 +155,11 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
         e.message ?? 'Verification check failed, please try again!',
         StackTrace.current,
       );
+    } catch (e) {
+      state = AsyncError(
+        'Verification check failed, please try again!',
+        StackTrace.current,
+      );
     }
   }
 
@@ -192,8 +197,9 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
 
   // logout
   Future<void> signOut() async {
+    state = const AsyncLoading();
     try {
-      state = const AsyncLoading();
+      await FcmService().deleteToken();
       _authRepository.signOut();
       state = const AsyncData(AuthStatus.unauthenticated);
     } on FirebaseException catch (e) {
