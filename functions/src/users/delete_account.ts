@@ -19,7 +19,7 @@ async function batchDelete(
 }
 
 /** Deletes user account, their queries, responses, and record. */
-export const deleteAccount = onCall(async (request) => {
+export const deleteAccount = onCall({maxInstances: 1}, async (request) => {
   if (!request.auth) {
     throw new HttpsError("unauthenticated", "Please log in to continue.");
   }

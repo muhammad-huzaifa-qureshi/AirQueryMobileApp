@@ -1,7 +1,7 @@
 import {onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
-export const resolveQuery = onCall(async (request) => {
+export const resolveQuery = onCall({maxInstances: 1}, async (request) => {
   // Auth guard
   if (!request.auth) {
     throw new HttpsError("unauthenticated", "Please log in to continue.");

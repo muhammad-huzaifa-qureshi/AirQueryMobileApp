@@ -3,7 +3,7 @@ import * as admin from "firebase-admin";
 import {Constants} from "../constants";
 
 /** Fetches paginated responses for a query. */
-export const getResponses = onCall(async (request) => {
+export const getResponses = onCall({maxInstances: 2}, async (request) => {
   if (!request.auth) {
     throw new HttpsError("unauthenticated", "Please log in to continue.");
   }

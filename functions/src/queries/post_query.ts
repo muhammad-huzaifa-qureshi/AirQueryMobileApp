@@ -3,7 +3,7 @@ import * as admin from "firebase-admin";
 import {Constants} from "../constants";
 
 /** Posts a new query and increments user and platform counters atomically. */
-export const postQuery = onCall(async (request) => {
+export const postQuery = onCall({maxInstances: 1}, async (request) => {
   // Auth guard
   if (!request.auth) {
     throw new HttpsError("unauthenticated", "Please log in to continue.");

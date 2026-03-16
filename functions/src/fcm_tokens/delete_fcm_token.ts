@@ -1,7 +1,7 @@
 import {onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
-export const deleteFcmToken = onCall(async (request) => {
+export const deleteFcmToken = onCall({maxInstances: 1}, async (request) => {
   if (!request.auth) {
     throw new HttpsError("unauthenticated", "Please log in to continue.");
   }
