@@ -122,6 +122,7 @@ class _DeleteAccountScreenState extends ConsumerState<DeleteAccountScreen> {
                 decoration: InputDecoration(
                   labelText: "Product",
                   prefixIcon: Icon(Icons.help_outline),
+                  hintText: "$n1 x $n2"
                 ),
               ),
               SizedBox(height: AppSizes.large),
