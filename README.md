@@ -101,7 +101,7 @@ Scope            : Collection group
 ```
 
 # What’s Coming Next
-- Implement Rate Limiting (high priority)
+- Implement Rate Limiting on Cloud Functions - App Check Already Implemented (high priority)
 - Implement a "Show Email" feature in profile card
 - Implement a user friendly message when offline rather than current "UNAVAILABLE" error.
 - Introduce a **"Report Query"** feature for better moderation
