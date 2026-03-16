@@ -4,27 +4,27 @@ import * as admin from "firebase-admin";
 export const saveFcmToken = onCall(
   {maxInstances: 1, enforceAppCheck: true},
   async (request) => {
-  if (!request.auth) {
-    throw new HttpsError("unauthenticated", "Please log in to continue.");
-  }
+    if (!request.auth) {
+      throw new HttpsError("unauthenticated", "Please log in to continue.");
+    }
 
-  if (!request.auth.token.email_verified) {
-    throw new HttpsError(
-      "failed-precondition",
-      "Please verify your email to continue.");
-  }
+    if (!request.auth.token.email_verified) {
+      throw new HttpsError(
+        "failed-precondition",
+        "Please verify your email to continue.");
+    }
 
-  const {token} = request.data;
-  if (!token) {
-    throw new HttpsError(
-      "invalid-argument",
-      "FCM token missing, please retry!");
-  }
+    const {token} = request.data;
+    if (!token) {
+      throw new HttpsError(
+        "invalid-argument",
+        "FCM token missing, please retry!");
+    }
 
-  await admin.firestore()
-    .collection("users")
-    .doc(request.auth.uid)
-    .set({fcmToken: token}, {merge: true});
+    await admin.firestore()
+      .collection("users")
+      .doc(request.auth.uid)
+      .set({fcmToken: token}, {merge: true});
 
-  return {success: true};
-});
+    return {success: true};
+  });

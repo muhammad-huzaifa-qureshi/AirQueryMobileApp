@@ -4,20 +4,20 @@ import * as admin from "firebase-admin";
 export const deleteFcmToken = onCall(
   {maxInstances: 1, enforceAppCheck: true},
   async (request) => {
-  if (!request.auth) {
-    throw new HttpsError("unauthenticated", "Please log in to continue.");
-  }
+    if (!request.auth) {
+      throw new HttpsError("unauthenticated", "Please log in to continue.");
+    }
 
-  if (!request.auth.token.email_verified) {
-    throw new HttpsError(
-      "failed-precondition",
-      "Please verify your email to continue.");
-  }
+    if (!request.auth.token.email_verified) {
+      throw new HttpsError(
+        "failed-precondition",
+        "Please verify your email to continue.");
+    }
 
-  await admin.firestore()
-    .collection("users")
-    .doc(request.auth.uid)
-    .set({fcmToken: admin.firestore.FieldValue.delete()}, {merge: true});
+    await admin.firestore()
+      .collection("users")
+      .doc(request.auth.uid)
+      .set({fcmToken: admin.firestore.FieldValue.delete()}, {merge: true});
 
-  return {success: true};
-});
+    return {success: true};
+  });

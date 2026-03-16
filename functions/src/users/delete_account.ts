@@ -22,48 +22,48 @@ async function batchDelete(
 export const deleteAccount = onCall(
   {maxInstances: 1, enforceAppCheck: true},
   async (request) => {
-  if (!request.auth) {
-    throw new HttpsError("unauthenticated", "Please log in to continue.");
-  }
+    if (!request.auth) {
+      throw new HttpsError("unauthenticated", "Please log in to continue.");
+    }
 
-  if (!request.auth.token.email_verified) {
-    throw new HttpsError(
-      "failed-precondition",
-      "Please verify your email to continue.");
-  }
+    if (!request.auth.token.email_verified) {
+      throw new HttpsError(
+        "failed-precondition",
+        "Please verify your email to continue.");
+    }
 
-  const uid = request.auth.uid;
-  const db = admin.firestore();
+    const uid = request.auth.uid;
+    const db = admin.firestore();
 
-  // Fetch all user's queries
-  const queriesSnap = await db
-    .collection("queries")
-    .where("postedBy.uid", "==", uid)
-    .get();
+    // Fetch all user's queries
+    const queriesSnap = await db
+      .collection("queries")
+      .where("postedBy.uid", "==", uid)
+      .get();
 
-  // Delete all responses inside each of user's queries
-  await Promise.all(
-    queriesSnap.docs.map(async (queryDoc) => {
-      const responsesSnap = await queryDoc.ref.collection("responses").get();
-      await batchDelete(responsesSnap.docs);
-    })
-  );
+    // Delete all responses inside each of user's queries
+    await Promise.all(
+      queriesSnap.docs.map(async (queryDoc) => {
+        const responsesSnap = await queryDoc.ref.collection("responses").get();
+        await batchDelete(responsesSnap.docs);
+      })
+    );
 
-  // Delete all user's queries
-  await batchDelete(queriesSnap.docs);
+    // Delete all user's queries
+    await batchDelete(queriesSnap.docs);
 
-  // Delete user's responses on other people's queries
-  const myResponsesSnap = await db
-    .collectionGroup("responses")
-    .where("postedBy.uid", "==", uid)
-    .get();
-  await batchDelete(myResponsesSnap.docs);
+    // Delete user's responses on other people's queries
+    const myResponsesSnap = await db
+      .collectionGroup("responses")
+      .where("postedBy.uid", "==", uid)
+      .get();
+    await batchDelete(myResponsesSnap.docs);
 
-  // Delete user doc
-  await db.collection("users").doc(uid).delete();
+    // Delete user doc
+    await db.collection("users").doc(uid).delete();
 
-  // Delete Firebase Auth user last
-  await admin.auth().deleteUser(uid);
+    // Delete Firebase Auth user last
+    await admin.auth().deleteUser(uid);
 
-  return {success: true};
-});
+    return {success: true};
+  });

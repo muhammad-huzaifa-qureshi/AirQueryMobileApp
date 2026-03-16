@@ -7,82 +7,82 @@ export const postQuery = onCall(
   {maxInstances: 1, enforceAppCheck: true},
   async (request) => {
   // Auth guard
-  if (!request.auth) {
-    throw new HttpsError("unauthenticated", "Please log in to continue.");
-  }
+    if (!request.auth) {
+      throw new HttpsError("unauthenticated", "Please log in to continue.");
+    }
 
-  // Email verification check
-  if (!request.auth.token.email_verified) {
-    throw new HttpsError(
-      "failed-precondition",
-      "Please verify your email to continue."
-    );
-  }
+    // Email verification check
+    if (!request.auth.token.email_verified) {
+      throw new HttpsError(
+        "failed-precondition",
+        "Please verify your email to continue."
+      );
+    }
 
-  const uid = request.auth.uid;
-  const db = admin.firestore();
-  const {description, postToAll} = request.data;
-  const trimmedDescription = description.trim();
+    const uid = request.auth.uid;
+    const db = admin.firestore();
+    const {description, postToAll} = request.data;
+    const trimmedDescription = description.trim();
 
-  // Validate
-  if (trimmedDescription === "") {
-    throw new HttpsError(
-      "invalid-argument",
-      "Please provide a description for your query."
-    );
-  }
+    // Validate
+    if (trimmedDescription === "") {
+      throw new HttpsError(
+        "invalid-argument",
+        "Please provide a description for your query."
+      );
+    }
 
-  if (trimmedDescription.length < Constants.minQueryLen) {
-    throw new HttpsError(
-      "invalid-argument",
-      `Query must be at least ${Constants.minQueryLen} characters.`
-    );
-  }
+    if (trimmedDescription.length < Constants.minQueryLen) {
+      throw new HttpsError(
+        "invalid-argument",
+        `Query must be at least ${Constants.minQueryLen} characters.`
+      );
+    }
 
-  if (trimmedDescription.length > Constants.maxQueryLen) {
-    throw new HttpsError(
-      "invalid-argument",
-      `Query must be less than ${Constants.maxQueryLen} characters.`
-    );
-  }
+    if (trimmedDescription.length > Constants.maxQueryLen) {
+      throw new HttpsError(
+        "invalid-argument",
+        `Query must be less than ${Constants.maxQueryLen} characters.`
+      );
+    }
 
-  // Fetch user doc
-  const userSnap = await db.collection("users").doc(uid).get();
-  if (!userSnap.exists) {
-    throw new HttpsError("not-found", "Please set up your profile first.");
-  }
+    // Fetch user doc
+    const userSnap = await db.collection("users").doc(uid).get();
+    if (!userSnap.exists) {
+      throw new HttpsError("not-found", "Please set up your profile first.");
+    }
 
-  const userData = userSnap.data();
-  if (!userData?.profileComplete) {
-    throw new HttpsError(
-      "failed-precondition",
-      "Please complete your profile to continue."
-    );
-  }
+    const userData = userSnap.data();
+    if (!userData?.profileComplete) {
+      throw new HttpsError(
+        "failed-precondition",
+        "Please complete your profile to continue."
+      );
+    }
 
-  const campus = postToAll ? "All" : userData.campus;
+    const campus = postToAll ? "All" : userData.campus;
 
-  const queryRef = db.collection("queries").doc();
-  const userRef = db.collection("users").doc(uid);
-  const statsRef = db.collection("platformStats").doc("global");
+    const queryRef = db.collection("queries").doc();
+    const userRef = db.collection("users").doc(uid);
+    const statsRef = db.collection("platformStats").doc("global");
 
-  await db.runTransaction(async (tx) => {
-    tx.set(queryRef, {
-      description: trimmedDescription,
-      campus,
-      postedBy: {uid, name: userData.name},
-      postedAt: admin.firestore.FieldValue.serverTimestamp(),
-      responseCount: 0,
+    await db.runTransaction(async (tx) => {
+      tx.set(queryRef, {
+        description: trimmedDescription,
+        campus,
+        postedBy: {uid, name: userData.name},
+        postedAt: admin.firestore.FieldValue.serverTimestamp(),
+        responseCount: 0,
+      });
+      tx.update(userRef, {
+        queriesPosted: admin.firestore.FieldValue.increment(1),
+      });
+      tx.set(
+        statsRef,
+        {totalQueriesPosted: admin.firestore.FieldValue.increment(1)},
+        {merge: true}
+      );
     });
-    tx.update(userRef, {
-      queriesPosted: admin.firestore.FieldValue.increment(1),
-    });
-    tx.set(
-      statsRef,
-      {totalQueriesPosted: admin.firestore.FieldValue.increment(1)},
-      {merge: true}
-    );
+
+    return {success: true};
   });
-
-  return {success: true};
-});

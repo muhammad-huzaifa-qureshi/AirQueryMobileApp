@@ -31,88 +31,88 @@ export const updateProfile = onCall(
   {maxInstances: 1, enforceAppCheck: true},
   async (request) => {
   // Auth guard
-  if (!request.auth) {
-    throw new HttpsError("unauthenticated", "Please log in to continue.");
-  }
+    if (!request.auth) {
+      throw new HttpsError("unauthenticated", "Please log in to continue.");
+    }
 
-  // Email verification check
-  if (!request.auth.token.email_verified) {
-    throw new HttpsError(
-      "failed-precondition",
-      "Please verify your email to continue."
-    );
-  }
-
-  const uid = request.auth.uid;
-  const db = admin.firestore();
-
-  const {name, semester, campus} = request.data;
-
-  // Validate: at least one field required
-  if (name == null && semester == null && campus == null) {
-    throw new HttpsError(
-      "invalid-argument",
-      "Please provide at least one field to update."
-    );
-  }
-
-  // name checks
-  if (name != null) {
-    if (name.length < Constants.nameMinChars) {
+    // Email verification check
+    if (!request.auth.token.email_verified) {
       throw new HttpsError(
-        "invalid-argument",
-        `Name must contain at least ${Constants.nameMinChars} characters!`
+        "failed-precondition",
+        "Please verify your email to continue."
       );
     }
-    if (name.length > Constants.nameMaxChars) {
+
+    const uid = request.auth.uid;
+    const db = admin.firestore();
+
+    const {name, semester, campus} = request.data;
+
+    // Validate: at least one field required
+    if (name == null && semester == null && campus == null) {
       throw new HttpsError(
         "invalid-argument",
-        `Name must not exceed ${Constants.nameMaxChars} characters!`
+        "Please provide at least one field to update."
       );
     }
-  }
 
-  // Validate semester range
-  if (semester != null) {
-    const semNum = parseInt(semester, 10);
-    if (isNaN(semNum) || semNum < 1 || semNum > 8) {
+    // name checks
+    if (name != null) {
+      if (name.length < Constants.nameMinChars) {
+        throw new HttpsError(
+          "invalid-argument",
+          `Name must contain at least ${Constants.nameMinChars} characters!`
+        );
+      }
+      if (name.length > Constants.nameMaxChars) {
+        throw new HttpsError(
+          "invalid-argument",
+          `Name must not exceed ${Constants.nameMaxChars} characters!`
+        );
+      }
+    }
+
+    // Validate semester range
+    if (semester != null) {
+      const semNum = parseInt(semester, 10);
+      if (isNaN(semNum) || semNum < 1 || semNum > 8) {
+        throw new HttpsError(
+          "invalid-argument",
+          "Semester must be between 1 and 8."
+        );
+      }
+    }
+
+    // Validate campus
+    if (campus != null && !Constants.campuses.includes(campus)) {
       throw new HttpsError(
         "invalid-argument",
-        "Semester must be between 1 and 8."
+        "Invalid campus selected."
       );
     }
-  }
 
-  // Validate campus
-  if (campus != null && !Constants.campuses.includes(campus)) {
-    throw new HttpsError(
-      "invalid-argument",
-      "Invalid campus selected."
-    );
-  }
+    // Build update map
+    const updates: Record<string, unknown> = {};
+    if (name != null) updates.name = name;
+    if (semester != null) updates.semester = semester;
+    if (campus != null) updates.campus = campus;
+    updates.profileComplete = true;
 
-  // Build update map
-  const updates: Record<string, unknown> = {};
-  if (name != null) updates.name = name;
-  if (semester != null) updates.semester = semester;
-  if (campus != null) updates.campus = campus;
-  updates.profileComplete = true;
+    // Save user profile
+    await db.collection("users").doc(uid).set(updates, {merge: true});
 
-  // Save user profile
-  await db.collection("users").doc(uid).set(updates, {merge: true});
+    // Sync name across all queries and responses in parallel
+    if (name != null) {
+      const [querySnap, responseSnap] = await Promise.all([
+        db.collection("queries").where("postedBy.uid", "==", uid).get(),
+        db.collectionGroup("responses").where("postedBy.uid", "==", uid).get(),
+      ]);
 
-  // Sync name across all queries and responses in parallel
-  if (name != null) {
-    const [querySnap, responseSnap] = await Promise.all([
-      db.collection("queries").where("postedBy.uid", "==", uid).get(),
-      db.collectionGroup("responses").where("postedBy.uid", "==", uid).get(),
-    ]);
+      await Promise.all([
+        batchUpdateName(db, querySnap.docs, name),
+        batchUpdateName(db, responseSnap.docs, name),
+      ]);
+    }
 
-    await Promise.all([
-      batchUpdateName(db, querySnap.docs, name),
-      batchUpdateName(db, responseSnap.docs, name),
-    ]);
-  }
-
-  return {success: true};
-});
+    return {success: true};
+  });
