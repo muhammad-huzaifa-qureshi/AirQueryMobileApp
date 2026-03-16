@@ -1,7 +1,9 @@
 import {onCall} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 
-export const getPlatformStats = onCall({maxInstances: 1}, async () => {
+export const getPlatformStats = onCall(
+  {maxInstances: 1, enforceAppCheck: true},
+  async () => {
   const db = admin.firestore();
 
   const snap = await db.collection("platformStats").doc("global").get();

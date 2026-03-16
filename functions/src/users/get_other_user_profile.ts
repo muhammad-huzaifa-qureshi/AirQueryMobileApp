@@ -3,7 +3,8 @@ import * as admin from "firebase-admin";
 
 /** Fetches public profile of another user by uid. */
 export const getOtherUserProfile = onCall(
-  {maxInstances: 1}, async (request) => {
+  {maxInstances: 1, enforceAppCheck: true},
+  async (request) => {
     if (!request.auth) {
       throw new HttpsError("unauthenticated", "Please log in to continue.");
     }

@@ -4,7 +4,9 @@ import {Constants} from "../constants";
 
 /** Posts a response to a query and increments responseCount.
  * Also notifies the query owner*/
-export const postResponse = onCall({maxInstances: 1}, async (request) => {
+export const postResponse = onCall(
+  {maxInstances: 1, enforceAppCheck: true},
+  async (request) => {
   if (!request.auth) {
     throw new HttpsError("unauthenticated", "Please log in to continue.");
   }

@@ -27,7 +27,9 @@ async function batchUpdateName(
 
 /** Updates user profile fields
 and syncs name changes across queries and responses. */
-export const updateProfile = onCall({maxInstances: 1}, async (request) => {
+export const updateProfile = onCall(
+  {maxInstances: 1, enforceAppCheck: true},
+  async (request) => {
   // Auth guard
   if (!request.auth) {
     throw new HttpsError("unauthenticated", "Please log in to continue.");
