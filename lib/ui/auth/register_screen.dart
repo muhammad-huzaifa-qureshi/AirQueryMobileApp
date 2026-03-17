@@ -7,6 +7,7 @@ import 'package:air_query/ui/auth/notifier/auth_notifier.dart';
 import 'package:air_query/ui/auth/notifier/auth_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -159,11 +160,25 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: AppSizes.medium),
+                GestureDetector(
+                  onTap: _launchPrivacyPolicy,
+                  child: Text(
+                    "Privacy Policy",
+                    style: Theme.of(context).textTheme.bodySmall,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _launchPrivacyPolicy() async {
+    final uri = Uri.parse(BusinessConstants.privacyPolicy);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 }

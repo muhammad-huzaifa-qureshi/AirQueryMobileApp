@@ -1,10 +1,10 @@
 class BusinessConstants {
-  // github link
   static const String githubRepoLink =
       "https://github.com/muhammad-huzaifa-qureshi/AirQueryMobileApp";
-
   static const String authorLinkedin =
       "https://www.linkedin.com/in/muhammad-huzaifa-qureshi/";
+  static const String privacyPolicy =
+      "https://sites.google.com/view/air-query-privacy-policy";
 
   // password policy
   static const minPassChars = 8;

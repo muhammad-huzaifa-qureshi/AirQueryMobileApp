@@ -23,6 +23,11 @@ class SettingsScreen extends ConsumerWidget {
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
+  Future<void> _launchPrivacyPolicy() async {
+    final uri = Uri.parse(BusinessConstants.privacyPolicy);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(authProvider, (_, next) {
@@ -54,6 +59,11 @@ class SettingsScreen extends ConsumerWidget {
                 icon: Icon(Icons.leaderboard_outlined),
                 onTap: () =>
                     Navigator.pushNamed(context, AppRoutes.platformStats),
+              ),
+              SettingsCard(
+                text: "Privacy Policy",
+                icon: Icon(Icons.privacy_tip_outlined),
+                onTap: _launchPrivacyPolicy
               ),
               SizedBox(height: AppSizes.vLarge),
 
