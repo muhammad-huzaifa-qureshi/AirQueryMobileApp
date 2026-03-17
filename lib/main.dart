@@ -17,8 +17,8 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
 
   await FirebaseAppCheck.instance.activate(
-    // change in production
-    providerAndroid: AndroidDebugProvider(),
+    // change to "AndroidDebugProvider()" in debug mode
+    providerAndroid: AndroidPlayIntegrityProvider(),
   );
 
   runApp(ProviderScope(child: const AirQuery()));
