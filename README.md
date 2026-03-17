@@ -104,9 +104,10 @@ Scope            : Collection group
 
 # What’s Coming Next
 - Implement Rate Limiting on Cloud Functions - App Check Already Implemented (high priority)
+- Introduce a **"Report Query"** feature for better moderation
 - Implement a "Show Email" feature in profile card
 - Implement a user friendly message when offline rather than current "UNAVAILABLE" error.
-- Introduce a **"Report Query"** feature for better moderation
+- Introduce **Firebase Crashlytics** for crash reporting.
 - Add **notifications tab**
 - Add **Filters** on Home Feed (like date, response count, etc.)
 - Implement **automatic deletion of queries** after 30 days
