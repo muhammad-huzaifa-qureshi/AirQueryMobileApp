@@ -14,6 +14,8 @@ An **unofficial** mobile app for Air University students to post and answer camp
 - Firestore
 - Cloud Functions
 - Analytics
+- App Check
+- Cloud Messaging (FCM)
 
 # Firestore Rules
 All Firestore reads and writes are disabled. Use Cloud Functions for all database operations.

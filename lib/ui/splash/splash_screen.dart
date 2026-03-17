@@ -1,7 +1,7 @@
 import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/ui/auth/notifier/auth_notifier.dart';
 import 'package:air_query/ui/auth/notifier/auth_status.dart';
-import 'package:air_query/ui/splash/update_checker.dart';
+import 'package:air_query/services/update_checker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
