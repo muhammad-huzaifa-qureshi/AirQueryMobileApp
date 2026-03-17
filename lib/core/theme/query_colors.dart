@@ -2,13 +2,13 @@ import 'dart:ui';
 
 class QueryColors {
   static const List<Color> strokes = [
-    Color(0xFFFF9F1C),
-    Color(0xFFFF4D8A),
-    Color(0xFFFFCC00),
-    Color(0xFF9B4DFF),
-    Color(0xFFFF6B35),
-    Color(0xFF00C9FF),
-    Color(0xFF2ECC71),
-    Color(0xFFFF3D71),
+    Color(0xFF5DEFE0), // teal — echoes primary
+    Color(0xFFFF6B6B), // coral red
+    Color(0xFFFFAB40), // amber
+    Color(0xFF9B8FFF), // lavender
+    Color(0xFF4FC3F7), // sky blue
+    Color(0xFFA8E063), // lime green
+    Color(0xFFFF85A1), // rose pink
+    Color(0xFFFFB347), // peach
   ];
 }
