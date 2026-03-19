@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:air_query/repositories/auth/auth_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import '../core/routing/app_routes.dart';
@@ -10,13 +11,7 @@ class NotificationService {
   NotificationService(this._navigatorKey);
 
   Future<void> init() async {
-    // Terminated
-    final initial = await FirebaseMessaging.instance.getInitialMessage();
-    if (initial != null) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => _handleTap(initial.data),
-      );
-    }
+    // terminated state — handled by SplashScreen
 
     // Background
     _subscriptions.add(
@@ -37,6 +32,13 @@ class NotificationService {
   }
 
   void _handleForeground(RemoteMessage message) {
+    // Skip own query notifications
+    if (message.data['type'] == 'new_query') {
+      final posterUid = message.data['posterUid'];
+      final currentUid = AuthRepository().currentUser?.uid;
+      if (posterUid == currentUid) return;
+    }
+
     final notification = message.notification;
     if (notification == null) return;
     final context = _navigatorKey.currentContext;
@@ -59,15 +61,19 @@ class NotificationService {
 
     switch (type) {
       case 'new_response':
-        _navigatorKey.currentState?.pushNamed(
+        _navigatorKey.currentState?.pushNamedAndRemoveUntil(
           AppRoutes.responses,
+          (route) => false,
           arguments: data['queryId'],
         );
-      // case 'new_comment':
-      //   _navigatorKey.currentState?.pushNamed(
-      //     AppRoutes.comments,
-      //     arguments: data['commentId'],
-      //   );
+      case 'new_query':
+        final posterUid = data['posterUid'];
+        final currentUid = AuthRepository().currentUser?.uid;
+        if (posterUid == currentUid) return; // skip own query
+        _navigatorKey.currentState?.pushNamedAndRemoveUntil(
+          AppRoutes.home,
+          (route) => false,
+        );
     }
   }
 }

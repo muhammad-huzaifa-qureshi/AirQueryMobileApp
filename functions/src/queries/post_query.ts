@@ -2,11 +2,20 @@ import {onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 import {Constants} from "../constants";
 
+/**
+ * Converts a campus name to a valid FCM topic string.
+ * @param {string} campus - The campus name to convert
+ * @return {string} The formatted topic string
+ */
+function _topicFromCampus(campus: string): string {
+  return `campus_${campus.toLowerCase().replace(/ /g, "_")}`;
+}
+
 /** Posts a new query and increments user and platform counters atomically. */
 export const postQuery = onCall(
   {maxInstances: 1, enforceAppCheck: true},
   async (request) => {
-  // Auth guard
+    // Auth guard
     if (!request.auth) {
       throw new HttpsError("unauthenticated", "Please log in to continue.");
     }
@@ -83,6 +92,29 @@ export const postQuery = onCall(
         {merge: true}
       );
     });
+
+    // Notify campus users
+    const topic = campus === "All" ? "campus_all" : _topicFromCampus(campus);
+    const notifBody = campus === "All" ?
+      "A new query was posted for all campuses." :
+      `A new query was posted for ${campus}.`;
+
+    try {
+      await admin.messaging().send({
+        topic,
+        notification: {
+          title: "New Query Posted!",
+          body: notifBody,
+        },
+        data: {
+          type: "new_query",
+          queryId: queryRef.id,
+          posterUid: uid,
+        },
+      });
+    } catch (e) {
+      console.error("Notification failed:", e);
+    }
 
     return {success: true};
   });

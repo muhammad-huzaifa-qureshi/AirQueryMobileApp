@@ -1,3 +1,4 @@
+import 'package:air_query/services/fcm_service.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../repositories/user/user_repository.dart';
@@ -29,6 +30,8 @@ class EditProfileNotifier extends Notifier<EditProfileState> {
         campus: campus,
         semester: semester,
       );
+      // Subscribe to FCM campus topic after successful profile update
+      await FcmService().subscribeToTopic(campus);
       state = state.copyWith(isLoading: false, success: true);
     } catch (e) {
       final message = e is FirebaseFunctionsException
