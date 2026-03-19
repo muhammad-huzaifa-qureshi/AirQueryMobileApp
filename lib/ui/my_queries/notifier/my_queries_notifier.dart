@@ -1,8 +1,7 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../models/query_model.dart';
-import '../../../repositories/queries/queries_repository.dart';
 import '../../../core/constants/business_constants.dart';
+import '../../../repositories/queries/queries_repository.dart';
 import 'my_queries_state.dart';
 
 final myQueriesProvider =

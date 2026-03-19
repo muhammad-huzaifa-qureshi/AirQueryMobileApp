@@ -3,7 +3,6 @@ import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/ui/home/notifier/home_notifier.dart';
 import 'package:air_query/ui/my_queries/notifier/my_queries_notifier.dart';
-import 'package:air_query/ui/profile/notifier/profile_notifier.dart';
 import 'package:air_query/ui/responses/notifier/responses_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
