@@ -7,15 +7,7 @@ class UpdateChecker {
 
       if (info.updateAvailability != UpdateAvailability.updateAvailable) return;
 
-      // Start flexible update — shows Play Store bottom sheet
-      final result = await InAppUpdate.performImmediateUpdate();
-
-      // Download accepted — install
-      if (result == AppUpdateResult.success) {
-        await InAppUpdate.completeFlexibleUpdate();
-      }
-    } catch (_) {
-      // Silently fail on debug/non-Play builds
-    }
+      await InAppUpdate.performImmediateUpdate();
+    } catch (_) {}
   }
 }
