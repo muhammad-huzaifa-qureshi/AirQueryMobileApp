@@ -3,7 +3,7 @@ description: "An unofficial mobile app for Air University students to post and a
 
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.3.4+2
 
 environment:
   sdk: ^3.10.8
