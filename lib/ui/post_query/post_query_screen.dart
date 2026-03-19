@@ -65,6 +65,7 @@ class _PostQueryScreenState extends ConsumerState<PostQueryScreen> {
                 controller: _descriptionController,
                 maxLength: BusinessConstants.maxQueryLen,
                 textInputAction: TextInputAction.done,
+                maxLines: 2,
                 decoration: const InputDecoration(
                   labelText: "What's your query?",
                   hintText: "e.g: How to submit fee Online?",
