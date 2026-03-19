@@ -16,28 +16,25 @@ class SplashScreen extends ConsumerStatefulWidget {
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   bool _navigated = false;
-
-  // stores the notification that launched the app (if any)
+  bool _initialMessageLoaded = false; // guards against race condition
   RemoteMessage? _initialMessage;
 
   @override
   void initState() {
     super.initState();
     UpdateChecker.check();
-    // fetch initial notification BEFORE trying to navigate
-    // so _resolveAuthenticatedRoute() has the message ready
     _loadInitialMessageThenNavigate();
   }
 
-  // replaces direct _tryNavigate call in initState
-  // waits for FCM initial message before deciding where to go
   Future<void> _loadInitialMessageThenNavigate() async {
     _initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+    _initialMessageLoaded = true; // mark as ready before navigating
     _tryNavigate(ref.read(authProvider));
   }
 
   void _tryNavigate(AsyncValue<AuthStatus> authState) {
     if (_navigated) return;
+    if (!_initialMessageLoaded) return; // wait for FCM before navigating
 
     authState.when(
       loading: () {},
@@ -47,14 +44,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           _navigateToRoute(AppRoutes.login);
           return;
         }
-        // use _resolveAuthenticatedRoute() instead of AppRoutes.home
         final route = user.emailVerified
             ? _resolveAuthenticatedRoute()
             : AppRoutes.emailVerify;
         _navigateToRoute(route);
       },
       data: (status) {
-        // use _resolveAuthenticatedRoute() instead of AppRoutes.home
         final route = switch (status) {
           AuthStatus.authenticated => _resolveAuthenticatedRoute(),
           AuthStatus.emailNotVerified => AppRoutes.emailVerify,
@@ -65,24 +60,15 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     );
   }
 
-  // decides where to go when user is authenticated
-  // checks if app was opened via notification and routes accordingly
   String _resolveAuthenticatedRoute() {
     final message = _initialMessage;
-
-    // no notification — go to home as usual
     if (message == null) return AppRoutes.home;
 
     final type = message.data['type'] as String?;
     switch (type) {
       case 'new_response':
-        // will pass queryId as argument in _navigateToRoute
         return AppRoutes.responses;
       case 'new_query':
-        // skip if it's own query
-        final posterUid = message.data['posterUid'];
-        final currentUid = FirebaseAuth.instance.currentUser?.uid;
-        if (posterUid == currentUid) return AppRoutes.home;
         return AppRoutes.home;
       default:
         return AppRoutes.home;
@@ -93,7 +79,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     if (_navigated) return;
     _navigated = true;
 
-    // pass queryId as argument when navigating to responses screen
     final args = route == AppRoutes.responses
         ? _initialMessage?.data['queryId']
         : null;
@@ -103,10 +88,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // _tryNavigate now safe to call from listener too
-    // because _initialMessage is already loaded before auth resolves
     ref.listen(authProvider, (_, next) => _tryNavigate(next));
-
     return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }
