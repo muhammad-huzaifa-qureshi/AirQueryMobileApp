@@ -1,6 +1,9 @@
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/core/theme/app_colors.dart';
+import 'package:air_query/ui/home/notifier/home_notifier.dart';
+import 'package:air_query/ui/my_queries/notifier/my_queries_notifier.dart';
+import 'package:air_query/ui/profile/notifier/profile_notifier.dart';
 import 'package:air_query/ui/responses/notifier/responses_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,7 +63,18 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
     _responseController.clear();
     ref
         .read(responsesProvider(widget.queryId).notifier)
-        .postResponse(description);
+        .postResponse(description)
+        .then((_) {
+          // update in memory count
+          ref
+              .read(homeProvider.notifier)
+              .updateResponseCount(widget.queryId, 1);
+          if (ref.exists(myQueriesProvider)) {
+            ref
+                .read(myQueriesProvider.notifier)
+                .updateResponseCount(widget.queryId, 1);
+          }
+        });
   }
 
   @override
@@ -153,9 +167,22 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
                 response: response,
                 isOwn: isOwn,
                 onDelete: isOwn
-                    ? () => ref
-                          .read(responsesProvider(widget.queryId).notifier)
-                          .deleteResponse(response.id)
+                    ? () {
+                        ref
+                            .read(responsesProvider(widget.queryId).notifier)
+                            .deleteResponse(response.id)
+                            .then((_) {
+                              // update in memory count
+                              ref
+                                  .read(homeProvider.notifier)
+                                  .updateResponseCount(widget.queryId, -1);
+                              if (ref.exists(myQueriesProvider)) {
+                                ref
+                                    .read(myQueriesProvider.notifier)
+                                    .updateResponseCount(widget.queryId, -1);
+                              }
+                            });
+                      }
                     : null,
               );
             },

@@ -2,6 +2,7 @@ import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/repositories/auth/auth_repository.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../models/query_model.dart';
 import '../../../repositories/queries/queries_repository.dart';
 import 'home_query_state.dart';
 
@@ -106,5 +107,19 @@ class HomeNotifier extends Notifier<HomeQueriesState> {
           : 'Something went wrong.';
       state = state.copyWith(error: message);
     }
+  }
+
+  // for in-memory count update (no db fetch)
+  // called when a del/post response done
+  void updateResponseCount(String queryId, int delta) {
+    state = state.copyWith(
+      queries: state.queries
+          .map(
+            (q) => q.id == queryId
+                ? q.copyWith(responseCount: q.responseCount + delta)
+                : q,
+          )
+          .toList(),
+    );
   }
 }

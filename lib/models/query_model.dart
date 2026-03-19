@@ -29,4 +29,24 @@ class QueryModel {
       responseCount: int.parse(map['responseCount'].toString()),
     );
   }
+
+  QueryModel copyWith({
+    String? id,
+    String? description,
+    String? campus,
+    String? postedByUid,
+    String? postedByName,
+    DateTime? postedAt,
+    int? responseCount,
+  }) {
+    return QueryModel(
+      id: id ?? this.id,
+      description: description ?? this.description,
+      campus: campus ?? this.campus,
+      postedByUid: postedByUid ?? this.postedByUid,
+      postedByName: postedByName ?? this.postedByName,
+      postedAt: postedAt ?? this.postedAt,
+      responseCount: responseCount ?? this.responseCount,
+    );
+  }
 }

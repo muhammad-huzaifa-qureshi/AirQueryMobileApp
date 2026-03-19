@@ -1,5 +1,6 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../models/query_model.dart';
 import '../../../repositories/queries/queries_repository.dart';
 import '../../../core/constants/business_constants.dart';
 import 'my_queries_state.dart';
@@ -84,6 +85,20 @@ class MyQueriesNotifier extends Notifier<MyQueriesState> {
     } catch (e) {
       state = state.copyWith(error: _errorMessage(e));
     }
+  }
+
+  // for in-memory count update (no db fetch)
+  // called when a del/post response done
+  void updateResponseCount(String queryId, int delta) {
+    state = state.copyWith(
+      queries: state.queries
+          .map(
+            (q) => q.id == queryId
+                ? q.copyWith(responseCount: q.responseCount + delta)
+                : q,
+          )
+          .toList(),
+    );
   }
 
   String _errorMessage(Object e) => e is FirebaseFunctionsException
