@@ -7,14 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({super.key});
+  // get the controller from MAIN,
+  // for supporting the feature:
+  // on "Bottom NavBar Home click -> scrolls to top"
+  final ScrollController scrollController;
+  const HomeScreen({super.key, required this.scrollController});
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  final _scrollController = ScrollController();
   late final String? _currentUId;
 
   @override
@@ -22,17 +25,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     super.initState();
     // for detecting if its own query
     _currentUId = ref.read(homeProvider.notifier).currentUserID;
-    _scrollController.addListener(_onScroll);
+    widget.scrollController.addListener(_onScroll);
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    widget.scrollController.removeListener(_onScroll);
     super.dispose();
   }
 
   void _onScroll() {
-    final pos = _scrollController.position;
+    final pos = widget.scrollController.position;
     if (pos.pixels >= pos.maxScrollExtent - 200) {
       ref.read(homeProvider.notifier).fetchMore();
     }
@@ -119,7 +122,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         return RefreshIndicator(
           onRefresh: () => ref.read(homeProvider.notifier).refresh(),
           child: ListView.builder(
-            controller: _scrollController,
+            controller: widget.scrollController,
             physics: const AlwaysScrollableScrollPhysics(),
             // to enable pull to refresh all time
             padding: const .all(AppSizes.medium),
