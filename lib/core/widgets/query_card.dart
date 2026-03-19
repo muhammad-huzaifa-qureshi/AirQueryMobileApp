@@ -32,95 +32,102 @@ class QueryCard extends StatelessWidget {
     final queryColor =
         QueryColors.strokes[colorIndex % QueryColors.strokes.length];
 
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: AppSizes.small),
-      padding: const EdgeInsets.all(AppSizes.medium),
-
-      decoration: BoxDecoration(
-        color: AppColors.blackish,
-        borderRadius: BorderRadius.circular(AppSizes.medium),
-        boxShadow: [
-          BoxShadow(
-            color: queryColor,
-            blurRadius: 1,
-            offset: const Offset(1, 2),
-          ),
-        ],
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(
+        context,
+        AppRoutes.responses,
+        arguments: query.id,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Author and time row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: GestureDetector(
-                  onTap: isOwnQuery
-                      ? () => Navigator.pushNamed(context, AppRoutes.profile)
-                      : () => showUserProfileCard(context, query.postedByUid),
-                  child: Text(
-                    isOwnQuery
-                        ? "${query.postedByName} (Me)"
-                        : query.postedByName,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.labelLarge?.copyWith(color: queryColor),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: AppSizes.small),
+        padding: const EdgeInsets.all(AppSizes.medium),
+
+        decoration: BoxDecoration(
+          color: AppColors.blackish,
+          borderRadius: BorderRadius.circular(AppSizes.medium),
+          boxShadow: [
+            BoxShadow(
+              color: queryColor,
+              blurRadius: 1,
+              offset: const Offset(1, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Author and time row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: GestureDetector(
+                    onTap: isOwnQuery
+                        ? () => Navigator.pushNamed(context, AppRoutes.profile)
+                        : () => showUserProfileCard(context, query.postedByUid),
+                    child: Text(
+                      isOwnQuery
+                          ? "${query.postedByName} (Me)"
+                          : query.postedByName,
+                      style: Theme.of(
+                        context,
+                      ).textTheme.labelLarge?.copyWith(color: queryColor),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
-              ),
-              Text(
-                formatTime(query.postedAt),
-                style: Theme.of(
-                  context,
-                ).textTheme.labelSmall?.copyWith(color: queryColor),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSizes.vSmall),
-          // campus
-          Text(
-            "For ${query.campus == "All" ? "All Campuses" : query.campus}",
-            style: Theme.of(
-              context,
-            ).textTheme.labelSmall?.copyWith(color: queryColor),
-          ),
-
-          const SizedBox(height: AppSizes.medium),
-
-          // Description
-          Text(
-            query.description,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-
-          const SizedBox(height: AppSizes.medium),
-
-          // Bottom row
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                '${query.responseCount}',
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-              const SizedBox(width: AppSizes.minute),
-              IconButton(
-                color: AppColors.whitish,
-                onPressed: () => Navigator.pushNamed(
-                  context,
-                  AppRoutes.responses,
-                  arguments: query.id,
+                Text(
+                  formatTime(query.postedAt),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelSmall?.copyWith(color: queryColor),
                 ),
-                icon: const Icon(Icons.comment),
-                tooltip: "Responses",
-              ),
-              if (isOwnQuery) ...[const Spacer(), _buildMenu(context)],
-            ],
-          ),
-        ],
+              ],
+            ),
+            const SizedBox(height: AppSizes.vSmall),
+            // campus
+            Text(
+              "For ${query.campus == "All" ? "All Campuses" : query.campus}",
+              style: Theme.of(
+                context,
+              ).textTheme.labelSmall?.copyWith(color: queryColor),
+            ),
+
+            const SizedBox(height: AppSizes.medium),
+
+            // Description
+            Text(
+              query.description,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+
+            const SizedBox(height: AppSizes.medium),
+
+            // Bottom row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  '${query.responseCount}',
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+                const SizedBox(width: AppSizes.minute),
+                IconButton(
+                  color: AppColors.whitish,
+                  onPressed: () => Navigator.pushNamed(
+                    context,
+                    AppRoutes.responses,
+                    arguments: query.id,
+                  ),
+                  icon: const Icon(Icons.comment),
+                  tooltip: "Responses",
+                ),
+                if (isOwnQuery) ...[const Spacer(), _buildMenu(context)],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
