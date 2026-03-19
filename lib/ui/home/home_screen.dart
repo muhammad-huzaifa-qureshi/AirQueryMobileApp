@@ -81,8 +81,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
         // no queries
         if (state.queries.isEmpty && state.error == null) {
-          return const Center(
-            child: Text("No queries yet. Be the first to post!"),
+          return Center(
+            child: Column(
+              mainAxisSize: .min,
+              children: [
+                const Text("No queries yet. Be the first to post!"),
+                const SizedBox(height: AppSizes.small),
+                ElevatedButton(
+                  onPressed: () =>
+                      ref.read(homeProvider.notifier).fetchInitial(),
+                  child: const Text("Refresh"),
+                ),
+              ],
+            ),
           );
         }
 
