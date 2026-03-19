@@ -1,6 +1,5 @@
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/routing/app_routes.dart';
-import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/ui/auth/notifier/auth_notifier.dart';
 import 'package:air_query/ui/auth/notifier/auth_status.dart';
 import 'package:air_query/services/update_checker.dart';

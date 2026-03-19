@@ -1,7 +1,6 @@
 import 'package:air_query/core/routing/app_router.dart';
 import 'package:air_query/services/notification_service.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 import 'core/routing/app_routes.dart';
 import 'core/theme/custom_app_theme.dart';
