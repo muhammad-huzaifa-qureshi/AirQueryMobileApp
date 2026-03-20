@@ -30,8 +30,6 @@ class EditProfileNotifier extends Notifier<EditProfileState> {
         campus: campus,
         semester: semester,
       );
-      // Subscribe to FCM campus topic after successful profile update
-      await FcmService().subscribeToTopic(campus);
       state = state.copyWith(isLoading: false, success: true);
     } catch (e) {
       final message = e is FirebaseFunctionsException

@@ -18,7 +18,7 @@ void main() async {
 
   await FirebaseAppCheck.instance.activate(
     // change to "AndroidDebugProvider()" in debug mode
-    providerAndroid: AndroidPlayIntegrityProvider(),
+    providerAndroid: AndroidDebugProvider(),
   );
 
   runApp(ProviderScope(child: const AirQuery()));

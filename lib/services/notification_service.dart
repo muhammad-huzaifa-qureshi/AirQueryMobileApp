@@ -32,13 +32,6 @@ class NotificationService {
   }
 
   void _handleForeground(RemoteMessage message) {
-    // Skip own query notifications
-    if (message.data['type'] == 'new_query') {
-      final posterUid = message.data['posterUid'];
-      final currentUid = AuthRepository().currentUser?.uid;
-      if (posterUid == currentUid) return;
-    }
-
     final notification = message.notification;
     if (notification == null) return;
     final context = _navigatorKey.currentContext;
@@ -67,9 +60,6 @@ class NotificationService {
           arguments: data['queryId'],
         );
       case 'new_query':
-        final posterUid = data['posterUid'];
-        final currentUid = AuthRepository().currentUser?.uid;
-        if (posterUid == currentUid) return; // skip own query
         _navigatorKey.currentState?.pushNamedAndRemoveUntil(
           AppRoutes.home,
           (route) => false,

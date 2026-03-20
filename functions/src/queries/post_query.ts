@@ -2,15 +2,6 @@ import {onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 import {Constants} from "../constants";
 
-/**
- * Converts a campus name to a valid FCM topic string.
- * @param {string} campus - The campus name to convert
- * @return {string} The formatted topic string
- */
-function _topicFromCampus(campus: string): string {
-  return `campus_${campus.toLowerCase().replace(/ /g, "_")}`;
-}
-
 /** Posts a new query and increments user and platform counters atomically. */
 export const postQuery = onCall(
   {maxInstances: 1, enforceAppCheck: true},
@@ -94,24 +85,55 @@ export const postQuery = onCall(
     });
 
     // Notify campus users
-    const topic = campus === "All" ? "campus_all" : _topicFromCampus(campus);
-    const notifBody = campus === "All" ?
-      "A new query was posted for all campuses." :
-      `A new query was posted for ${campus}.`;
-
+    // ===============================
+    // Send notifications (MULTICAST)
     try {
-      await admin.messaging().send({
-        topic,
-        notification: {
-          title: "New Query Posted!",
-          body: notifBody,
-        },
-        data: {
-          type: "new_query",
-          queryId: queryRef.id,
-          posterUid: uid,
-        },
+      let usersSnap;
+
+      if (campus === "All") {
+        usersSnap = await db.collection("users").get();
+      } else {
+        usersSnap = await db
+          .collection("users")
+          .where("campus", "==", campus)
+          .get();
+      }
+
+      const tokens: string[] = [];
+
+      usersSnap.forEach((doc) => {
+        // exclude poster
+        if (doc.id === uid) return;
+
+        const token = doc.data().fcmToken as string | undefined;
+        if (token) tokens.push(token);
       });
+
+      if (tokens.length === 0) return {success: true};
+
+      const notifBody =
+        campus === "All" ?
+          "A new query was posted for all campuses." :
+          `A new query was posted for ${campus}.`;
+
+      // FCM allows max 500 tokens per request
+      const chunkSize = 500;
+      for (let i = 0; i < tokens.length; i += chunkSize) {
+        const chunk = tokens.slice(i, i + chunkSize);
+
+        await admin.messaging().sendEachForMulticast({
+          tokens: chunk,
+          notification: {
+            title: "New Query Posted!",
+            body: notifBody,
+          },
+          data: {
+            type: "new_query",
+            queryId: queryRef.id,
+            posterUid: uid,
+          },
+        });
+      }
     } catch (e) {
       console.error("Notification failed:", e);
     }
