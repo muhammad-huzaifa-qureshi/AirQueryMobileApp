@@ -19,6 +19,7 @@ dependencies:
   #  rename_app: ^1.6.5
   #  flutter_launcher_icons: ^0.14.4
   #  change_app_package_name: ^1.5.0
+  #  flutter_native_splash: ^2.4.7
 
   cupertino_icons: ^1.0.8
   url_launcher: ^6.3.2
@@ -42,5 +43,18 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+
 #  assets:
-#    - assets/app_icon/
+#    - assets/logo.png
+#
+#flutter_native_splash:
+#  color: "#212121"
+#  image: assets/logo.png
+#  android: true
+#  ios: true
+#  fullscreen: true
+#
+#  android_12:
+#    color: "#212121"
+#    image: assets/logo.png
