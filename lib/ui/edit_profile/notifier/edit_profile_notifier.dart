@@ -1,4 +1,3 @@
-import 'package:air_query/services/fcm_service.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../repositories/user/user_repository.dart';

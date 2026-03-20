@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'package:air_query/core/constants/campuses.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import '../repositories/user/user_repository.dart';
 
 class FcmService {
   final _messaging = FirebaseMessaging.instance;

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:air_query/repositories/auth/auth_repository.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import '../core/routing/app_routes.dart';
