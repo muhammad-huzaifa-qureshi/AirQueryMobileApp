@@ -3,7 +3,7 @@ An **unofficial** mobile app for Air University students to post and answer camp
 
 [![Get it on Google Play](https://img.shields.io/badge/Download-Google%20Play-34A853?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=com.hqapplications.airuniversity.airquery)
 
-[![License](https://img.shields.io/badge/License-blue.svg)](LICENSE.md)
+[![License](https://img.shields.io/badge/License-Air%20Query-111111?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE.md)
 
 # Tech Stack
 - Flutter
