@@ -1,11 +1,13 @@
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../repositories/user/user_repository.dart';
 import 'profile_state.dart';
 
-final profileProvider = NotifierProvider.autoDispose<ProfileNotifier, ProfileState>(
-  ProfileNotifier.new,
-);
+final profileProvider =
+    NotifierProvider.autoDispose<ProfileNotifier, ProfileState>(
+      ProfileNotifier.new,
+    );
 
 class ProfileNotifier extends Notifier<ProfileState> {
   late final UserRepository _repository;
@@ -23,7 +25,7 @@ class ProfileNotifier extends Notifier<ProfileState> {
       final user = await _repository.fetchProfile();
       state = state.copyWith(user: user, isLoading: false);
     } catch (e) {
-      final message = e is FirebaseFunctionsException
+      final message = e is FirebaseException
           ? e.message ?? 'Something went wrong.'
           : 'Something went wrong.';
       state = state.copyWith(isLoading: false, error: message);

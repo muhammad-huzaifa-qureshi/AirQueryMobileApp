@@ -6,7 +6,6 @@ setGlobalOptions({region: "asia-south1"});
 
 // export functions
 export {getQueries} from "./queries/get_queries";
-export {getProfile} from "./users/get_profile";
 export {updateProfile} from "./users/update_profile";
 export {postQuery} from "./queries/post_query";
 export {deleteQuery} from "./queries/delete_query";
@@ -15,7 +14,5 @@ export {getMyQueries} from "./queries/get_my_queries";
 export {postResponse} from "./responses/post_response";
 export {deleteResponse} from "./responses/delete_response";
 export {getResponses} from "./responses/get_responses";
-export {saveFcmToken} from "./fcm_tokens/save_fcm_token";
-export {deleteFcmToken} from "./fcm_tokens/delete_fcm_token";
 export {deleteAccount} from "./users/delete_account";
 export {getOtherUserProfile} from "./users/get_other_user_profile";
