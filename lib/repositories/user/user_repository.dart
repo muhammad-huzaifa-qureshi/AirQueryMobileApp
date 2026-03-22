@@ -39,9 +39,9 @@ class UserRepository {
   }
 
   Future<void> updateProfile({
-    String? name,
-    String? campus,
-    String? semester,
+    required String name,
+    required String campus,
+    required String semester,
   }) async {
     final uid = AuthRepository().currentUser?.uid;
     if (uid == null) {
@@ -51,49 +51,36 @@ class UserRepository {
       );
     }
 
-    // At least one field required
-    if (name == null && campus == null && semester == null) {
+    // Validate name
+    if (name.length < BusinessConstants.nameMinChars) {
       throw FirebaseException(
         plugin: 'user_repository',
         code: 'invalid-argument',
-        message: 'Please provide at least one field to update.',
+        message:
+            'Name must be at least ${BusinessConstants.nameMinChars} characters.',
+      );
+    }
+    if (name.length > BusinessConstants.nameMaxChars) {
+      throw FirebaseException(
+        plugin: 'user_repository',
+        code: 'invalid-argument',
+        message:
+            'Name must not exceed ${BusinessConstants.nameMaxChars} characters.',
       );
     }
 
-    // Validate name if provided
-    if (name != null) {
-      if (name.length < BusinessConstants.nameMinChars) {
-        throw FirebaseException(
-          plugin: 'user_repository',
-          code: 'invalid-argument',
-          message:
-              'Name must be at least ${BusinessConstants.nameMinChars} characters.',
-        );
-      }
-      if (name.length > BusinessConstants.nameMaxChars) {
-        throw FirebaseException(
-          plugin: 'user_repository',
-          code: 'invalid-argument',
-          message:
-              'Name must not exceed ${BusinessConstants.nameMaxChars} characters.',
-        );
-      }
+    // Validate semester
+    final semNum = int.tryParse(semester);
+    if (semNum == null || semNum < 1 || semNum > 8) {
+      throw FirebaseException(
+        plugin: 'user_repository',
+        code: 'invalid-argument',
+        message: 'Semester must be between 1 and 8.',
+      );
     }
 
-    // Validate semester if provided
-    if (semester != null) {
-      final semNum = int.tryParse(semester);
-      if (semNum == null || semNum < 1 || semNum > 8) {
-        throw FirebaseException(
-          plugin: 'user_repository',
-          code: 'invalid-argument',
-          message: 'Semester must be between 1 and 8.',
-        );
-      }
-    }
-
-    // Validate campus if provided
-    if (campus != null && !Campuses.list.contains(campus)) {
+    // Validate campus
+    if (!Campuses.list.contains(campus)) {
       throw FirebaseException(
         plugin: 'user_repository',
         code: 'invalid-argument',
@@ -101,22 +88,27 @@ class UserRepository {
       );
     }
 
-    // Build update map
+    // Fetch current doc to compare name
+    final doc = await _firestore.collection('users').doc(uid).get();
+    final currentName = doc.data()?['name'] as String?;
+    final nameChanged = currentName != name;
+
+    // Build update map — name excluded if unchanged
     final updates = <String, dynamic>{
       'profileComplete': true,
-      'name': ?name,
-      'campus': ?campus,
-      'semester': ?semester,
+      'campus': campus,
+      'semester': semester,
+      // name handled by cloud function
     };
 
-    // Direct write to Firestore
+    // Write to Firestore
     await _firestore
         .collection('users')
         .doc(uid)
         .set(updates, SetOptions(merge: true));
 
-    // Sync name only if name changed
-    if (name != null) {
+    // Sync name across queries/responses only if changed (also writes name to user doc)
+    if (nameChanged) {
       await _functions.httpsCallable('syncUserName').call({'name': name});
     }
   }
