@@ -6,7 +6,6 @@ setGlobalOptions({region: "asia-south1"});
 
 // export functions
 export {getQueries} from "./queries/get_queries";
-export {updateProfile} from "./users/update_profile";
 export {postQuery} from "./queries/post_query";
 export {deleteQuery} from "./queries/delete_query";
 export {resolveQuery} from "./queries/resolve_query";
@@ -16,3 +15,4 @@ export {deleteResponse} from "./responses/delete_response";
 export {getResponses} from "./responses/get_responses";
 export {deleteAccount} from "./users/delete_account";
 export {getOtherUserProfile} from "./users/get_other_user_profile";
+export {syncUserName} from "./users/sync_user_name";

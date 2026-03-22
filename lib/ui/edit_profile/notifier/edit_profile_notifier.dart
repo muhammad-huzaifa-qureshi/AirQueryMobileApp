@@ -1,4 +1,4 @@
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../repositories/user/user_repository.dart';
 import 'edit_profile_state.dart';
@@ -31,7 +31,7 @@ class EditProfileNotifier extends Notifier<EditProfileState> {
       );
       state = state.copyWith(isLoading: false, success: true);
     } catch (e) {
-      final message = e is FirebaseFunctionsException
+      final message = e is FirebaseException
           ? e.message ?? 'Something went wrong.'
           : 'Something went wrong.';
       state = state.copyWith(isLoading: false, error: message);
