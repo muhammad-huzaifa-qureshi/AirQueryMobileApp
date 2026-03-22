@@ -14,5 +14,4 @@ export {postResponse} from "./responses/post_response";
 export {deleteResponse} from "./responses/delete_response";
 export {getResponses} from "./responses/get_responses";
 export {deleteAccount} from "./users/delete_account";
-export {getOtherUserProfile} from "./users/get_other_user_profile";
 export {syncUserName} from "./users/sync_user_name";

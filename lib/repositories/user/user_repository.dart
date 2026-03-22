@@ -115,10 +115,14 @@ class UserRepository {
 
   // for other user profile
   Future<UserModel> fetchOtherUserProfile(String uid) async {
-    final callable = _functions.httpsCallable('getOtherUserProfile');
-    final result = await callable.call({'uid': uid});
-
-    final data = Map<String, dynamic>.from(result.data as Map);
-    return UserModel.fromMap(data);
+    final doc = await _firestore.collection("users").doc(uid).get();
+    if (!doc.exists || doc.data() == null) {
+      throw FirebaseException(
+        plugin: 'user_repository',
+        code: 'not-found',
+        message: 'User not found.',
+      );
+    }
+    return UserModel.fromMap({"uid": uid, ...doc.data()!});
   }
 }
