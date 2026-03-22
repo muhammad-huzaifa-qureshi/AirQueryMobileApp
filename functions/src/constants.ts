@@ -11,7 +11,7 @@ export class Constants {
   static readonly maxRespLen = 100;
 
   // rate limiting
-  static readonly nameChangeCooldownDays = 5;
+  static readonly nameChangeCooldownDays = 2;
   static readonly nameChangeCooldownMS =
     this.nameChangeCooldownDays * 24 * 60 * 60 * 1000;
 }

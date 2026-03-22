@@ -121,6 +121,14 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
               const SizedBox(height: AppSizes.vLarge),
 
+              Text(
+                "Please Note that: Name Can be changed once in a ${BusinessConstants.nameChangeCooldownDays} days!",
+                textAlign: .center,
+                style: Theme.of(context).textTheme.bodySmall
+              ),
+
+              const SizedBox(height: AppSizes.medium),
+
               // Save button
               Consumer(
                 builder: (context, ref, child) {
