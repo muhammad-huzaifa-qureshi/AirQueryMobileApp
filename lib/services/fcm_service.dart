@@ -1,11 +1,22 @@
 import 'dart:async';
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:air_query/repositories/auth/auth_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FcmService {
   final _messaging = FirebaseMessaging.instance;
-  final _functions = FirebaseFunctions.instanceFor(region: "asia-south1");
+  final _firestore = FirebaseFirestore.instance;
   StreamSubscription? _tokenRefreshSub;
+
+  DocumentReference? get _fcmDoc {
+    final uid = AuthRepository().currentUser?.uid;
+    if (uid == null) return null;
+    return _firestore
+        .collection('users')
+        .doc(uid)
+        .collection('private')
+        .doc('fcmToken');
+  }
 
   Future<void> init() async {
     await _messaging.requestPermission();
@@ -22,7 +33,9 @@ class FcmService {
   }
 
   Future<void> _saveToken(String token) async {
-    await _functions.httpsCallable('saveFcmToken').call({'token': token});
+    final doc = _fcmDoc;
+    if (doc == null) return; // silently skip if not logged in
+    await doc.set({'token': token});
   }
 
   Future<void> deleteToken() async {
@@ -30,6 +43,9 @@ class FcmService {
     _tokenRefreshSub = null;
 
     await _messaging.deleteToken();
-    await _functions.httpsCallable('deleteFcmToken').call();
+
+    final doc = _fcmDoc;
+    if (doc == null) return; // silently skip if already logged out
+    await doc.delete();
   }
 }
