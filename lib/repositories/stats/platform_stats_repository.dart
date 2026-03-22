@@ -1,14 +1,23 @@
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../models/platform_stats_model.dart';
 
 class PlatformStatsRepository {
-  final _functions = FirebaseFunctions.instanceFor(region: 'asia-south1');
+  final _firestore = FirebaseFirestore.instance;
 
   Future<PlatformStatsModel> fetchPlatformStats() async {
-    final callable = _functions.httpsCallable('getPlatformStats');
-    final result = await callable.call();
+    final doc = await _firestore
+        .collection("platformStats")
+        .doc("global")
+        .get();
 
-    final data = Map<String, dynamic>.from(result.data as Map);
-    return PlatformStatsModel.fromMap(data);
+    if (!doc.exists || doc.data() == null) {
+      return PlatformStatsModel(
+        totalQueriesPosted: 0,
+        totalQueriesResolved: 0,
+        totalResponses: 0,
+      );
+    }
+
+    return PlatformStatsModel.fromMap(doc.data()!);
   }
 }

@@ -1,4 +1,4 @@
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../repositories/stats/platform_stats_repository.dart';
 import 'platform_stats_state.dart';
@@ -24,7 +24,7 @@ class PlatformStatsNotifier extends Notifier<PlatformStatsState> {
       final stats = await _repository.fetchPlatformStats();
       state = state.copyWith(stats: stats, isLoading: false);
     } catch (e) {
-      final message = e is FirebaseFunctionsException
+      final message = e is FirebaseException
           ? e.message ?? 'Something went wrong.'
           : 'Something went wrong.';
       state = state.copyWith(isLoading: false, error: message);
