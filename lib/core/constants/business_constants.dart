@@ -31,4 +31,5 @@ class BusinessConstants {
   static const maxResponseLen = 100;
 
   static const nameChangeCooldownDays = 2;
+  static const maxQueriesPerDayPerUser = 2;
 }

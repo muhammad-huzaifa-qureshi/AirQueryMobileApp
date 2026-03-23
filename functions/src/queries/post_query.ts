@@ -6,12 +6,9 @@ import {Constants} from "../constants";
 export const postQuery = onCall(
   {maxInstances: 1, enforceAppCheck: true},
   async (request) => {
-    // Auth guard
     if (!request.auth) {
       throw new HttpsError("unauthenticated", "Please log in to continue.");
     }
-
-    // Email verification check
     if (!request.auth.token.email_verified) {
       throw new HttpsError(
         "failed-precondition",
@@ -22,23 +19,15 @@ export const postQuery = onCall(
     const uid = request.auth.uid;
     const db = admin.firestore();
     const {description, postToAll} = request.data;
-    const trimmedDescription = description.trim();
+    const trimmedDescription = (description as string).trim();
 
-    // Validate
-    if (trimmedDescription === "") {
-      throw new HttpsError(
-        "invalid-argument",
-        "Please provide a description for your query."
-      );
-    }
-
+    // Validate description
     if (trimmedDescription.length < Constants.minQueryLen) {
       throw new HttpsError(
         "invalid-argument",
         `Query must be at least ${Constants.minQueryLen} characters.`
       );
     }
-
     if (trimmedDescription.length > Constants.maxQueryLen) {
       throw new HttpsError(
         "invalid-argument",
@@ -60,12 +49,39 @@ export const postQuery = onCall(
       );
     }
 
-    const campus = postToAll ? "All" : userData.campus;
+    // Check rate limit
+    const rateLimitRef = db
+      .collection("users")
+      .doc(uid)
+      .collection("rateLimits")
+      .doc("limits");
 
+    const rateLimitSnap = await rateLimitRef.get();
+    const rateLimitData = rateLimitSnap.data();
+
+    const now = Date.now();
+    const lastPostedAt = rateLimitData?.queryLastPostedAt?.toMillis() ?? 0;
+    const dailyCount = rateLimitData?.queryDailyCount ?? 0;
+
+    // Reset count if last post was on a different day
+    const isSameDay =
+      new Date(now).toDateString() === new Date(lastPostedAt).toDateString();
+    const currentCount = isSameDay ? dailyCount : 0;
+
+    if (currentCount >= Constants.maxQueriesPerDayPerUser) {
+      throw new HttpsError(
+        "resource-exhausted",
+        `You have already posted ${Constants.maxQueriesPerDayPerUser} ` +
+        "queries today. Please try again tomorrow."
+      );
+    }
+
+    const campus = postToAll ? "All" : userData.campus;
     const queryRef = db.collection("queries").doc();
     const userRef = db.collection("users").doc(uid);
     const statsRef = db.collection("platformStats").doc("global");
 
+    // Atomic transaction + rate limit update
     await db.runTransaction(async (tx) => {
       tx.set(queryRef, {
         description: trimmedDescription,
@@ -82,61 +98,16 @@ export const postQuery = onCall(
         {totalQueriesPosted: admin.firestore.FieldValue.increment(1)},
         {merge: true}
       );
+      // Update rate limit inside transaction
+      tx.set(
+        rateLimitRef,
+        {
+          queryLastPostedAt: admin.firestore.FieldValue.serverTimestamp(),
+          queryDailyCount: currentCount + 1,
+        },
+        {merge: true}
+      );
     });
-
-    // Notify campus users
-    // ===============================
-    // Send notifications (MULTICAST)
-    try {
-      let usersSnap;
-
-      if (campus === "All") {
-        usersSnap = await db.collection("users").get();
-      } else {
-        usersSnap = await db
-          .collection("users")
-          .where("campus", "==", campus)
-          .get();
-      }
-
-      const tokens: string[] = [];
-
-      usersSnap.forEach((doc) => {
-        // exclude poster
-        if (doc.id === uid) return;
-
-        const token = doc.data().fcmToken as string | undefined;
-        if (token) tokens.push(token);
-      });
-
-      if (tokens.length === 0) return {success: true};
-
-      const notifBody =
-        campus === "All" ?
-          "A new query was posted for all campuses." :
-          `A new query was posted for ${campus}.`;
-
-      // FCM allows max 500 tokens per request
-      const chunkSize = 500;
-      for (let i = 0; i < tokens.length; i += chunkSize) {
-        const chunk = tokens.slice(i, i + chunkSize);
-
-        await admin.messaging().sendEachForMulticast({
-          tokens: chunk,
-          notification: {
-            title: "New Query Posted!",
-            body: notifBody,
-          },
-          data: {
-            type: "new_query",
-            queryId: queryRef.id,
-            posterUid: uid,
-          },
-        });
-      }
-    } catch (e) {
-      console.error("Notification failed:", e);
-    }
 
     return {success: true};
   });

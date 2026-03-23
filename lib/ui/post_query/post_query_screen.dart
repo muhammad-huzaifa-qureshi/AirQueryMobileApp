@@ -89,6 +89,14 @@ class _PostQueryScreenState extends ConsumerState<PostQueryScreen> {
 
               const SizedBox(height: AppSizes.vLarge),
 
+              Text(
+                  "Please Note that you can post ${BusinessConstants.maxQueriesPerDayPerUser} Queries per day! (inclusive deleted/resolved)",
+                  textAlign: .center,
+                  style: Theme.of(context).textTheme.bodySmall
+              ),
+
+              const SizedBox(height: AppSizes.medium),
+
               // Post button
               Consumer(
                 builder: (context, ref, _) {
