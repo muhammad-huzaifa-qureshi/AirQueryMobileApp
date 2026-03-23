@@ -102,13 +102,38 @@ class QueriesRepository {
   }
 
   Future<List<QueryModel>> fetchMyQueries({String? startAfterId}) async {
-    final callable = _functions.httpsCallable('getMyQueries');
-    final result = await callable.call({'startAfter': startAfterId});
+    final uid = AuthRepository().currentUser?.uid;
+    if (uid == null) {
+      throw FirebaseAuthException(
+        code: 'unauthenticated',
+        message: 'Please login to continue',
+      );
+    }
 
-    final data = result.data['queries'] as List;
-    return data.map((q) {
-      final map = Map<String, dynamic>.from(q as Map);
-      return QueryModel.fromMap(map, map['id']);
+    Query query = _firestore
+        .collection('queries')
+        .where('postedBy.uid', isEqualTo: uid)
+        .orderBy('postedAt', descending: true)
+        .limit(BusinessConstants.queryFetchLimit);
+
+    if (startAfterId != null) {
+      final cursorDoc = await _firestore
+          .collection('queries')
+          .doc(startAfterId)
+          .get();
+
+      if (!cursorDoc.exists) return []; // cursor deleted — silent empty return
+
+      query = query.startAfterDocument(cursorDoc);
+    }
+
+    final snapshot = await query.get();
+
+    return snapshot.docs.map((doc) {
+      return QueryModel.fromMap(
+        Map<String, dynamic>.from(doc.data() as Map),
+        doc.id,
+      );
     }).toList();
   }
 }

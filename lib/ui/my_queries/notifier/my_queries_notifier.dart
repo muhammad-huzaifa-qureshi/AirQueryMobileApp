@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/business_constants.dart';
@@ -100,7 +101,7 @@ class MyQueriesNotifier extends Notifier<MyQueriesState> {
     );
   }
 
-  String _errorMessage(Object e) => e is FirebaseFunctionsException
+  String _errorMessage(Object e) => e is FirebaseException
       ? e.message ?? 'Something went wrong.'
       : 'Something went wrong.';
 }
