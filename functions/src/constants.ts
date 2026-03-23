@@ -8,7 +8,7 @@ export class Constants {
 
   // response len
   static readonly minRespLen = 1;
-  static readonly maxRespLen = 100;
+  static readonly maxRespLen = 500;
 
   // rate limiting
   static readonly nameChangeCooldownDays = 2;
