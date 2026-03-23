@@ -1,0 +1,61 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthed() {
+      return request.auth != null
+          && request.auth.token.email_verified == true;
+    }
+
+    function isOwner(uid) {
+      return isAuthed() && request.auth.uid == uid;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    match /platformStats/{docId} {
+      allow get: if isAuthed();
+      allow list, create, update, delete: if false;
+    }
+
+    match /users/{uid} {
+      allow get: if isAuthed();
+      allow list: if false;
+
+      allow create: if isOwner(uid)
+                    && !request.resource.data.keys()
+                        .hasAny(['queriesPosted', 'queriesAnswered',
+                                 'queriesResolved', 'name']);
+
+      allow update: if isOwner(uid)
+                    && !request.resource.data.diff(resource.data).affectedKeys()
+                        .hasAny(['queriesPosted', 'queriesAnswered',
+                                 'queriesResolved', 'name']);
+
+      allow delete: if false;
+
+      match /private/fcmToken {
+        allow read, write: if isOwner(uid);
+      }
+
+      match /rateLimits/{doc} {
+        allow read, write: if false;
+      }
+    }
+
+    match /queries/{queryId} {
+      allow get: if isAuthed();
+      allow list: if isAuthed() && request.query.limit <= 10;
+      allow create, update, delete: if false;
+
+      match /responses/{responseId} {
+        allow get: if isAuthed();
+        allow list: if isAuthed() && request.query.limit <= 10;
+        allow create, update, delete: if false;
+      }
+    }
+
+  }
+}
