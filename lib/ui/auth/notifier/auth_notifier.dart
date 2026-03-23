@@ -1,6 +1,5 @@
 import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/ui/auth/notifier/auth_status.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../repositories/auth/auth_repository.dart';
@@ -221,7 +220,7 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
       await FcmService().deleteToken();
       await _authRepository.deleteAccount();
       state = const AsyncData(AuthStatus.unauthenticated);
-    } on FirebaseFunctionsException catch (e) {
+    } on FirebaseException catch (e) {
       state = AsyncError(
         e.message ?? 'Account deletion failed, please try again!',
         StackTrace.current,
