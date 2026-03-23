@@ -1,15 +1,14 @@
 import {onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
+import {batchDelete} from "../utils/batch_delete";
 
+/** Deletes a query and all its responses. */
 export const deleteQuery = onCall(
   {maxInstances: 1, enforceAppCheck: true},
   async (request) => {
-  // Auth guard
     if (!request.auth) {
       throw new HttpsError("unauthenticated", "Please log in to continue.");
     }
-
-    // Email verification check
     if (!request.auth.token.email_verified) {
       throw new HttpsError(
         "failed-precondition",
@@ -24,10 +23,10 @@ export const deleteQuery = onCall(
     if (!queryId) {
       throw new HttpsError(
         "invalid-argument",
-        "Query ID is missing, please try again!");
+        "Query ID is missing, please try again!"
+      );
     }
 
-    // Fetch query doc
     const queryRef = db.collection("queries").doc(queryId);
     const querySnap = await queryRef.get();
 
@@ -43,18 +42,12 @@ export const deleteQuery = onCall(
       );
     }
 
-    // Delete all responses in subcollection (chunked for 500+ responses)
+    // Delete all responses first (outside transaction — too many ops)
     const responsesSnap = await queryRef.collection("responses").get();
-    const chunkSize = 499;
-    for (let i = 0; i < responsesSnap.docs.length; i += chunkSize) {
-      const batch = db.batch();
-      responsesSnap.docs.slice(i, i + chunkSize)
-        .forEach((doc) => batch.delete(doc.ref));
-      await batch.commit();
-    }
+    await batchDelete(db, responsesSnap.docs);
 
-    // Delete query
-    await db.collection("queries").doc(queryId).delete();
+    // Delete query doc
+    await queryRef.delete();
 
     return {success: true};
   });
