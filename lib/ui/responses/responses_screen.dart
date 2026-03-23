@@ -96,6 +96,17 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
       body: SafeArea(
         child: Column(
           children: [
+            Padding(
+              padding: const .symmetric(
+                horizontal: AppSizes.medium,
+                vertical: AppSizes.minute,
+              ),
+              child: Text(
+                "Please note that you can post ${BusinessConstants.maxResponsesPerDayPerUser} responses per day (inclusive of deleted).",
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
             Expanded(child: _buildBody()),
             _buildResponseInput(),
           ],

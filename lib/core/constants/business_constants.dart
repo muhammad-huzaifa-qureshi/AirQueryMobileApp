@@ -30,6 +30,7 @@ class BusinessConstants {
   // rate limiting
   static const nameChangeCooldownDays = 2;
   static const maxQueriesPerDayPerUser = 2;
+  static const maxResponsesPerDayPerUser = 50;
 
   // pagination (keep them n sync with FIREBASE RULES)
   static const queryFetchLimit = 10;

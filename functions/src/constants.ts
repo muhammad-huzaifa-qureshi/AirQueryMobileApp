@@ -13,4 +13,5 @@ export class Constants {
   static readonly nameChangeCooldownMS =
     this.nameChangeCooldownDays * 24 * 60 * 60 * 1000;
   static readonly maxQueriesPerDayPerUser = 2;
+  static readonly maxResponsesPerDayPerUser = 50;
 }

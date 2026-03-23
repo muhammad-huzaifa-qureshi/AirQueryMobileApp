@@ -14,3 +14,4 @@ export {deleteAccount} from "./users/delete_account";
 export {syncUserName} from "./users/sync_user_name";
 // export triggers
 export {onQueryCreated} from "./triggers/on_query_created";
+export {onResponseCreated} from "./triggers/on_response_created";
