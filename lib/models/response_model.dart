@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ResponseModel {
   final String id;
   final String description;
@@ -20,7 +22,7 @@ class ResponseModel {
       description: map['description'] ?? '',
       postedByUid: postedBy['uid'] ?? '',
       postedByName: postedBy['name'] ?? '',
-      postedAt: DateTime.fromMillisecondsSinceEpoch(map['postedAt'] as int),
+      postedAt: (map['postedAt'] as Timestamp).toDate()
     );
   }
 }

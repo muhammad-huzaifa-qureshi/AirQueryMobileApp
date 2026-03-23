@@ -1,7 +1,5 @@
 /** Application-wide constants */
 export class Constants {
-  static readonly fetchLimit = 10;
-
   // query len
   static readonly minQueryLen = 10;
   static readonly maxQueryLen = 500;

@@ -1,5 +1,5 @@
 import 'package:air_query/repositories/auth/auth_repository.dart';
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/business_constants.dart';
 import '../../../repositories/responses/responses_repository.dart';
@@ -109,7 +109,7 @@ class ResponsesNotifier extends Notifier<ResponsesState> {
   }
 
   String _errorMessage(Object e) {
-    if (e is FirebaseFunctionsException) {
+    if (e is FirebaseException) {
       return e.message ?? 'Something went wrong.';
     }
     return 'Something went wrong.';

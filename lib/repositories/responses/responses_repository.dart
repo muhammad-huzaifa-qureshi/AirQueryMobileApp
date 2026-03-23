@@ -1,23 +1,54 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '../../core/constants/business_constants.dart';
 import '../../models/response_model.dart';
+import '../auth/auth_repository.dart';
 
 class ResponsesRepository {
   final _functions = FirebaseFunctions.instanceFor(region: "asia-south1");
+  final _firestore = FirebaseFirestore.instance;
 
   Future<List<ResponseModel>> fetchResponses({
     required String queryId,
     String? startAfterId,
   }) async {
-    final callable = _functions.httpsCallable('getResponses');
-    final result = await callable.call({
-      'queryId': queryId,
-      'startAfter': startAfterId,
-    });
+    final uid = AuthRepository().currentUser?.uid;
+    if (uid == null) {
+      throw FirebaseAuthException(
+        code: 'unauthenticated',
+        message: 'Please login to continue',
+      );
+    }
 
-    final data = result.data['responses'] as List;
-    return data.map((r) {
-      final map = Map<String, dynamic>.from(r as Map);
-      return ResponseModel.fromMap(map, map['id']);
+    Query query = _firestore
+        .collection('queries')
+        .doc(queryId)
+        .collection('responses')
+        .orderBy('postedAt', descending: true)
+        .limit(BusinessConstants.responseFetchLimit);
+
+    if (startAfterId != null) {
+      final cursorDoc = await _firestore
+          .collection('queries')
+          .doc(queryId)
+          .collection('responses')
+          .doc(startAfterId)
+          .get();
+
+      if (!cursorDoc.exists) return [];
+
+      query = query.startAfterDocument(cursorDoc);
+    }
+
+    final snapshot = await query.get();
+
+    return snapshot.docs.map((doc) {
+      return ResponseModel.fromMap(
+        Map<String, dynamic>.from(doc.data() as Map),
+        doc.id,
+      );
     }).toList();
   }
 

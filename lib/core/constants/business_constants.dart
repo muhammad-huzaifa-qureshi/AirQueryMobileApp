@@ -15,9 +15,6 @@ class BusinessConstants {
   static const auEmailDomain = '@students.au.edu.pk';
   static const timerTickSeconds = 2;
 
-  // pagination
-  static const queryFetchLimit = 10;
-
   // user full name
   static const nameMinChars = 3;
   static const nameMaxChars = 30;
@@ -30,6 +27,11 @@ class BusinessConstants {
   static const minResponseLen = 1;
   static const maxResponseLen = 500;
 
+  // rate limiting
   static const nameChangeCooldownDays = 2;
   static const maxQueriesPerDayPerUser = 2;
+
+  // pagination (keep them n sync with FIREBASE RULES)
+  static const queryFetchLimit = 10;
+  static const responseFetchLimit = 10;
 }

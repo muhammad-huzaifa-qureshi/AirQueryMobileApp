@@ -27,9 +27,7 @@ class QueryModel {
       campus: map['campus'] ?? '',
       postedByUid: postedBy['uid'] ?? '',
       postedByName: postedBy['name'] ?? '',
-      postedAt: map['postedAt'] is Timestamp
-          ? (map['postedAt'] as Timestamp).toDate()
-          : DateTime.fromMillisecondsSinceEpoch(map['postedAt'] as int),
+      postedAt: (map['postedAt'] as Timestamp).toDate(),
       responseCount: int.parse(map['responseCount'].toString()),
     );
   }
