@@ -1,5 +1,6 @@
 import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/repositories/auth/auth_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../repositories/queries/queries_repository.dart';
@@ -36,7 +37,7 @@ class HomeNotifier extends Notifier<HomeQueriesState> {
         hasMore: queries.length == BusinessConstants.queryFetchLimit,
       );
     } catch (e) {
-      final message = e is FirebaseFunctionsException
+      final message = e is FirebaseException
           ? e.message ?? 'Something went wrong.'
           : 'Something went wrong.';
       state = state.copyWith(isLoading: false, error: message);
@@ -55,7 +56,7 @@ class HomeNotifier extends Notifier<HomeQueriesState> {
         hasMore: more.length == BusinessConstants.queryFetchLimit,
       );
     } catch (e) {
-      final message = e is FirebaseFunctionsException
+      final message = e is FirebaseException
           ? e.message ?? 'Something went wrong.'
           : 'Something went wrong.';
       state = state.copyWith(isLoadingMore: false, error: message);
@@ -71,7 +72,7 @@ class HomeNotifier extends Notifier<HomeQueriesState> {
         hasMore: queries.length == BusinessConstants.queryFetchLimit,
       );
     } catch (e) {
-      final message = e is FirebaseFunctionsException
+      final message = e is FirebaseException
           ? e.message ?? 'Something went wrong.'
           : 'Something went wrong.';
       state = HomeQueriesState(error: message);

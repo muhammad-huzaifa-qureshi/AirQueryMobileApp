@@ -1,17 +1,82 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '../../core/constants/business_constants.dart';
 import '../../models/query_model.dart';
+import '../auth/auth_repository.dart';
 
 class QueriesRepository {
   final _functions = FirebaseFunctions.instanceFor(region: "asia-south1");
+  final _firestore = FirebaseFirestore.instance;
 
   Future<List<QueryModel>> fetchQueries({String? startAfterId}) async {
-    final callable = _functions.httpsCallable('getQueries');
-    final result = await callable.call({'startAfter': startAfterId});
+    final uid = AuthRepository().currentUser?.uid;
+    if (uid == null) {
+      throw FirebaseAuthException(
+        code: 'unauthenticated',
+        message: 'Please login to continue',
+      );
+    }
 
-    final data = result.data['queries'] as List;
-    return data.map((q) {
-      final map = Map<String, dynamic>.from(q as Map);
-      return QueryModel.fromMap(map, map['id']);
+    // Fetch user profile for campus + profileComplete check
+    final userDoc = await _firestore.collection('users').doc(uid).get();
+
+    if (!userDoc.exists || userDoc.data() == null) {
+      throw FirebaseException(
+        plugin: 'queries_repository',
+        code: 'not-found',
+        message: 'Please set your profile first!',
+      );
+    }
+
+    final userData = userDoc.data()!;
+
+    if (userData['profileComplete'] != true) {
+      throw FirebaseException(
+        plugin: 'queries_repository',
+        code: 'failed-precondition',
+        message: 'Please complete your profile to continue.',
+      );
+    }
+
+    final campus = userData['campus'] as String?;
+    if (campus == null || campus.isEmpty) {
+      throw FirebaseException(
+        plugin: 'queries_repository',
+        code: 'failed-precondition',
+        message: 'No campus set. Please check your profile or contact support.',
+      );
+    }
+
+    // Build query
+    Query query = _firestore
+        .collection('queries')
+        .where('campus', whereIn: [campus, 'All'])
+        .orderBy('postedAt', descending: true)
+        .limit(BusinessConstants.queryFetchLimit);
+
+    // Pagination cursor
+    if (startAfterId != null) {
+      final cursorDoc = await _firestore
+          .collection('queries')
+          .doc(startAfterId)
+          .get();
+
+      if (!cursorDoc.exists) {
+        return []; // cursor deleted — silent empty return
+      }
+
+      query = query.startAfterDocument(cursorDoc);
+    }
+
+    final snapshot = await query.get();
+
+    return snapshot.docs.map((doc) {
+      return QueryModel.fromMap(
+        Map<String, dynamic>.from(doc.data() as Map),
+        doc.id,
+      );
     }).toList();
   }
 

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class QueryModel {
   final String id;
   final String description;
@@ -25,7 +27,9 @@ class QueryModel {
       campus: map['campus'] ?? '',
       postedByUid: postedBy['uid'] ?? '',
       postedByName: postedBy['name'] ?? '',
-      postedAt: DateTime.fromMillisecondsSinceEpoch(map['postedAt'] as int),
+      postedAt: map['postedAt'] is Timestamp
+          ? (map['postedAt'] as Timestamp).toDate()
+          : DateTime.fromMillisecondsSinceEpoch(map['postedAt'] as int),
       responseCount: int.parse(map['responseCount'].toString()),
     );
   }

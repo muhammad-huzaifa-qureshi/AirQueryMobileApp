@@ -5,7 +5,6 @@ admin.initializeApp();
 setGlobalOptions({region: "asia-south1"});
 
 // export functions
-export {getQueries} from "./queries/get_queries";
 export {postQuery} from "./queries/post_query";
 export {deleteQuery} from "./queries/delete_query";
 export {resolveQuery} from "./queries/resolve_query";
