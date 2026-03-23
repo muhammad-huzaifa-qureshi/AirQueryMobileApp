@@ -218,6 +218,7 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
   Future<void> deleteAccount() async {
     state = const AsyncLoading();
     try {
+      await FcmService().deleteToken();
       await _authRepository.deleteAccount();
       state = const AsyncData(AuthStatus.unauthenticated);
     } on FirebaseFunctionsException catch (e) {
