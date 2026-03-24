@@ -5,12 +5,21 @@ An **unofficial** mobile app for Air University students to post and answer camp
 
 [![License](https://img.shields.io/badge/License-Air%20Query-111111?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE.md)
 
+# Table of Contents
+- [Tech Stack](#tech-stack)
+- [Firebase Services Used](#firebase-services-used)
+- [Firestore Structure](#firestore-structure)
+- [What's Coming Next](#whats-coming-next)
+- [Contributing & Local Setup](#contributing--local-setup)
+- [Disclaimer](#disclaimer)
+- [Contact](#contact)
+
 # Tech Stack
 - Flutter
 - Riverpod (for State Management)
 - Firebase
 - TypeScript (Cloud Functions)
-- 
+
 # Firebase Services Used
 - Authentication
 - Firestore
@@ -19,97 +28,47 @@ An **unofficial** mobile app for Air University students to post and answer camp
 - App Check
 - Cloud Messaging (FCM)
 
-# Firestore Rules
-All Firestore reads and writes are disabled. Use Cloud Functions for all database operations.
+# Firestore Structure
 
-# Firestore Database Structure
+## `users/{uid}`
+- `name`: String
+- `campus`: String
+- `semester`: String
+- `queriesPosted`: Int
+- `queriesAnswered`: Int
+- `queriesResolved`: Int
+- `profileComplete`: Bool
 
-## Users — `users/{uid}`
+## `users/{uid}/private/fcmToken`
+- `token`: String
 
-| Field             | Type   | Description                                       |
-|-------------------|--------|---------------------------------------------------|
-| `name`            | String | Display name                                      |
-| `campus`          | String | User's campus                                     |
-| `semester`        | String | Current semester                                  |
-| `queriesPosted`   | Int    | Total queries posted                              |
-| `queriesAnswered` | Int    | Total queries answered                            |
-| `queriesResolved` | Int    | Total queries marked resolved                     |
-| `fcmToken`        | String | For Firebase Cloud Messaging                      |
-| `profileComplete` | bool   | True when name, campus and semester is first set. |
+## `users/{uid}/rateLimits/limits`
+- `nameLastChanged`: Timestamp
+- `queryLastPostedAt`: Timestamp
+- `queryDailyCount`: Int
+- `responseLastPostedAt`: Timestamp
+- `responseDailyCount`: Int
 
-## Queries — `queries/{queryId}`
+## `queries/{queryId}`
+- `description`: String
+- `campus`: String — user's campus or `"All"`
+- `postedBy`: Map — `{ uid: String, name: String }`
+- `postedAt`: Timestamp
+- `responseCount`: Int
 
-| Field | Type | Description                                 |
-|---|---|---------------------------------------------|
-| `description` | String | The query content                           |
-| `campus` | String | Campus this query belongs to **(can be "All")** |
-| `postedBy` | Map | Author info (see below)                     |
-| `postedAt` | Timestamp | When the query was posted                   |
-| `responseCount` | Int | Total number of responses                   |
+## `queries/{queryId}/responses/{responseId}`
+- `description`: String
+- `postedBy`: Map — `{ uid: String, name: String }`
+- `postedAt`: Timestamp
 
-**`postedBy` map:**
-```
-{
-  uid:  String   // Author's Firebase UID
-  name: String   // Author's display name (denormalized)
-}
-```
-
-## Responses — `queries/{queryId}/responses/{responseId}`
-
-| Field | Type | Description |
-|---|---|---|
-| `description` | String | The response content |
-| `postedBy` | Map | Author info (see below) |
-| `postedAt` | Timestamp | When the response was posted |
-
-**`postedBy` map:**
-```
-{
-  uid:  String   // Author's Firebase UID
-  name: String   // Author's display name (denormalized)
-}
-```
-
-## Platform Stats — `platformStats/global`
-
-| Field | Type | Description |
-|---|---|---|
-| `totalQueriesPosted` | Int | Total queries posted across all campuses |
-| `totalQueriesResolved` | Int | Total queries resolved across all campuses |
-| `totalResponses` | Int | Total responses posted across all campuses |
-
-
-## Notes
-- `postedBy.name` is **denormalized** for read efficiency. Name changes will not reflect on old posts by design.
-- `responseCount` is **incremented via Cloud Function** on each new response — avoids a full subcollection count query.
-- `campus` on each query enables **direct Firestore filtering** without resolving the author's user document.
-- Responses are a **subcollection** under each query for natural hierarchy and easy per-query fetching.
-- Upon `Resolution`, query will be deleted.
-
-##  Required Firestore Index
-### Composite Indexes
-```
-Collection : queries
-Fields     : campus (ASC), postedAt (DESC)
-```
-```
-Collection : queries
-Fields     : postedBy.uid (ASC), postedAt (DESC)
-```
-### Single Field Exemptions
-```
-Collection Group : responses
-Field            : postedBy.uid (ASC)
-Scope            : Collection group
-```
+## `platformStats/global`
+- `totalQueriesPosted`: Int
+- `totalQueriesResolved`: Int
+- `totalResponses`: Int
 
 # What’s Coming Next
-- Implement Rate Limiting on Cloud Functions - App Check Already Implemented (high priority)
 - Introduce a **"Report Query"** feature for better moderation
 - Implement a "Show Email" feature in profile card
-- Implement a user friendly message when offline rather than current "UNAVAILABLE" error.
-- Introduce **Firebase Crashlytics** for crash reporting.
 - Add **notifications tab**
 - Add **Filters** on Home Feed (like date, response count, etc.)
 - Implement **automatic deletion of queries** after 30 days
@@ -119,5 +78,58 @@ Scope            : Collection group
 - Refactor and improve overall **code quality and maintainability**
 - Optimize app performance and internal logic
 
+# Contributing & Local Setup
+
+> Assumes familiarity with Flutter, Firebase, and TypeScript. Not a beginner guide.
+
+## Prerequisites
+- Flutter & Dart SDK
+- Node.js
+- Firebase CLI — `npm install -g firebase-tools`
+
+## 1. Clone & Install
+```bash
+git clone https://github.com/muhammad-huzaifa-qureshi/AirQueryMobileApp
+cd AirQueryMobileApp
+flutter pub get
+```
+
+## 2. Firebase Setup
+Create your own Firebase project and enable the following services:
+- listed above in [Firebase Services Used](#firebase-services-used)
+
+Then follow Firebase guidelines to add a **Flutter App**.
+DO NOT commit any sensitive file.
+
+## 3. Firestore Rules & Indexes
+Deploy the included rules and indexes:
+```bash
+firebase deploy --only firestore:rules,firestore:indexes
+```
+
+## 4. Cloud Functions
+```bash
+cd functions
+npm install
+npm run build
+firebase deploy --only functions
+```
+
+## 5. App Check
+Enable App Check in Firebase Console with **Play Integrity** (Android). For development, register your debug token under App Check → Apps → Manage debug tokens.
+
+## 6. Run
+```bash
+flutter run
+```
+or by using Android Studio.
+
+> **Note:** iOS is not actively maintained — no guarantee of compatibility without additional configuration.
+
 # Disclaimer
 This application is an independent project and is **NOT** affiliated with, endorsed by, or officially associated with Air University in any capacity. All references to Air University are for identification purposes only.
+
+# Contact
+Before starting work on a new feature, **reach out first** — open a GitHub discussion or email `muhammadhuzaifaqureshi01@gmail.com`. This avoids duplicate effort and ensures the feature aligns with the project direction. Bug fixes and improvements are welcome directly via PR.
+
+For any technical issues or questions regarding the codebase, feel free to reach out via email or open a GitHub issue.
