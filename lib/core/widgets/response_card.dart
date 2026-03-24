@@ -1,5 +1,7 @@
 import 'package:air_query/ui/other_user_profile/show_user_profile_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/response_model.dart';
 import '../constants/app_sizes.dart';
@@ -80,9 +82,16 @@ class ResponseCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSizes.vSmall),
-          Text(
-            response.description,
-            style: Theme.of(context).textTheme.bodyMedium,
+          SelectableLinkify(
+            text: response.description,
+            style: Theme.of(context).textTheme.bodyLarge,
+            linkStyle: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(color: AppColors.primary),
+            onOpen: (link) async {
+              final uri = Uri.parse(link.url);
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
+            },
           ),
         ],
       ),

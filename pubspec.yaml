@@ -27,6 +27,7 @@ dependencies:
   intl: ^0.20.2 # for time formatting
   in_app_update: ^4.2.5 # app update
   share_plus: ^12.0.1 # sharing content via share dialog
+  flutter_linkify: ^6.0.0
 
   #Firebase
   firebase_core: ^4.4.0

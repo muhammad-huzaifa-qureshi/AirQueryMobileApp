@@ -5,8 +5,11 @@ import 'package:air_query/core/utils/format_time.dart';
 import 'package:air_query/core/widgets/confirm_dialog.dart';
 import 'package:air_query/ui/other_user_profile/show_user_profile_card.dart';
 import 'package:flutter/material.dart';
-import '../theme/query_colors.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../models/query_model.dart';
+import '../theme/query_colors.dart';
 
 enum _QueryAction { delete, resolve }
 
@@ -97,9 +100,16 @@ class QueryCard extends StatelessWidget {
             const SizedBox(height: AppSizes.medium),
 
             // Description
-            Text(
-              query.description,
-              style: Theme.of(context).textTheme.bodyMedium,
+            SelectableLinkify(
+              text: query.description,
+              style: Theme.of(context).textTheme.bodyLarge,
+              linkStyle: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(color: queryColor),
+              onOpen: (link) async {
+                final uri = Uri.parse(link.url);
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              },
             ),
 
             const SizedBox(height: AppSizes.medium),
