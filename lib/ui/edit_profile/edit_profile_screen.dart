@@ -122,9 +122,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               const SizedBox(height: AppSizes.vLarge),
 
               Text(
-                "Please Note that Name can be changed once in a ${BusinessConstants.nameChangeCooldownDays} days!",
+                "Note: Name can be changed only once every ${BusinessConstants.nameChangeCooldownDays} days.",
                 textAlign: .center,
-                style: Theme.of(context).textTheme.bodySmall
+                style: Theme.of(context).textTheme.bodySmall,
               ),
 
               const SizedBox(height: AppSizes.medium),
@@ -162,7 +162,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     if (name.length < BusinessConstants.nameMinChars) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Name must contain at least ${BusinessConstants.nameMinChars} characters!"),
+          content: Text(
+            "Name must contain at least ${BusinessConstants.nameMinChars} characters!",
+          ),
         ),
       );
       return;
@@ -171,7 +173,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     if (name.length > BusinessConstants.nameMaxChars) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Name must not exceed ${BusinessConstants.nameMaxChars} characters!"),
+          content: Text(
+            "Name must not exceed ${BusinessConstants.nameMaxChars} characters!",
+          ),
         ),
       );
       return;

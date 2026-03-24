@@ -102,7 +102,7 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
                 vertical: AppSizes.minute,
               ),
               child: Text(
-                "Please note that you can post ${BusinessConstants.maxResponsesPerDayPerUser} responses per day (inclusive of deleted).",
+                "Note: You can post ${BusinessConstants.maxResponsesPerDayPerUser} responses per day, including deleted ones.",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
