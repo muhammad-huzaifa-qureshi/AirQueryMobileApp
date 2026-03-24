@@ -6,8 +6,8 @@ import 'package:air_query/ui/auth/notifier/auth_notifier.dart';
 import 'package:air_query/ui/settings/widgets/settings_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../core/constants/business_constants.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -26,6 +26,26 @@ class SettingsScreen extends ConsumerWidget {
   Future<void> _launchPrivacyPolicy() async {
     final uri = Uri.parse(BusinessConstants.privacyPolicy);
     await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  Future<void> _launchPlayStore() async {
+    final uri = Uri.parse(BusinessConstants.appPlayStoreLink);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  Future<void> _launchAuthorEmail() async {
+    final uri = Uri.parse(BusinessConstants.authorEmail);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  void _shareApp() {
+    const String message =
+        "🙌 Check out this Mobile App designed for Air University Students only! Post and answer campus questions smartly and stay connected:"
+        "\n${BusinessConstants.appPlayStoreLink}";
+
+    SharePlus.instance.share(
+      ShareParams(text: message, title: "Air Query Mobile App"),
+    );
   }
 
   @override
@@ -63,11 +83,16 @@ class SettingsScreen extends ConsumerWidget {
               SettingsCard(
                 text: "Privacy Policy",
                 icon: Icon(Icons.privacy_tip_outlined),
-                onTap: _launchPrivacyPolicy
+                onTap: _launchPrivacyPolicy,
               ),
               SizedBox(height: AppSizes.vLarge),
 
               // section 2
+              SettingsCard(
+                text: "Email Support",
+                icon: Icon(Icons.email_outlined),
+                onTap: _launchAuthorEmail,
+              ),
               SettingsCard(
                 text: "GitHub Repository",
                 icon: Icon(Icons.code),
@@ -118,6 +143,27 @@ class SettingsScreen extends ConsumerWidget {
                     Navigator.pushNamed(context, AppRoutes.deleteAccount),
                 color: AppColors.error,
               ),
+
+              // section 4
+              SizedBox(height: AppSizes.vLarge),
+              SettingsCard(
+                text: "Rate on Play Store",
+                icon: Icon(Icons.star_rate_rounded),
+                onTap: _launchPlayStore,
+              ),
+              SettingsCard(
+                text: "Share App",
+                icon: Icon(Icons.share),
+                onTap: _shareApp,
+              ),
+              SizedBox(height: AppSizes.vLarge),
+
+              // version
+              Text(
+                "Version 2.0.0",
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              SizedBox(height: AppSizes.vLarge),
             ],
           ),
         ),
