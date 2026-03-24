@@ -5,6 +5,10 @@ An **unofficial** mobile app for Air University students to post and answer camp
 
 [![License](https://img.shields.io/badge/License-Air%20Query-111111?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE.md)
 
+[![Privacy Policy](https://img.shields.io/badge/Privacy-Policy-2563EB?style=for-the-badge&logo=shield&logoColor=white)](https://sites.google.com/view/air-query-privacy-policy/air-query)
+
+[![Delete Account](https://img.shields.io/badge/Account-Data%20Deletion-DC2626?style=for-the-badge&logo=trash&logoColor=white)](https://forms.gle/DmUXGR4ZAqZQ9szJA)
+
 # Table of Contents
 - [Tech Stack](#tech-stack)
 - [Firebase Services Used](#firebase-services-used)
