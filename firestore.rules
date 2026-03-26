@@ -26,7 +26,7 @@ service cloud.firestore {
 
       allow create: if isOwner(uid)
                     && !request.resource.data.keys()
-                        .hasAny(['queriesPosted', 'queriesAnswered',
+                        .hasAny(['queriesPosted', 'responsesPosted',
                                  'queriesResolved', 'name']);
 
       allow update: if isOwner(uid)

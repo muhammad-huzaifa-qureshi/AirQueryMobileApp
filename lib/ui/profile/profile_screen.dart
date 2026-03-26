@@ -194,20 +194,22 @@ class ProfileScreen extends ConsumerWidget {
           const SizedBox(height: AppSizes.large),
 
           // Stats row
-          Row(
-            children: [
-              Expanded(
-                child: StatBox(label: "Posted", value: user.queriesPosted),
-              ),
-              const SizedBox(width: AppSizes.medium),
-              Expanded(
-                child: StatBox(label: "Answered", value: user.queriesAnswered),
-              ),
-              const SizedBox(width: AppSizes.medium),
-              Expanded(
-                child: StatBox(label: "Resolved", value: user.queriesResolved),
-              ),
-            ],
+          IntrinsicHeight(
+            child: Row(
+              children: [
+                Expanded(
+                  child: StatBox(label: "Lifetime Queries", value: user.queriesPosted),
+                ),
+                const SizedBox(width: AppSizes.medium),
+                Expanded(
+                  child: StatBox(label: "Lifetime Responses", value: user.responsesPosted),
+                ),
+                const SizedBox(width: AppSizes.medium),
+                Expanded(
+                  child: StatBox(label: "Queries Resolved", value: user.queriesResolved),
+                ),
+              ],
+            ),
           ),
 
           // CTAs

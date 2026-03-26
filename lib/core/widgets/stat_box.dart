@@ -28,6 +28,7 @@ class StatBox extends StatelessWidget {
           const SizedBox(height: AppSizes.vSmall),
           Text(
             label,
+            textAlign: .center,
             style: Theme.of(
               context,
             ).textTheme.labelSmall?.copyWith(color: AppColors.greyish),
