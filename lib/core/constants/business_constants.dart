@@ -39,4 +39,7 @@ class BusinessConstants {
   // pagination (keep them n sync with FIREBASE RULES)
   static const queryFetchLimit = 10;
   static const responseFetchLimit = 10;
+
+  // version
+  static const appVersion = "2.4.0";
 }
