@@ -140,7 +140,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               ),
               const SizedBox(height: AppSizes.small),
               CTAButton(
-                text: "Back to Login",
+                text: "Back",
                 onPressed: () => Navigator.pop(context),
                 isPrimary: false,
               ),

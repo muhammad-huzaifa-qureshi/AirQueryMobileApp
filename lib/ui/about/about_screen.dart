@@ -50,14 +50,14 @@ class AboutScreen extends StatelessWidget {
                     ),
                     SizedBox(height: AppSizes.medium),
                     Text(
-                      'Open Source & Collaborative',
+                      'Source Available & Collaborative',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: AppColors.primary,
                       ),
                     ),
                     SizedBox(height: AppSizes.small),
                     Text(
-                      'This project is built for collaboration. We encourage students and developers to contribute, learn, and improve the platform together.',
+                      'Air Query is a source-available project. The code can be viewed and improved through approved contributions, helping students learn and collaborate while protecting the project’s ownership and original implementation.',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],

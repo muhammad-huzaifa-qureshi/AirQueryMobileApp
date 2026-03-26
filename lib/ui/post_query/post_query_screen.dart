@@ -64,7 +64,7 @@ class _PostQueryScreenState extends ConsumerState<PostQueryScreen> {
               TextField(
                 controller: _descriptionController,
                 maxLength: BusinessConstants.maxQueryLen,
-                textInputAction: TextInputAction.done,
+                textInputAction: TextInputAction.newline,
                 maxLines: 2,
                 decoration: const InputDecoration(
                   labelText: "What's your query?",
