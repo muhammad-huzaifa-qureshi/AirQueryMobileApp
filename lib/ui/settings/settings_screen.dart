@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../core/constants/business_constants.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -107,6 +108,19 @@ class SettingsScreen extends ConsumerWidget {
               // section 3
               SizedBox(height: AppSizes.vLarge),
               SettingsCard(
+                text: "Rate on Play Store",
+                icon: Icon(Icons.star_rate_rounded),
+                onTap: _launchPlayStore,
+              ),
+              SettingsCard(
+                text: "Share App",
+                icon: Icon(Icons.share),
+                onTap: _shareApp,
+              ),
+
+              // section 4
+              SizedBox(height: AppSizes.vLarge),
+              SettingsCard(
                 text: "Reset Password",
                 icon: Icon(Icons.lock_reset_outlined),
                 onTap: () =>
@@ -144,23 +158,10 @@ class SettingsScreen extends ConsumerWidget {
                 color: AppColors.error,
               ),
 
-              // section 4
               SizedBox(height: AppSizes.vLarge),
-              SettingsCard(
-                text: "Rate on Play Store",
-                icon: Icon(Icons.star_rate_rounded),
-                onTap: _launchPlayStore,
-              ),
-              SettingsCard(
-                text: "Share App",
-                icon: Icon(Icons.share),
-                onTap: _shareApp,
-              ),
-              SizedBox(height: AppSizes.vLarge),
-
               // version
               Text(
-                "Version 2.0.0",
+                "Version 2.3.0",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               SizedBox(height: AppSizes.vLarge),

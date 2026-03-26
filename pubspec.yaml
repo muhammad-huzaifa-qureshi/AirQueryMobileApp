@@ -4,7 +4,7 @@ description: "An unofficial mobile app for Air University students to post and a
 publish_to: 'none'
 
 # keep settings' version in sync with this
-version: 2.0.0+4
+version: 2.3.0+5
 
 environment:
   sdk: ^3.10.8
