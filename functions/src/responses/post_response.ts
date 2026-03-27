@@ -99,7 +99,7 @@ export const postResponse = onCall(
         totalResponses: admin.firestore.FieldValue.increment(1),
       });
       tx.update(userRef, {
-        queriesAnswered: admin.firestore.FieldValue.increment(1),
+        responsesPosted: admin.firestore.FieldValue.increment(1),
       });
       tx.set(
         rateLimitRef,
