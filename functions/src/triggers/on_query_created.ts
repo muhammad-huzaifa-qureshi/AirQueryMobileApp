@@ -14,47 +14,41 @@ export const onQueryCreated = onDocumentCreated(
     const db = admin.firestore();
 
     try {
-      // Fetch users by campus
-      let usersSnap;
+      const tokens: string[] = [];
+
       if (campus === "All") {
-        usersSnap = await db.collection("users").get();
+        // Fetch all campus token docs
+        const fcmSnap = await db.collection("fcmTokens").get();
+
+        fcmSnap.docs.forEach((doc) => {
+          const campusTokens = doc.data() ?? {};
+          Object.entries(campusTokens).forEach(([uid, token]) => {
+            if (uid !== posterUid && typeof token === "string") {
+              tokens.push(token);
+            }
+          });
+        });
       } else {
-        usersSnap = await db
-          .collection("users")
-          .where("campus", "==", campus)
-          .get();
+        // Fetch tokens only for the specific campus
+        const doc = await db.collection("fcmTokens").doc(campus).get();
+        if (doc.exists) {
+          const campusTokens = doc.data() ?? {};
+          Object.entries(campusTokens).forEach(([uid, token]) => {
+            if (uid !== posterUid && typeof token === "string") {
+              tokens.push(token);
+            }
+          });
+        }
       }
-
-      const eligibleDocs = usersSnap.docs.filter(
-        (doc) => doc.id !== posterUid
-      );
-
-      if (eligibleDocs.length === 0) return;
-
-      // Fetch fcmToken from each user's subcollection in parallel
-      const tokenResults = await Promise.all(
-        eligibleDocs.map((doc) =>
-          db
-            .collection("users")
-            .doc(doc.id)
-            .collection("private")
-            .doc("fcmToken")
-            .get()
-        )
-      );
-
-      const tokens = tokenResults
-        .filter((snap) => snap.exists && snap.data()?.token)
-        .map((snap) => snap.data()?.token as string)
-        .filter((token): token is string => !!token);
 
       if (tokens.length === 0) return;
 
-      const notifBody = campus === "All" ?
-        "A new query was posted for all campuses." :
-        `A new query was posted for ${campus}.`;
+      const notifBody =
+        campus === "All" ?
+          "A new query was posted for all campuses." :
+          `A new query was posted for ${campus}.`;
 
-      // FCM max 500 tokens per multicast
+      // Send FCM in chunks of 500 tokens
       const chunkSize = 500;
       for (let i = 0; i < tokens.length; i += chunkSize) {
         await admin.messaging().sendEachForMulticast({
@@ -70,7 +64,8 @@ export const onQueryCreated = onDocumentCreated(
           },
         });
       }
-    } catch (e) {
-      console.error("Notification failed:", e);
+    } catch (err) {
+      console.error("FCM notification failed:", err);
     }
-  });
+  }
+);

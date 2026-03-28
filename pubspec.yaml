@@ -1,9 +1,9 @@
 name: air_query
-description: "An unofficial mobile app for Air University students to post and answer campus related questions in a smart and organized way."
+description: "Air Query is an unofficial platform designed specifically for Air University students. It provides a focused space to post and answer campus-related questions, helping students navigate university life through peer-to-peer support."
 
 publish_to: 'none'
 
-# keep settings' version in sync with this
+# keep constants' version in sync with this
 version: 2.4.0+6
 
 environment:

@@ -24,17 +24,7 @@ service cloud.firestore {
       allow get: if isAuthed();
       allow list: if false;
 
-      allow create: if isOwner(uid)
-                    && !request.resource.data.keys()
-                        .hasAny(['queriesPosted', 'responsesPosted',
-                                 'queriesResolved', 'name']);
-
-      allow update: if isOwner(uid)
-                    && !request.resource.data.diff(resource.data).affectedKeys()
-                        .hasAny(['queriesPosted', 'queriesAnswered',
-                                 'queriesResolved', 'name']);
-
-      allow delete: if false;
+      allow write: if false;
 
       match /private/fcmToken {
         allow read, write: if isOwner(uid);
@@ -57,5 +47,8 @@ service cloud.firestore {
       }
     }
 
+    match /fcmTokens/{campus} {
+      allow read, write: if false;
+    }
   }
 }

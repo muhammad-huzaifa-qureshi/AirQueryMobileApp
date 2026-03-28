@@ -11,7 +11,8 @@ export {resolveQuery} from "./queries/resolve_query";
 export {postResponse} from "./responses/post_response";
 export {deleteResponse} from "./responses/delete_response";
 export {deleteAccount} from "./users/delete_account";
-export {syncUserName} from "./users/sync_user_name";
+export {updateProfile} from "./users/update_profile";
 // export triggers
 export {onQueryCreated} from "./triggers/on_query_created";
 export {onResponseCreated} from "./triggers/on_response_created";
+export {syncFcmTokenInMap} from "./triggers/sync_fcm_token_in_map";

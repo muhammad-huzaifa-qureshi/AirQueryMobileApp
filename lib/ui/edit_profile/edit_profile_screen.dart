@@ -122,7 +122,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               const SizedBox(height: AppSizes.vLarge),
 
               Text(
-                "Note: Name can be changed only once every ${BusinessConstants.nameChangeCooldownDays} days.",
+                "Note: Profile can be updated only once every ${BusinessConstants.profileUpdateCooldownDays} days.",
                 textAlign: .center,
                 style: Theme.of(context).textTheme.bodySmall,
               ),

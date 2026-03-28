@@ -161,7 +161,7 @@ class SettingsScreen extends ConsumerWidget {
               SizedBox(height: AppSizes.vLarge),
               // version
               Text(
-                "Version ${BusinessConstants.appVersion}",
+                "Version ${BusinessConstants.appCurrentVersion}",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               SizedBox(height: AppSizes.vLarge),

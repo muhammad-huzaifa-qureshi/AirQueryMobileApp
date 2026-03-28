@@ -32,7 +32,7 @@ class BusinessConstants {
   static const maxResponseLen = 500;
 
   // rate limiting
-  static const nameChangeCooldownDays = 2;
+  static const profileUpdateCooldownDays = 2;
   static const maxQueriesPerDayPerUser = 2;
   static const maxResponsesPerDayPerUser = 50;
 
@@ -41,5 +41,5 @@ class BusinessConstants {
   static const responseFetchLimit = 10;
 
   // version
-  static const appVersion = "2.4.0";
+  static const appCurrentVersion = "2.4.0";
 }

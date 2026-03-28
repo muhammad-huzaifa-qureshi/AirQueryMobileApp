@@ -47,7 +47,7 @@ An **unofficial** mobile app for Air University students to post and answer camp
 - `token`: String
 
 ## `users/{uid}/rateLimits/limits`
-- `nameLastChanged`: Timestamp
+- `profileLastUpdated`: Timestamp
 - `queryLastPostedAt`: Timestamp
 - `queryDailyCount`: Int
 - `responseLastPostedAt`: Timestamp
@@ -70,9 +70,12 @@ An **unofficial** mobile app for Air University students to post and answer camp
 - `totalQueriesResolved`: Int
 - `totalResponses`: Int
 
+## `fcmTokens/{campus}`
+- Each document key is a `uid` of a user in that campus.
+- The value for each `uid` is the FCM token string.
+
 # What’s Coming Next
 - Introduce a **"Report Query"** feature for better moderation
-- Implement a "Show Email" feature in profile card
 - Add **notifications tab**
 - Add **Filters** on Home Feed (like date, response count, etc.)
 - Implement **automatic deletion of queries** after 30 days
