@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../models/response_model.dart';
 import '../../ui/responses/notifier/reply_notifier.dart';
 import '../constants/app_sizes.dart';
+import '../constants/business_constants.dart';
 import '../routing/app_routes.dart';
 import '../theme/app_colors.dart';
 import '../utils/format_time.dart';
@@ -40,15 +41,26 @@ class ResponseCard extends ConsumerWidget {
                       ? () => Navigator.pushNamed(context, AppRoutes.profile)
                       : () =>
                             showUserProfileCard(context, response.postedByUid),
-                  child: Text(
-                    isOwn
-                        ? "${response.postedByName} (Me)"
-                        : response.postedByName,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.labelMedium?.copyWith(color: AppColors.primary),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  child: Row(
+                    children: [
+                      Text(
+                        isOwn
+                            ? "${response.postedByName} (Me)"
+                            : response.postedByName,
+                        style: Theme.of(context).textTheme.labelMedium
+                            ?.copyWith(color: AppColors.primary),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      if (response.postedByUid == BusinessConstants.devUid) ...[
+                        const SizedBox(width: AppSizes.vSmall),
+                        Icon(
+                          Icons.verified,
+                          size: AppSizes.smallIcon,
+                          color: AppColors.primary,
+                        ),
+                      ],
+                    ],
                   ),
                 ),
               ),

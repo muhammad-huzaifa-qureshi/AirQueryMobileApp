@@ -20,7 +20,7 @@ class SettingsScreen extends ConsumerWidget {
   }
 
   Future<void> _launchAuthorLinkedin() async {
-    final uri = Uri.parse(BusinessConstants.authorLinkedin);
+    final uri = Uri.parse(BusinessConstants.devLinkedin);
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
@@ -35,7 +35,7 @@ class SettingsScreen extends ConsumerWidget {
   }
 
   Future<void> _launchAuthorEmail() async {
-    final uri = Uri.parse(BusinessConstants.authorEmail);
+    final uri = Uri.parse(BusinessConstants.devEmail);
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 

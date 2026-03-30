@@ -1,4 +1,5 @@
 import 'package:air_query/core/constants/app_sizes.dart';
+import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/utils/format_time.dart';
@@ -68,15 +69,31 @@ class QueryCard extends StatelessWidget {
                     onTap: isOwnQuery
                         ? () => Navigator.pushNamed(context, AppRoutes.profile)
                         : () => showUserProfileCard(context, query.postedByUid),
-                    child: Text(
-                      isOwnQuery
-                          ? "${query.postedByName} (Me)"
-                          : query.postedByName,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.labelLarge?.copyWith(color: queryColor),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            isOwnQuery
+                                ? "${query.postedByName} (Me)"
+                                : query.postedByName,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.labelLarge?.copyWith(color: queryColor),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        if (query.postedByUid ==
+                            BusinessConstants.devUid) ...[
+                          const SizedBox(width: AppSizes.small),
+                          Icon(
+                            Icons.verified,
+                            size: AppSizes.mediumIcon,
+                            color: queryColor,
+                          ),
+                        ],
+                      ],
                     ),
                   ),
                 ),

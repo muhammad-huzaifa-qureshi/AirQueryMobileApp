@@ -2,13 +2,14 @@ class BusinessConstants {
   // Links
   static const String githubRepoLink =
       "https://github.com/muhammad-huzaifa-qureshi/AirQueryMobileApp";
-  static const String authorLinkedin =
+  static const String devLinkedin =
       "https://www.linkedin.com/in/muhammad-huzaifa-qureshi/";
   static const String privacyPolicy =
       "https://sites.google.com/view/air-query-privacy-policy";
-  static const String authorEmail = "mailto:muhammadhuzaifaqureshi01@gmail.com";
+  static const String devEmail = "mailto:muhammadhuzaifaqureshi01@gmail.com";
   static const String appPlayStoreLink =
       "https://play.google.com/store/apps/details?id=com.hqapplications.airuniversity.airquery";
+  static const String devUid = "6q6T8KShaKZhrOeqN2o0nOGRdYL2";
 
   // password policy
   static const minPassChars = 8;
