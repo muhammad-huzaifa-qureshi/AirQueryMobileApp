@@ -7,6 +7,7 @@ import 'package:air_query/ui/responses/notifier/responses_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/response_card.dart';
+import 'notifier/reply_notifier.dart';
 
 class ResponsesScreen extends ConsumerStatefulWidget {
   final String queryId;
@@ -60,10 +61,16 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
       return;
     }
     _responseController.clear();
+
+    final replyState = ref.read(replyStateProvider);
+    final mentionedUid = replyState.isReplying ? replyState.replyToUid : null;
+    final mentionedName = replyState.isReplying ? replyState.replyToName : null;
+
     ref
         .read(responsesProvider(widget.queryId).notifier)
-        .postResponse(description)
+        .postResponse(description, mentionedUid, mentionedName)
         .then((_) {
+          ref.read(replyStateProvider.notifier).clearReply();
           // update in memory count
           ref
               .read(homeProvider.notifier)
@@ -209,6 +216,8 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
           responsesProvider(widget.queryId).select((s) => s.isLoading),
         );
 
+        final replyState = ref.watch(replyStateProvider);
+
         final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
         return AnimatedPadding(
@@ -220,28 +229,77 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
             top: AppSizes.medium,
             bottom: bottomInset > 0 ? bottomInset : AppSizes.medium,
           ),
-          child: Row(
+          child: Column(
             children: [
-              Expanded(
-                child: TextField(
-                  controller: _responseController,
-                  textInputAction: TextInputAction.send,
-                  onSubmitted: (_) => _onPost(),
-                  maxLength: BusinessConstants.maxResponseLen,
-                  decoration: const InputDecoration(
-                    hintText: "Write a response...",
+              // REPLY CONTAINER
+              if (replyState.isReplying)
+                Align(
+                  alignment: .centerLeft,
+                  child: Container(
+                    margin: const .only(bottom: AppSizes.small),
+                    padding: const .symmetric(
+                      horizontal: AppSizes.small,
+                      vertical: AppSizes.vSmall,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.blackish,
+                      borderRadius: BorderRadius.circular(AppSizes.small),
+                      border: Border.all(color: AppColors.whitish),
+                    ),
+                    child: Row(
+                      mainAxisSize: .min,
+                      children: [
+                        Icon(
+                          Icons.reply,
+                          size: AppSizes.mediumIcon,
+                          color: AppColors.whitish,
+                        ),
+                        const SizedBox(width: AppSizes.vSmall),
+                        Text(
+                          'Replying to ${replyState.replyToName}',
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(color: AppColors.whitish),
+                          overflow: .ellipsis,
+                        ),
+                        const SizedBox(width: AppSizes.small),
+                        GestureDetector(
+                          onTap: () {
+                            ref.read(replyStateProvider.notifier).clearReply();
+                          },
+                          child: Icon(
+                            Icons.close,
+                            size: AppSizes.mediumIcon,
+                            color: AppColors.error,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: AppSizes.small),
-              IconButton(
-                onPressed: isPosting ? null : _onPost,
-                icon: const Icon(
-                  Icons.send_outlined,
-                  size: AppSizes.mediumIcon,
-                ),
-                tooltip: "send",
-                color: AppColors.primary,
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _responseController,
+                      textInputAction: TextInputAction.send,
+                      onSubmitted: (_) => _onPost(),
+                      maxLength: BusinessConstants.maxResponseLen,
+                      decoration: const InputDecoration(
+                        hintText: "Write a response...",
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: AppSizes.small),
+                  IconButton(
+                    onPressed: isPosting ? null : _onPost,
+                    icon: const Icon(
+                      Icons.send_outlined,
+                      size: AppSizes.mediumIcon,
+                    ),
+                    tooltip: "send",
+                    color: AppColors.primary,
+                  ),
+                ],
               ),
             ],
           ),

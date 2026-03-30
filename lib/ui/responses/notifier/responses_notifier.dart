@@ -79,11 +79,17 @@ class ResponsesNotifier extends Notifier<ResponsesState> {
     }
   }
 
-  Future<void> postResponse(String description) async {
+  Future<void> postResponse(
+    String description,
+    String? mentionedUid,
+    String? mentionedName,
+  ) async {
     try {
       await _repository.postResponse(
         queryId: _queryId,
         description: description,
+        mentionedUid: mentionedUid,
+        mentionedName: mentionedName,
       );
 
       await refresh();

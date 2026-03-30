@@ -63,6 +63,13 @@ class NotificationService {
           AppRoutes.home,
           (route) => false,
         );
+      case 'mention':
+        _navigatorKey.currentState?.pushNamedAndRemoveUntil(
+          AppRoutes.responses,
+          (route) => false,
+          arguments: data['queryId'],
+        );
+        break;
     }
   }
 }

@@ -11,6 +11,8 @@ export const onResponseCreated = onDocumentCreated(
     const posterUid = data.postedBy?.uid as string;
     const posterName = data.postedBy?.name as string;
     const queryId = event.params.queryId;
+    const mentionedUid = data.mentionedUid as string | undefined;
+    const mentionedName = data.mentionedName as string | undefined;
 
     const db = admin.firestore();
 
@@ -49,6 +51,34 @@ export const onResponseCreated = onDocumentCreated(
           queryId,
         },
       });
+
+      // Notify mentioned user if different from poster and query owner
+      if (mentionedUid &&
+        mentionedName &&
+        mentionedUid !== posterUid &&
+        mentionedUid !== queryOwnerUid) {
+        const mentionTokenSnap = await db
+          .collection("users")
+          .doc(mentionedUid)
+          .collection("private")
+          .doc("fcmToken")
+          .get();
+        const mentionToken =
+          mentionTokenSnap.data()?.token as string | undefined;
+        if (mentionToken) {
+          await admin.messaging().send({
+            token: mentionToken,
+            notification: {
+              title: "You were mentioned",
+              body: `${posterName} mentioned you in a response.`,
+            },
+            data: {
+              type: "mention",
+              queryId,
+            },
+          });
+        }
+      }
     } catch (e) {
       console.error("Notification failed:", e);
     }

@@ -6,6 +6,8 @@ class ResponseModel {
   final String postedByUid;
   final String postedByName;
   final DateTime postedAt;
+  final String? mentionedUid;
+  final String? mentionedName;
 
   ResponseModel({
     required this.id,
@@ -13,6 +15,8 @@ class ResponseModel {
     required this.postedByUid,
     required this.postedByName,
     required this.postedAt,
+    this.mentionedUid,
+    this.mentionedName,
   });
 
   factory ResponseModel.fromMap(Map<String, dynamic> map, String docId) {
@@ -22,7 +26,12 @@ class ResponseModel {
       description: map['description'] ?? '',
       postedByUid: postedBy['uid'] ?? '',
       postedByName: postedBy['name'] ?? '',
-      postedAt: (map['postedAt'] as Timestamp).toDate()
+      postedAt: (map['postedAt'] as Timestamp).toDate(),
+      mentionedUid: map['mentionUid'] as String?,
+      mentionedName: map['mentionName'] as String?,
     );
   }
+
+  bool get hasMention =>
+      mentionedUid != null && mentionedName != null && mentionedName!.isNotEmpty;
 }

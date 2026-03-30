@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import '../../core/constants/business_constants.dart';
 import '../../models/response_model.dart';
 import '../auth/auth_repository.dart';
@@ -55,9 +54,16 @@ class ResponsesRepository {
   Future<void> postResponse({
     required String queryId,
     required String description,
+    String? mentionedUid,
+    String? mentionedName
   }) async {
     final callable = _functions.httpsCallable('postResponse');
-    await callable.call({'queryId': queryId, 'description': description});
+    await callable.call({
+      'queryId': queryId,
+      'description': description,
+      'mentionedUid': mentionedUid,
+      'mentionedName' : mentionedName
+    });
   }
 
   Future<void> deleteResponse({

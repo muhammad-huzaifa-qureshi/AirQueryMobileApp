@@ -18,7 +18,7 @@ export const postResponse = onCall(
 
     const uid = request.auth.uid;
     const db = admin.firestore();
-    const {queryId, description} = request.data;
+    const {queryId, description, mentionedUid, mentionedName} = request.data;
 
     if (!queryId) {
       throw new HttpsError(
@@ -79,6 +79,23 @@ export const postResponse = onCall(
 
     const userName = userSnap.data()?.name as string ?? "";
 
+    // Validate mention data
+    let finalMentionedUid: string | null = null;
+    let finalMentionedName: string | null = null;
+
+    if (
+      mentionedUid &&
+      typeof mentionedUid === "string" &&
+      mentionedUid.trim() !== "" &&
+          mentionedUid !== uid &&
+      mentionedName &&
+      typeof mentionedName === "string" &&
+      mentionedName.trim() !== ""
+    ) {
+      finalMentionedUid = mentionedUid.trim();
+      finalMentionedName = mentionedName.trim();
+    }
+
     const responseRef = querySnap.ref.collection("responses").doc();
     const queryRef = querySnap.ref;
     const userRef = db.collection("users").doc(uid);
@@ -91,6 +108,8 @@ export const postResponse = onCall(
         description: trimmedDescription,
         postedBy: {uid, name: userName},
         postedAt: admin.firestore.FieldValue.serverTimestamp(),
+        mentionedUid: finalMentionedUid,
+        mentionedName: finalMentionedName,
       });
       tx.update(queryRef, {
         responseCount: admin.firestore.FieldValue.increment(1),

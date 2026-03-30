@@ -1,8 +1,8 @@
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/routing/app_routes.dart';
+import 'package:air_query/services/update_checker.dart';
 import 'package:air_query/ui/auth/notifier/auth_notifier.dart';
 import 'package:air_query/ui/auth/notifier/auth_status.dart';
-import 'package:air_query/services/update_checker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +71,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         return AppRoutes.responses;
       case 'new_query':
         return AppRoutes.home;
+      case 'mention':
+        return AppRoutes.responses;
       default:
         return AppRoutes.home;
     }
@@ -91,16 +93,16 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   Widget build(BuildContext context) {
     ref.listen(authProvider, (_, next) => _tryNavigate(next));
     return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisSize: .min,
-            children: [
-              CircularProgressIndicator(),
-              SizedBox(height: AppSizes.medium,),
-              Text("we heard you. one sec.", textAlign: .center,)
-            ],
-          ),
-        )
+      body: Center(
+        child: Column(
+          mainAxisSize: .min,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: AppSizes.medium),
+            Text("Almost there!", textAlign: .center),
+          ],
+        ),
+      ),
     );
   }
 }
