@@ -50,4 +50,4 @@ The source code, concept, architecture, and implementation of Air Query remain t
 
 ## 5. Unauthorized Use
 
-Unauthorized usage, reproduction, redistribution, or commercial exploitation of Air Query is strictly prohibited.
+All rights reserved. Unauthorized use, reproduction, redistribution, or commercial exploitation of Air Query is prohibited and may lead to legal action under applicable laws.
