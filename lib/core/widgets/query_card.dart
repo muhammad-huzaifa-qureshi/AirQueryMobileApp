@@ -8,7 +8,6 @@ import 'package:air_query/ui/other_user_profile/show_user_profile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../models/query_model.dart';
 import '../theme/query_colors.dart';
 
@@ -117,7 +116,7 @@ class QueryCard extends StatelessWidget {
             const SizedBox(height: AppSizes.medium),
 
             // Description
-            SelectableLinkify(
+            Linkify(
               text: query.description,
               style: Theme.of(context).textTheme.bodyLarge,
               linkStyle: Theme.of(

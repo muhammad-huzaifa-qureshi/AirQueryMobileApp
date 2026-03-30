@@ -133,7 +133,7 @@ class ResponseCard extends ConsumerWidget {
             ),
           ],
 
-          SelectableLinkify(
+          Linkify(
             text: response.description,
             style: Theme.of(context).textTheme.bodyLarge,
             linkStyle: Theme.of(
