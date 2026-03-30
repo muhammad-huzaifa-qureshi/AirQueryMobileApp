@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import '../../core/constants/business_constants.dart';
 import '../../models/query_model.dart';
 import '../auth/auth_repository.dart';
@@ -53,6 +52,7 @@ class QueriesRepository {
     Query query = _firestore
         .collection('queries')
         .where('campus', whereIn: [campus, 'All'])
+        .where('isResolved', isEqualTo: false)
         .orderBy('postedAt', descending: true)
         .limit(BusinessConstants.queryFetchLimit);
 

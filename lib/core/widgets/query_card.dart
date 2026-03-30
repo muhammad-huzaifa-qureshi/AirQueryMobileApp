@@ -160,7 +160,7 @@ class QueryCard extends StatelessWidget {
           final confirmed = await ConfirmDialog.show(
             context,
             content:
-                "Mark this query as resolved? Once resolved, it will no longer appear in your profile.",
+                "Mark this query as resolved? It will be hidden from the public feed but remain visible in your queries.",
             cancelColor: AppColors.primary,
             confirmColor: AppColors.error,
           );
@@ -168,16 +168,32 @@ class QueryCard extends StatelessWidget {
         }
       },
       itemBuilder: (_) => [
-        PopupMenuItem(
-          value: _QueryAction.resolve,
-          child: Row(
-            children: [
-              Icon(Icons.check_circle_outline, size: AppSizes.mediumIcon),
-              SizedBox(width: AppSizes.vSmall),
-              Text("Mark as Resolved"),
-            ],
+        if (query.isResolved)
+          PopupMenuItem(
+            enabled: false,
+            child: Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: AppColors.primary,
+                  size: AppSizes.mediumIcon,
+                ),
+                SizedBox(width: AppSizes.vSmall),
+                Text("Resolved", style: TextStyle(color: AppColors.primary)),
+              ],
+            ),
+          )
+        else
+          PopupMenuItem(
+            value: _QueryAction.resolve,
+            child: Row(
+              children: [
+                Icon(Icons.check_circle_outline, size: AppSizes.mediumIcon),
+                SizedBox(width: AppSizes.vSmall),
+                Text("Mark as Resolved"),
+              ],
+            ),
           ),
-        ),
         PopupMenuItem(
           value: _QueryAction.delete,
           child: Row(

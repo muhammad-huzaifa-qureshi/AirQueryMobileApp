@@ -1,6 +1,5 @@
 import {onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
-import {batchDelete} from "../utils/batch_delete";
 
 /** Resolves a query — deletes it, its responses, and updates counters. */
 export const resolveQuery = onCall(
@@ -42,22 +41,17 @@ export const resolveQuery = onCall(
       );
     }
 
-    // Delete all responses first
-    const responsesSnap = await queryRef.collection("responses").get();
-    await batchDelete(db, responsesSnap.docs);
-
     // Atomically delete query + update counters
     const userRef = db.collection("users").doc(uid);
     const statsRef = db.collection("platformStats").doc("global");
 
     await db.runTransaction(async (tx) => {
-      // Re-read query inside transaction to confirm it still exists
       const freshSnap = await tx.get(queryRef);
       if (!freshSnap.exists) {
         throw new HttpsError("not-found", "Query no longer exists.");
       }
 
-      tx.delete(queryRef);
+      tx.update(queryRef, {isResolved: true});
       tx.update(userRef, {
         queriesResolved: admin.firestore.FieldValue.increment(1),
       });

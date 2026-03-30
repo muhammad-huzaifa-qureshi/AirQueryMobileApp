@@ -78,7 +78,9 @@ class MyQueriesNotifier extends Notifier<MyQueriesState> {
     try {
       await _repository.resolveQuery(queryId: queryId);
       state = state.copyWith(
-        queries: state.queries.where((q) => q.id != queryId).toList(),
+        queries: state.queries
+            .map((q) => q.id == queryId ? q.copyWith(isResolved: true) : q)
+            .toList(),
         clearError: true,
       );
     } catch (e) {

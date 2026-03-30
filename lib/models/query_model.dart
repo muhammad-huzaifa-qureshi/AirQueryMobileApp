@@ -8,6 +8,7 @@ class QueryModel {
   final String postedByName;
   final DateTime postedAt;
   final int responseCount;
+  final bool isResolved;
 
   QueryModel({
     required this.id,
@@ -17,6 +18,7 @@ class QueryModel {
     required this.postedByName,
     required this.postedAt,
     required this.responseCount,
+    required this.isResolved,
   });
 
   factory QueryModel.fromMap(Map<String, dynamic> map, String docId) {
@@ -29,6 +31,7 @@ class QueryModel {
       postedByName: postedBy['name'] ?? '',
       postedAt: (map['postedAt'] as Timestamp).toDate(),
       responseCount: int.parse(map['responseCount'].toString()),
+      isResolved: map['isResolved'] ?? false
     );
   }
 
@@ -40,6 +43,7 @@ class QueryModel {
     String? postedByName,
     DateTime? postedAt,
     int? responseCount,
+    bool? isResolved
   }) {
     return QueryModel(
       id: id ?? this.id,
@@ -49,6 +53,7 @@ class QueryModel {
       postedByName: postedByName ?? this.postedByName,
       postedAt: postedAt ?? this.postedAt,
       responseCount: responseCount ?? this.responseCount,
+      isResolved: isResolved ?? this.isResolved
     );
   }
 }

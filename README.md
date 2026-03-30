@@ -59,6 +59,7 @@ An **unofficial** mobile app for Air University students to post and answer camp
 - `postedBy`: Map — `{ uid: String, name: String }`
 - `postedAt`: Timestamp
 - `responseCount`: Int
+- `isResolved`: bool
 
 ## `queries/{queryId}/responses/{responseId}`
 - `description`: String

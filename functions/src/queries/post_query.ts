@@ -89,6 +89,7 @@ export const postQuery = onCall(
         postedBy: {uid, name: userData.name},
         postedAt: admin.firestore.FieldValue.serverTimestamp(),
         responseCount: 0,
+        isResolved: false,
       });
       tx.update(userRef, {
         queriesPosted: admin.firestore.FieldValue.increment(1),
