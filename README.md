@@ -78,15 +78,19 @@ An **unofficial** mobile app for Air University students to post and answer camp
 - The value for each `uid` is the FCM token string.
 
 # What’s Coming Next
-- Introduce a **"Report Query"** feature for better moderation
-- Add **notifications tab**
-- Add **Filters** on Home Feed (like date, response count, etc.)
-- Implement **automatic deletion of queries** after 30 days
-- Add **profile picture support** for user accounts
-- Enhance the overall **user experience** and interaction flow
-- Improve the app’s **UI and visual aesthetics**
-- Refactor and improve overall **code quality and maintainability**
-- Optimize app performance and internal logic
+- Query reporting system
+- Skeleton loading (shimmer effect) on home feed
+- Fix navigation issue when opening responses from notifications (missing back option)
+- Image attachments for queries and responses 
+- Reduced splash screen latency
+- Firebase Crashlytics integration for crash monitoring
+- Dedicated notifications tab
+- Home feed filters (date, response count, etc.)
+- Automatic query deletion after 30 days
+- Improved user experience and interaction flow
+- UI and visual design enhancements
+- Codebase refactoring for better maintainability
+- Performance and internal logic optimizations
 
 # Contributing & Local Setup
 
