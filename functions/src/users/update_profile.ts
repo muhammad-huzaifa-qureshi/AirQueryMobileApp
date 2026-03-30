@@ -25,23 +25,16 @@ export const updateProfile = onCall(
       typeof campus !== "string" ||
       typeof semester !== "string"
     ) {
-      throw new HttpsError(
-        "invalid-argument",
-        "Invalid profile data."
-      );
+      throw new HttpsError("invalid-argument", "Invalid profile data.");
     }
 
     // CAMPUS VALIDATION
     if (!Constants.campuses.includes(campus)) {
-      throw new HttpsError(
-        "invalid-argument",
-        "Invalid campus selected."
-      );
+      throw new HttpsError("invalid-argument", "Invalid campus selected.");
     }
 
     // SEMESTER VALIDATION
     const semesterNumber = Number(semester);
-
     if (
       !Number.isInteger(semesterNumber) ||
       semesterNumber < 1 ||
@@ -55,55 +48,61 @@ export const updateProfile = onCall(
 
     const db = admin.firestore();
     const userRef = db.collection("users").doc(uid);
-    const rateLimitRef =
-      userRef.collection("rateLimits").doc("limits");
+    const rateLimitRef = userRef.collection("rateLimits").doc("limits");
 
     const [userSnap, rateSnap] = await Promise.all([
       userRef.get(),
       rateLimitRef.get(),
     ]);
 
-    if (!userSnap.exists) {
-      throw new HttpsError("not-found", "User not found.");
+    // CREATE USER DOC IF NOT EXISTS (new user)
+    const isNewUser = !userSnap.exists;
+    if (isNewUser) {
+      await userRef.set({
+        name: "",
+        campus: "",
+        semester: "",
+        queriesPosted: 0,
+        queriesAnswered: 0,
+        queriesResolved: 0,
+        profileComplete: false,
+      });
     }
 
-    const userData = userSnap.data();
-    if (!userData) {
-      throw new HttpsError("not-found", "User data not found.");
-    }
-    const user = userData;
+    const user = isNewUser ? {} : (userSnap.data() ?? {});
 
     const oldName = user.name ?? "";
     const oldCampus = user.campus ?? "";
+    const oldSemester = user.semester ?? "";
 
     const nameChanged = oldName !== name;
     const campusChanged = oldCampus !== campus;
-    const semesterChanged = user.semester !== semester;
+    const semesterChanged = oldSemester !== semester;
 
-    // PROFILE COOLDOWN
+    // NO CHANGES
     if (!(nameChanged || campusChanged || semesterChanged)) {
       return {success: true};
     }
 
-    if (rateSnap.exists) {
+    // PROFILE COOLDOWN (skip for new users, they have no rate limit doc)
+    if (!isNewUser && rateSnap.exists) {
       const lastUpdated =
         rateSnap.data()?.profileLastUpdated?.toMillis?.() ?? 0;
-
       const elapsed = Date.now() - lastUpdated;
 
       if (elapsed < Constants.profileUpdateCooldownMS) {
         const daysRemaining = Math.ceil(
-          (Constants.profileUpdateCooldownMS - elapsed) / (24 * 60 * 60 * 1000)
+          (Constants.profileUpdateCooldownMS - elapsed) /
+            (24 * 60 * 60 * 1000)
         );
         const message =
           `You can update your profile again in ${daysRemaining} ` +
           `day${daysRemaining > 1 ? "s" : ""}.`;
-
         throw new HttpsError("resource-exhausted", message);
       }
     }
 
-    // update user profile
+    // UPDATE USER PROFILE
     await userRef.set({
       name,
       campus,
@@ -111,13 +110,12 @@ export const updateProfile = onCall(
       profileComplete: true,
     }, {merge: true});
 
-    // propogate name
-    if (nameChanged) {
+    // PROPAGATE NAME
+    if (nameChanged && !isNewUser) {
       const [querySnap, responseSnap] = await Promise.all([
         db.collection("queries")
           .where("postedBy.uid", "==", uid)
           .get(),
-
         db.collectionGroup("responses")
           .where("postedBy.uid", "==", uid)
           .get(),
@@ -141,12 +139,14 @@ export const updateProfile = onCall(
       if (token) {
         const batch = db.batch();
 
-        // remove from old campus
-        batch.set(
-          db.collection("fcmTokens").doc(oldCampus),
-          {[uid]: admin.firestore.FieldValue.delete()},
-          {merge: true}
-        );
+        // remove from old campus only if it existed
+        if (oldCampus !== "") {
+          batch.set(
+            db.collection("fcmTokens").doc(oldCampus),
+            {[uid]: admin.firestore.FieldValue.delete()},
+            {merge: true}
+          );
+        }
 
         // add to new campus
         batch.set(
@@ -160,12 +160,9 @@ export const updateProfile = onCall(
     }
 
     // UPDATE RATE LIMIT
-    if (nameChanged || campusChanged || semesterChanged) {
-      await rateLimitRef.set({
-        profileLastUpdated:
-          admin.firestore.FieldValue.serverTimestamp(),
-      }, {merge: true});
-    }
+    await rateLimitRef.set({
+      profileLastUpdated: admin.firestore.FieldValue.serverTimestamp(),
+    }, {merge: true});
 
     return {success: true};
   }

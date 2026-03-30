@@ -27,8 +27,8 @@ class ResponseModel {
       postedByUid: postedBy['uid'] ?? '',
       postedByName: postedBy['name'] ?? '',
       postedAt: (map['postedAt'] as Timestamp).toDate(),
-      mentionedUid: map['mentionUid'] as String?,
-      mentionedName: map['mentionName'] as String?,
+      mentionedUid: map['mentionedUid'] as String?,
+      mentionedName: map['mentionedName'] as String?,
     );
   }
 
