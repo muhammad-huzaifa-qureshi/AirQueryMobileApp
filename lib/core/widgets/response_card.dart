@@ -120,7 +120,7 @@ class ResponseCard extends ConsumerWidget {
                             )
                           : null,
                       child: Text(
-                        "Replying to @${response.mentionedName}",
+                        "Mentioning @${response.mentionedName}",
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: AppColors.primary,
                         ),
@@ -135,7 +135,7 @@ class ResponseCard extends ConsumerWidget {
 
           Linkify(
             text: response.description,
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: Theme.of(context).textTheme.bodyMedium,
             linkStyle: Theme.of(
               context,
             ).textTheme.bodyMedium?.copyWith(color: AppColors.primary),

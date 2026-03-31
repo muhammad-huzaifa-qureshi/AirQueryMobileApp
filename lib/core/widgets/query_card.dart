@@ -118,7 +118,7 @@ class QueryCard extends StatelessWidget {
             // Description
             Linkify(
               text: query.description,
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.bodyMedium,
               linkStyle: Theme.of(
                 context,
               ).textTheme.bodyMedium?.copyWith(color: queryColor),
