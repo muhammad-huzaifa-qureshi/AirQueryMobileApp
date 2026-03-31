@@ -42,5 +42,5 @@ class BusinessConstants {
   static const responseFetchLimit = 10;
 
   // version
-  static const appCurrentVersion = "2.6.2";
+  static const appCurrentVersion = "2.6.3";
 }
