@@ -123,9 +123,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           onRefresh: () => ref.read(homeProvider.notifier).refresh(),
           child: ListView.builder(
             controller: widget.scrollController,
-            physics: const AlwaysScrollableScrollPhysics(),
-            // to enable pull to refresh all time
-            padding: const .all(AppSizes.medium),
+            physics: const AlwaysScrollableScrollPhysics(), // to enable pull to refresh all time
+            padding: const EdgeInsets.fromLTRB(
+              AppSizes.medium,
+              AppSizes.medium,
+              AppSizes.medium,
+              AppSizes.fabBottomPadding, // space for FAB
+            ),
             itemCount: state.queries.length + (state.isLoadingMore ? 1 : 0) + 1,
             // +1 for hint text added
             itemBuilder: (context, index) {

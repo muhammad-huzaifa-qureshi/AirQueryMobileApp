@@ -98,7 +98,12 @@ class _MyQueriesScreenState extends ConsumerState<MyQueriesScreen> {
           child: ListView.builder(
             controller: _scrollController,
             physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(AppSizes.medium),
+            padding: const EdgeInsets.fromLTRB(
+              AppSizes.medium,
+              AppSizes.medium,
+              AppSizes.medium,
+              AppSizes.fabBottomPadding, // space for FAB
+            ),
             itemCount: state.queries.length + (state.isLoadingMore ? 1 : 0) + 1,
             itemBuilder: (context, index) {
               // Hint text
