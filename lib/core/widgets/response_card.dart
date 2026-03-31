@@ -138,7 +138,7 @@ class ResponseCard extends ConsumerWidget {
             style: Theme.of(context).textTheme.bodyLarge,
             linkStyle: Theme.of(
               context,
-            ).textTheme.bodyLarge?.copyWith(color: AppColors.primary),
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.primary),
             onOpen: (link) async {
               final uri = Uri.parse(link.url);
               await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -156,7 +156,7 @@ class ResponseCard extends ConsumerWidget {
                       .setReply(response.postedByUid, response.postedByName);
                 },
                 child: Text(
-                  "Reply",
+                  "Mention",
                   style: Theme.of(
                     context,
                   ).textTheme.labelMedium?.copyWith(color: AppColors.primary),

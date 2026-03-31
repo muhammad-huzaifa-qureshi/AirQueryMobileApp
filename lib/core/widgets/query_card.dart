@@ -121,7 +121,7 @@ class QueryCard extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyLarge,
               linkStyle: Theme.of(
                 context,
-              ).textTheme.bodyLarge?.copyWith(color: queryColor),
+              ).textTheme.bodyMedium?.copyWith(color: queryColor),
               onOpen: (link) async {
                 final uri = Uri.parse(link.url);
                 await launchUrl(uri, mode: LaunchMode.externalApplication);
