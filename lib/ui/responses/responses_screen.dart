@@ -7,7 +7,7 @@ import 'package:air_query/ui/responses/notifier/responses_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/widgets/response_card.dart';
-import 'notifier/reply_notifier.dart';
+import 'notifier/mention_notifier.dart';
 
 class ResponsesScreen extends ConsumerStatefulWidget {
   final String queryId;
@@ -62,15 +62,15 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
     }
     _responseController.clear();
 
-    final replyState = ref.read(replyStateProvider);
-    final mentionedUid = replyState.isReplying ? replyState.replyToUid : null;
-    final mentionedName = replyState.isReplying ? replyState.replyToName : null;
+    final mentionState = ref.read(mentionStateProvider);
+    final mentionedUid = mentionState.isMentioning ? mentionState.mentionToUid : null;
+    final mentionedName = mentionState.isMentioning ? mentionState.mentionToName : null;
 
     ref
         .read(responsesProvider(widget.queryId).notifier)
         .postResponse(description, mentionedUid, mentionedName)
         .then((_) {
-          ref.read(replyStateProvider.notifier).clearReply();
+          ref.read(mentionStateProvider.notifier).clearMention();
           // update in memory count
           ref
               .read(homeProvider.notifier)
@@ -216,7 +216,7 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
           responsesProvider(widget.queryId).select((s) => s.isLoading),
         );
 
-        final replyState = ref.watch(replyStateProvider);
+        final mentionState = ref.watch(mentionStateProvider);
 
         final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
@@ -231,8 +231,8 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
           ),
           child: Column(
             children: [
-              // REPLY CONTAINER
-              if (replyState.isReplying)
+              // Mention CONTAINER
+              if (mentionState.isMentioning)
                 Align(
                   alignment: .centerLeft,
                   child: Container(
@@ -250,13 +250,13 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
                       mainAxisSize: .min,
                       children: [
                         Icon(
-                          Icons.reply,
+                          Icons.assignment_ind_outlined,
                           size: AppSizes.mediumIcon,
                           color: AppColors.whitish,
                         ),
                         const SizedBox(width: AppSizes.vSmall),
                         Text(
-                          'Replying to ${replyState.replyToName}',
+                          'Mentioning ${mentionState.mentionToName}',
                           style: Theme.of(context).textTheme.labelSmall
                               ?.copyWith(color: AppColors.whitish),
                           overflow: .ellipsis,
@@ -264,7 +264,7 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
                         const SizedBox(width: AppSizes.small),
                         GestureDetector(
                           onTap: () {
-                            ref.read(replyStateProvider.notifier).clearReply();
+                            ref.read(mentionStateProvider.notifier).clearMention();
                           },
                           child: Icon(
                             Icons.close,

@@ -4,7 +4,7 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../models/response_model.dart';
-import '../../ui/responses/notifier/reply_notifier.dart';
+import '../../ui/responses/notifier/mention_notifier.dart';
 import '../constants/app_sizes.dart';
 import '../constants/business_constants.dart';
 import '../routing/app_routes.dart';
@@ -106,7 +106,7 @@ class ResponseCard extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
-                    Icons.reply_rounded,
+                    Icons.assignment_ind_outlined,
                     size: AppSizes.smallIcon,
                     color: AppColors.primary,
                   ),
@@ -152,8 +152,8 @@ class ResponseCard extends ConsumerWidget {
               child: GestureDetector(
                 onTap: () {
                   ref
-                      .read(replyStateProvider.notifier)
-                      .setReply(response.postedByUid, response.postedByName);
+                      .read(mentionStateProvider.notifier)
+                      .setMention(response.postedByUid, response.postedByName);
                 },
                 child: Text(
                   "Mention",
