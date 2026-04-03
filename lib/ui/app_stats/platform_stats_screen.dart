@@ -101,7 +101,7 @@ class PlatformStatsScreen extends ConsumerWidget {
 
                   const SizedBox(height: AppSizes.medium),
                   Text(
-                    "Since March, 2026",
+                    "Since April, 2026",
                     style: Theme.of(context).textTheme.bodySmall,
                     textAlign: .center,
                   ),
