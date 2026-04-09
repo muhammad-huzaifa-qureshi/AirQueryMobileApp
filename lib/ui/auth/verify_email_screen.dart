@@ -99,8 +99,14 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
               ),
               const SizedBox(height: AppSizes.small),
               Text(
-                "A verification link has been sent to your AU email. Please click the link to verify your account.\n\nDon't forget to check your spam folder!",
+                "A verification link has been sent to your AU email. Please click the link to verify your account.",
                 style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppSizes.small),
+              Text(
+                "Please Check Your Spam Folder!",
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: .bold, color: AppColors.primary),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSizes.vLarge),
