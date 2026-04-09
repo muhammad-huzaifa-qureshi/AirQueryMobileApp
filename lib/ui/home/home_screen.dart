@@ -36,7 +36,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   void _onScroll() {
     final pos = widget.scrollController.position;
-    if (pos.pixels >= pos.maxScrollExtent - 200) {
+    final state = ref.read(homeProvider);
+
+    if (!state.isLoadingMore && pos.pixels >= pos.maxScrollExtent - 200) {
       ref.read(homeProvider.notifier).fetchMore();
     }
   }
