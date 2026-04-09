@@ -1,53 +1,16 @@
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
+import 'package:air_query/core/utils/app_external_launchers.dart';
 import 'package:air_query/core/widgets/confirm_dialog.dart';
 import 'package:air_query/ui/auth/notifier/auth_notifier.dart';
 import 'package:air_query/ui/settings/widgets/settings_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../../core/constants/business_constants.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
-
-  Future<void> _launchGithub() async {
-    final uri = Uri.parse(BusinessConstants.githubRepoLink);
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
-  }
-
-  Future<void> _launchAuthorLinkedin() async {
-    final uri = Uri.parse(BusinessConstants.devLinkedin);
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
-  }
-
-  Future<void> _launchPrivacyPolicy() async {
-    final uri = Uri.parse(BusinessConstants.privacyPolicy);
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
-  }
-
-  Future<void> _launchPlayStore() async {
-    final uri = Uri.parse(BusinessConstants.appPlayStoreLink);
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
-  }
-
-  Future<void> _launchAuthorEmail() async {
-    final uri = Uri.parse(BusinessConstants.devEmail);
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
-  }
-
-  void _shareApp() {
-    const String message =
-        "🙌 Check out this Mobile App designed for Air University Students only! Post and answer campus questions smartly and stay connected:"
-        "\n${BusinessConstants.appPlayStoreLink}";
-
-    SharePlus.instance.share(
-      ShareParams(text: message, title: "Air Query Mobile App"),
-    );
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -84,7 +47,7 @@ class SettingsScreen extends ConsumerWidget {
               SettingsCard(
                 text: "Privacy Policy",
                 icon: Icon(Icons.privacy_tip_outlined),
-                onTap: _launchPrivacyPolicy,
+                onTap: AppExternalLaunchers.launchPrivacyPolicy,
               ),
               SizedBox(height: AppSizes.vLarge),
 
@@ -92,17 +55,17 @@ class SettingsScreen extends ConsumerWidget {
               SettingsCard(
                 text: "Email Support",
                 icon: Icon(Icons.email_outlined),
-                onTap: _launchAuthorEmail,
+                onTap: AppExternalLaunchers.launchAuthorEmail,
               ),
               SettingsCard(
                 text: "GitHub Repository",
                 icon: Icon(Icons.code),
-                onTap: _launchGithub,
+                onTap: AppExternalLaunchers.launchGithub,
               ),
               SettingsCard(
                 text: "Connect on Linkedin",
                 icon: Icon(Icons.handshake_outlined),
-                onTap: _launchAuthorLinkedin,
+                onTap: AppExternalLaunchers.launchAuthorLinkedin,
               ),
 
               // section 3
@@ -110,12 +73,12 @@ class SettingsScreen extends ConsumerWidget {
               SettingsCard(
                 text: "Rate on Play Store",
                 icon: Icon(Icons.star_rate_rounded),
-                onTap: _launchPlayStore,
+                onTap: AppExternalLaunchers.launchPlayStore,
               ),
               SettingsCard(
                 text: "Share App",
                 icon: Icon(Icons.share),
-                onTap: _shareApp,
+                onTap: AppExternalLaunchers.shareApp,
               ),
 
               // section 4

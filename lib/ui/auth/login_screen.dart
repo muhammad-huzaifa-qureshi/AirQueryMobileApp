@@ -1,7 +1,8 @@
-import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/core/constants/app_sizes.dart';
+import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
+import 'package:air_query/core/utils/app_external_launchers.dart';
 import 'package:air_query/core/utils/auth_validators.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
 import 'package:air_query/ui/auth/notifier/auth_notifier.dart';
@@ -21,7 +22,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _idController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
-  
+
   @override
   void dispose() {
     _idController.dispose();
@@ -55,7 +56,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     });
 
-    return Scaffold(body: _buildForm(context));
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: AppExternalLaunchers.launchAuthorEmail,
+            icon: Icon(Icons.headphones),
+            tooltip: "Email Support",
+          ),
+        ],
+      ),
+      body: _buildForm(context),
+    );
   }
 
   Widget _buildForm(BuildContext context) {

@@ -9,6 +9,8 @@ import 'package:air_query/ui/auth/notifier/auth_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/utils/app_external_launchers.dart';
+
 class VerifyEmailScreen extends ConsumerStatefulWidget {
   const VerifyEmailScreen({super.key});
 
@@ -33,17 +35,21 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
   }
 
   void _startCooldown() {
-    setState(() => _cooldownRemaining = BusinessConstants.resendCooldownSeconds);
+    setState(
+      () => _cooldownRemaining = BusinessConstants.resendCooldownSeconds,
+    );
 
     _cooldownTimer?.cancel();
     _cooldownTimer = Timer.periodic(
-        const Duration(seconds: BusinessConstants.timerTickSeconds), (timer) {
-      if (_cooldownRemaining > 0) {
-        setState(() => _cooldownRemaining-=2);
-      } else {
-        timer.cancel();
-      }
-    });
+      const Duration(seconds: BusinessConstants.timerTickSeconds),
+      (timer) {
+        if (_cooldownRemaining > 0) {
+          setState(() => _cooldownRemaining -= 2);
+        } else {
+          timer.cancel();
+        }
+      },
+    );
   }
 
   void _resendEmail() {
@@ -63,20 +69,28 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
         );
       }
       if (next is AsyncError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.error.toString())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(next.error.toString())));
       }
     });
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Verify Email")),
+      appBar: AppBar(
+        title: const Text("Verify Email"),
+        actions: [
+          IconButton(
+            onPressed: AppExternalLaunchers.launchAuthorEmail,
+            icon: Icon(Icons.headphones),
+            tooltip: "Email Support",
+          ),
+        ],
+      ),
       body: _buildBody(context),
     );
   }
 
   Widget _buildBody(BuildContext context) {
-
     return SafeArea(
       child: Center(
         child: SingleChildScrollView(
@@ -106,7 +120,10 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
               const SizedBox(height: AppSizes.small),
               Text(
                 "Please Check Your Spam Folder!",
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: .bold, color: AppColors.primary),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: .bold,
+                  color: AppColors.primary,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSizes.vLarge),
@@ -121,12 +138,14 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       CTAButton(
-                        text: isLoading ? "Checking..." : "I've Verified My Email",
+                        text: isLoading
+                            ? "Checking..."
+                            : "I've Verified My Email",
                         onPressed: isLoading
                             ? null
                             : () => ref
-                                .read(authProvider.notifier)
-                                .checkEmailVerification(),
+                                  .read(authProvider.notifier)
+                                  .checkEmailVerification(),
                       ),
                       const SizedBox(height: AppSizes.medium),
                       CTAButton(

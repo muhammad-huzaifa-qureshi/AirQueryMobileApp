@@ -1,11 +1,14 @@
 import 'dart:async';
-import 'package:air_query/core/constants/business_constants.dart';
+
 import 'package:air_query/core/constants/app_sizes.dart';
+import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/core/utils/auth_validators.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
 import 'package:air_query/ui/auth/notifier/auth_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../core/utils/app_external_launchers.dart';
 
 class ForgotPasswordScreen extends ConsumerStatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -70,7 +73,16 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     });
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Forgot Password")),
+      appBar: AppBar(
+        title: const Text("Forgot Password"),
+        actions: [
+          IconButton(
+            onPressed: AppExternalLaunchers.launchAuthorEmail,
+            icon: Icon(Icons.headphones),
+            tooltip: "Email Support",
+          ),
+        ],
+      ),
       body: _buildBody(context),
     );
   }

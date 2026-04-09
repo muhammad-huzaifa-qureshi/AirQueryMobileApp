@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../core/utils/app_external_launchers.dart';
+
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
 
@@ -49,7 +51,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     });
 
     return Scaffold(
-      appBar: AppBar(title: Text("Register")),
+      appBar: AppBar(
+        title: Text("Register"),
+        actions: [
+          IconButton(
+            onPressed: AppExternalLaunchers.launchAuthorEmail,
+            icon: Icon(Icons.headphones),
+            tooltip: "Email Support",
+          ),
+        ],
+      ),
       body: _buildForm(context),
     );
   }
