@@ -12,12 +12,11 @@ export const onResponseCreated = onDocumentCreated(
     const posterName = data.postedBy?.name as string;
     const queryId = event.params.queryId;
     const mentionedUid = data.mentionedUid as string | undefined;
-    const mentionedName = data.mentionedName as string | undefined;
 
     const db = admin.firestore();
 
     try {
-      // Extra read to get query owner
+      // to get query owner
       const querySnap = await db
         .collection("queries")
         .doc(queryId)
@@ -27,34 +26,32 @@ export const onResponseCreated = onDocumentCreated(
 
       const queryOwnerUid = querySnap.data()?.postedBy?.uid as string;
 
-      // Don't notify if owner is the one responding
-      if (!queryOwnerUid || queryOwnerUid === posterUid) return;
+      // Notify owner if someone else responded
+      if (queryOwnerUid && queryOwnerUid !== posterUid) {
+        const ownerTokenSnap = await db
+          .collection("users")
+          .doc(queryOwnerUid)
+          .collection("private")
+          .doc("fcmToken")
+          .get();
 
-      const ownerTokenSnap = await db
-        .collection("users")
-        .doc(queryOwnerUid)
-        .collection("private")
-        .doc("fcmToken")
-        .get();
+        const ownerToken = ownerTokenSnap.data()?.token as string | undefined;
+        if (ownerToken) {
+          await admin.messaging().send({
+            token: ownerToken,
+            notification: {
+              title: "New Response",
+              body: `${posterName} replied to your query.`,
+            },
+            data: {type: "new_response", queryId},
+          });
+        }
+      }
 
-      const ownerToken = ownerTokenSnap.data()?.token as string | undefined;
-      if (!ownerToken) return;
-
-      await admin.messaging().send({
-        token: ownerToken,
-        notification: {
-          title: "New Response",
-          body: `${posterName} replied to your query.`,
-        },
-        data: {
-          type: "new_response",
-          queryId,
-        },
-      });
-
-      // Notify mentioned user if different from poster and query owner
+      // Notify mentioned user:
+      // skip if they're the query owner
+      // (they get response notification instead)
       if (mentionedUid &&
-        mentionedName &&
         mentionedUid !== posterUid &&
         mentionedUid !== queryOwnerUid) {
         const mentionTokenSnap = await db
@@ -63,8 +60,9 @@ export const onResponseCreated = onDocumentCreated(
           .collection("private")
           .doc("fcmToken")
           .get();
-        const mentionToken =
-          mentionTokenSnap.data()?.token as string | undefined;
+
+        const mentionToken = mentionTokenSnap.data()
+          ?.token as string | undefined;
         if (mentionToken) {
           await admin.messaging().send({
             token: mentionToken,
@@ -72,10 +70,7 @@ export const onResponseCreated = onDocumentCreated(
               title: "You were mentioned",
               body: `${posterName} mentioned you in a response.`,
             },
-            data: {
-              type: "mention",
-              queryId,
-            },
+            data: {type: "mention", queryId},
           });
         }
       }
