@@ -39,7 +39,7 @@ An **unofficial** mobile app for Air University students to post and answer camp
 - `campus`: String
 - `semester`: String
 - `queriesPosted`: Int
-- `queriesAnswered`: Int
+- `responsesPosted`: Int
 - `queriesResolved`: Int
 - `profileComplete`: Bool
 

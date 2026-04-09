@@ -63,7 +63,7 @@ export const updateProfile = onCall(
         campus: "",
         semester: "",
         queriesPosted: 0,
-        queriesAnswered: 0,
+        responsesPosted: 0,
         queriesResolved: 0,
         profileComplete: false,
       });
