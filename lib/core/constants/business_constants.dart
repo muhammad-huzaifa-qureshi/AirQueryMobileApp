@@ -9,7 +9,7 @@ class BusinessConstants {
   static const String devEmail = "mailto:muhammadhuzaifaqureshi01@gmail.com";
   static const String appPlayStoreLink =
       "https://play.google.com/store/apps/details?id=com.hqapplications.airuniversity.airquery";
-  static const String devUid = "6q6T8KShaKZhrOeqN2o0nOGRdYL2";
+  static const String devUid = "taqpDnlMfiX4P5E6xIAuZKemEGm1";
 
   // password policy
   static const minPassChars = 8;

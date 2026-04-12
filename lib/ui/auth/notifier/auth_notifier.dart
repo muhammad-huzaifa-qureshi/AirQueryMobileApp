@@ -2,6 +2,7 @@ import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/ui/auth/notifier/auth_status.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../repositories/auth/auth_repository.dart';
 import '../../../services/fcm_service.dart';
 
@@ -17,18 +18,29 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
     _authRepository = AuthRepository();
 
     final user = _authRepository.currentUser;
-
     if (user == null) return AuthStatus.unauthenticated;
 
+    // Verified: skip network call entirely, Firebase handles token refresh automatically
+    if (user.emailVerified) return AuthStatus.authenticated;
+
+    // Unverified: check if they verified since last session
     try {
       await user.reload();
     } on FirebaseException catch (e) {
       throw e.message ?? 'An error occurred, please try again!';
     }
 
-    return user.emailVerified
-        ? AuthStatus.authenticated
-        : AuthStatus.emailNotVerified;
+    final refreshedUser = _authRepository.currentUser;
+    if (refreshedUser == null) return AuthStatus.unauthenticated;
+
+    if (refreshedUser.emailVerified) {
+      await refreshedUser.getIdToken(
+        true,
+      ); // force refresh JWT for cloud functions
+      return AuthStatus.authenticated;
+    }
+
+    return AuthStatus.emailNotVerified;
   }
 
   Future<void> login({required String id, required String password}) async {
@@ -175,6 +187,7 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
 
       // If already verified, no need to resend
       if (user.emailVerified) {
+        FcmService().init();
         state = const AsyncData(AuthStatus.authenticated);
         return;
       }
