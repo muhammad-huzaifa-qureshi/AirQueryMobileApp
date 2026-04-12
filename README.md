@@ -81,8 +81,7 @@ An **unofficial** mobile app for Air University students to post and answer camp
 - Query reporting system
 - Skeleton loading (shimmer effect) on home feed
 - Fix navigation issue when opening responses from notifications (missing back option)
-- Image attachments for queries and responses 
-- Reduced splash screen latency
+- Image attachments for queries and responses
 - Firebase Crashlytics integration for crash monitoring
 - Dedicated notifications tab
 - Home feed filters (date, response count, etc.)
