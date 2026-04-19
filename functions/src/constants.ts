@@ -14,7 +14,7 @@ export class Constants {
 
   // query len
   static readonly minQueryLen = 10;
-  static readonly maxQueryLen = 500;
+  static readonly maxQueryLen = 2000;
 
   // response len
   static readonly minRespLen = 1;
@@ -25,6 +25,6 @@ export class Constants {
   static readonly profileUpdateCooldownMS =
     this.profileUpdateCooldownDays * 24 * 60 * 60 * 1000;
 
-  static readonly maxQueriesPerDayPerUser = 2;
+  static readonly maxQueriesPerDayPerUser = 1;
   static readonly maxResponsesPerDayPerUser = 50;
 }

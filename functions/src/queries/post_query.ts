@@ -69,10 +69,11 @@ export const postQuery = onCall(
     const currentCount = isSameDay ? dailyCount : 0;
 
     if (currentCount >= Constants.maxQueriesPerDayPerUser) {
+        const max = Constants.maxQueriesPerDayPerUser
       throw new HttpsError(
         "resource-exhausted",
-        `You have already posted ${Constants.maxQueriesPerDayPerUser} ` +
-        "queries today. Please try again tomorrow."
+        `You have already posted ${max} ` +
+        `${max === 1? "query" : "queries"} today. Try again tomorrow.`
       );
     }
 

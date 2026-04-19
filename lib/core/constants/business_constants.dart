@@ -26,7 +26,7 @@ class BusinessConstants {
 
   // query len
   static const minQueryLen = 10;
-  static const maxQueryLen = 500;
+  static const maxQueryLen = 2000;
 
   // response len
   static const minResponseLen = 1;
@@ -34,7 +34,7 @@ class BusinessConstants {
 
   // rate limiting
   static const profileUpdateCooldownDays = 2;
-  static const maxQueriesPerDayPerUser = 2;
+  static const maxQueriesPerDayPerUser = 1;
   static const maxResponsesPerDayPerUser = 50;
 
   // pagination (keep them n sync with FIREBASE RULES)
