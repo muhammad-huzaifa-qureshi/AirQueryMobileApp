@@ -10,7 +10,7 @@ export class Constants {
     "Kharian Campus",
     "Karachi Campus",
     "Bahu Campus",
-    "Attock Campus"
+    "Attock Campus",
   ];
 
   // query len
