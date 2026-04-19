@@ -1,13 +1,10 @@
 import 'package:air_query/core/constants/business_constants.dart';
 
 class AuthValidators {
-  /// To check if the ID is only numeric and non-empty
+  /// To check if the ID is non-empty
   static String? validateAuId(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return "Air University ID is required";
-    }
-    if (!RegExp(r'^\d+$').hasMatch(value.trim())) {
-      return "Enter a valid Air University ID";
+      return "Air University email is required";
     }
     return null;
   }

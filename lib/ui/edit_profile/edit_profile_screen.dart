@@ -126,6 +126,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 textAlign: .center,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
+              SizedBox(height: AppSizes.medium,),
+              Text(
+                "In case of non-availability of your campus, contact admin support (email/linkedin info provided in settings)",
+                textAlign: .center,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
 
               const SizedBox(height: AppSizes.medium),
 

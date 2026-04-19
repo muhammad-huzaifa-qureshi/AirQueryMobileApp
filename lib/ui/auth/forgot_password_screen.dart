@@ -117,13 +117,13 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                 key: _formKey,
                 child: TextFormField(
                   controller: _idController,
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.done,
                   decoration: const InputDecoration(
                     labelText: "AU Email",
-                    hintText: "eg: 000000",
+                    hintText: "eg: 000000@students",
                     prefixIcon: Icon(Icons.email_outlined),
-                    suffixText: BusinessConstants.auEmailDomain,
+                    suffixText: BusinessConstants.auEmailDomainExtension,
                   ),
                   validator: AuthValidators.validateAuId,
                 ),

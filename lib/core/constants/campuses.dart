@@ -8,5 +8,6 @@ class Campuses {
     "Kharian Campus",
     "Karachi Campus",
     "Bahu Campus",
+    "Attock Campus"
   ];
 }

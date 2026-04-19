@@ -17,7 +17,7 @@ class BusinessConstants {
 
   // authentication
   static const resendCooldownSeconds = 60;
-  static const auEmailDomain = '@students.au.edu.pk';
+  static const auEmailDomainExtension = '.au.edu.pk';
   static const timerTickSeconds = 2;
 
   // user full name

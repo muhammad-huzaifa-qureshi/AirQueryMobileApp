@@ -98,13 +98,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 // id field
                 TextFormField(
                   controller: _idController,
-                  keyboardType: .number,
+                  keyboardType: .emailAddress,
                   textInputAction: .next,
                   decoration: const InputDecoration(
                     labelText: "AU Email",
-                    hintText: "eg: 000000",
+                    hintText: "eg: 000000@students",
                     prefixIcon: Icon(Icons.email_outlined),
-                    suffixText: BusinessConstants.auEmailDomain,
+                    suffixText: BusinessConstants.auEmailDomainExtension,
                   ),
                   validator: AuthValidators.validateAuId,
                 ),

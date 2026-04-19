@@ -48,7 +48,7 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
 
     try {
       final user = await _authRepository.login(
-        email: "$id${BusinessConstants.auEmailDomain}",
+        email: "$id${BusinessConstants.auEmailDomainExtension}",
         password: password,
       );
 
@@ -89,7 +89,7 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
 
     try {
       final user = await _authRepository.register(
-        email: "$id${BusinessConstants.auEmailDomain}",
+        email: "$id${BusinessConstants.auEmailDomainExtension}",
         password: password,
       );
 
@@ -125,7 +125,7 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
 
     try {
       await _authRepository.sendPasswordResetEmail(
-        email: "$id${BusinessConstants.auEmailDomain}",
+        email: "$id${BusinessConstants.auEmailDomainExtension}",
       );
       state = AsyncData(state.value ?? AuthStatus.unauthenticated);
     } on FirebaseException catch (e) {
