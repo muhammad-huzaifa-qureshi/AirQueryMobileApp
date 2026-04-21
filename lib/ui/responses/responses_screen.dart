@@ -281,7 +281,7 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
                   Expanded(
                     child: TextField(
                       controller: _responseController,
-                      textInputAction: TextInputAction.send,
+                      textInputAction: TextInputAction.newline,
                       onSubmitted: (_) => _onPost(),
                       maxLength: BusinessConstants.maxResponseLen,
                       decoration: const InputDecoration(
