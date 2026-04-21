@@ -12,6 +12,9 @@ export class Constants {
     "Bahu Campus",
   ];
 
+  // image size
+  static readonly maxQueryImageSizeMB = 5;
+
   // query len
   static readonly minQueryLen = 10;
   static readonly maxQueryLen = 2000;

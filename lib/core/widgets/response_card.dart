@@ -54,10 +54,13 @@ class ResponseCard extends ConsumerWidget {
                       ),
                       if (response.postedByUid == BusinessConstants.devUid) ...[
                         const SizedBox(width: AppSizes.vSmall),
-                        Icon(
-                          Icons.verified,
-                          size: AppSizes.smallIcon,
-                          color: AppColors.primary,
+                        Tooltip(
+                          message: "Founder",
+                          child: Icon(
+                            Icons.verified_user_rounded,
+                            size: AppSizes.smallIcon,
+                            color: AppColors.primary,
+                          ),
                         ),
                       ],
                     ],

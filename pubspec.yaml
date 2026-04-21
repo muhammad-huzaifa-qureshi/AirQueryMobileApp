@@ -4,7 +4,7 @@ description: "Air Query is an unofficial platform designed specifically for Air 
 publish_to: 'none'
 
 # keep constants' version in sync with this
-version: 2.7.1+16
+version: 2.8.0+17
 
 environment:
   sdk: ^3.10.8
@@ -28,6 +28,8 @@ dependencies:
   in_app_update: ^4.2.5 # app update
   share_plus: ^12.0.1 # sharing content via share dialog
   flutter_linkify: ^6.0.0
+  image_picker: ^1.2.1
+  cached_network_image: ^3.4.1
 
   #Firebase
   firebase_core: ^4.4.0
@@ -37,6 +39,7 @@ dependencies:
   firebase_app_check: ^0.4.1+5
   firebase_analytics: ^12.1.3
   cloud_firestore: ^6.1.3
+  firebase_storage: ^13.3.0
 
 dev_dependencies:
   flutter_test:

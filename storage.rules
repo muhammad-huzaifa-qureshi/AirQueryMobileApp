@@ -1,0 +1,21 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAuthed() {
+      return request.auth != null
+          && request.auth.token.email_verified == true;
+    }
+
+    // Block everything by default
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+
+    match /queries/{uid}/{fileName} {
+      allow read: if isAuthed();
+      allow write: if false;
+      allow delete: if false;
+    }
+  }
+}

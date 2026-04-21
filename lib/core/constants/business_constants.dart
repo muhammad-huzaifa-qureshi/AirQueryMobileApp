@@ -1,4 +1,7 @@
 class BusinessConstants {
+  // version
+  static const appCurrentVersion = "2.8.0 (17)";
+
   // Links
   static const String githubRepoLink =
       "https://github.com/muhammad-huzaifa-qureshi/AirQueryMobileApp";
@@ -41,6 +44,8 @@ class BusinessConstants {
   static const queryFetchLimit = 10;
   static const responseFetchLimit = 10;
 
-  // version
-  static const appCurrentVersion = "2.7.1+16";
+  // query image uploading
+  static const maxQueryImageSizeMB = 5;
+  static const maxQueryImageWidth = 1024.00;
+  static const queryImageQuality = 70;
 }

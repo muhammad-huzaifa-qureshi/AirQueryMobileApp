@@ -5,6 +5,8 @@ import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/utils/format_time.dart';
 import 'package:air_query/core/widgets/confirm_dialog.dart';
 import 'package:air_query/ui/other_user_profile/show_user_profile_card.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -83,13 +85,15 @@ class QueryCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        if (query.postedByUid ==
-                            BusinessConstants.devUid) ...[
+                        if (query.postedByUid == BusinessConstants.devUid) ...[
                           const SizedBox(width: AppSizes.small),
-                          Icon(
-                            Icons.verified,
-                            size: AppSizes.mediumIcon,
-                            color: queryColor,
+                          Tooltip(
+                            message: "Founder",
+                            child: Icon(
+                              Icons.verified_user_rounded,
+                              size: AppSizes.mediumIcon,
+                              color: queryColor,
+                            ),
                           ),
                         ],
                       ],
@@ -127,6 +131,11 @@ class QueryCard extends StatelessWidget {
                 await launchUrl(uri, mode: LaunchMode.externalApplication);
               },
             ),
+
+            if (query.imagePath != null) ...[
+              const SizedBox(height: AppSizes.medium),
+              _QueryImage(imagePath: query.imagePath!),
+            ],
 
             const SizedBox(height: AppSizes.medium),
 
@@ -225,6 +234,80 @@ class QueryCard extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _QueryImage extends StatefulWidget {
+  final String imagePath;
+
+  const _QueryImage({required this.imagePath});
+
+  @override
+  State<_QueryImage> createState() => _QueryImageState();
+}
+
+class _QueryImageState extends State<_QueryImage> {
+  String? _url;
+  bool _error = false;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUrl();
+  }
+
+  Future<void> _loadUrl() async {
+    try {
+      final url = await FirebaseStorage.instance
+          .ref(widget.imagePath)
+          .getDownloadURL();
+      if (mounted) {
+        setState(() {
+          _url = url;
+          _loading = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _error = true;
+          _loading = false;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_error) return const SizedBox.shrink();
+
+    if (_loading) {
+      return const SizedBox(
+        height: AppSizes.heroIcon,
+        child: Center(
+          child: CircularProgressIndicator(strokeWidth: AppSizes.minute),
+        ),
+      );
+    }
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(AppSizes.medium),
+      child: CachedNetworkImage(
+        imageUrl: _url!,
+        width: .infinity,
+        fit: .cover,
+        // while image bytes load
+        placeholder: (_, _) => const SizedBox(
+          height: AppSizes.heroIcon,
+          child: Center(
+            child: CircularProgressIndicator(strokeWidth: AppSizes.minute),
+          ),
+        ),
+        // if image URL is valid but bytes fail
+        errorWidget: (_, _, _) => const SizedBox.shrink(),
+      ),
     );
   }
 }

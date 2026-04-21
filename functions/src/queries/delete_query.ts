@@ -42,6 +42,19 @@ export const deleteQuery = onCall(
       );
     }
 
+    // Delete image from Storage if present
+    const imagePath = querySnap.data()?.imagePath;
+    if (imagePath) {
+      try {
+        await admin.storage()
+          .bucket()
+          .file(imagePath)
+          .delete();
+      } catch (e) {
+        console.warn("Image delete failed:", e);
+      }
+    }
+
     // Delete all responses first (outside transaction — too many ops)
     const responsesSnap = await queryRef.collection("responses").get();
     await batchDelete(db, responsesSnap.docs);

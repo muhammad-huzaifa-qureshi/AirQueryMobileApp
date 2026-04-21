@@ -83,11 +83,13 @@ class QueriesRepository {
   Future<void> postQuery({
     required String description,
     required bool postToAllCampuses,
+    String? base64Image,
   }) async {
     final callable = _functions.httpsCallable('postQuery');
     await callable.call({
       'description': description,
       'postToAll': postToAllCampuses,
+      'base64Image': ?base64Image,
     });
   }
 

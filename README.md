@@ -9,15 +9,6 @@ An **unofficial** mobile app for Air University students to post and answer camp
 
 [![Delete Account](https://img.shields.io/badge/Account-Data%20Deletion-DC2626?style=for-the-badge&logo=trash&logoColor=white)](https://forms.gle/DmUXGR4ZAqZQ9szJA)
 
-# Table of Contents
-- [Tech Stack](#tech-stack)
-- [Firebase Services Used](#firebase-services-used)
-- [Firestore Structure](#firestore-structure)
-- [What's Coming Next](#whats-coming-next)
-- [Contributing & Local Setup](#contributing--local-setup)
-- [Disclaimer](#disclaimer)
-- [Contact](#contact)
-
 # Tech Stack
 - Flutter
 - Riverpod (for State Management)
@@ -31,6 +22,7 @@ An **unofficial** mobile app for Air University students to post and answer camp
 - Analytics
 - App Check
 - Cloud Messaging (FCM)
+- Storage
 
 # Firestore Structure
 
@@ -60,6 +52,7 @@ An **unofficial** mobile app for Air University students to post and answer camp
 - `postedAt`: Timestamp
 - `responseCount`: Int
 - `isResolved`: bool
+- `imagePath`: String | null
 
 ## `queries/{queryId}/responses/{responseId}`
 - `description`: String
@@ -81,7 +74,6 @@ An **unofficial** mobile app for Air University students to post and answer camp
 - Query reporting system
 - Skeleton loading (shimmer effect) on home feed
 - Fix navigation issue when opening responses from notifications (missing back option)
-- Image attachments for queries and responses
 - Firebase Crashlytics integration for crash monitoring
 - Dedicated notifications tab
 - Home feed filters (date, response count, etc.)
@@ -120,7 +112,13 @@ Deploy the included rules and indexes:
 firebase deploy --only firestore:rules,firestore:indexes
 ```
 
-## 4. Cloud Functions
+## 4. Storage Rules
+Deploy the included rules:
+```bash
+firebase deploy --only storage
+```
+
+## 5. Cloud Functions
 ```bash
 cd functions
 npm install
@@ -128,10 +126,10 @@ npm run build
 firebase deploy --only functions
 ```
 
-## 5. App Check
+## 6. App Check
 Enable App Check in Firebase Console with **Play Integrity** (Android). For development, register your debug token under App Check → Apps → Manage debug tokens.
 
-## 6. Run
+## 7. Run
 ```bash
 flutter run
 ```

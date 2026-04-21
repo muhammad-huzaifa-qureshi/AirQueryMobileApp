@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/core/theme/app_colors.dart';
@@ -7,6 +9,7 @@ import 'package:air_query/ui/my_queries/notifier/my_queries_notifier.dart';
 import 'package:air_query/ui/post_query/notifier/post_query_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PostQueryScreen extends ConsumerStatefulWidget {
   const PostQueryScreen({super.key});
@@ -18,11 +21,22 @@ class PostQueryScreen extends ConsumerStatefulWidget {
 class _PostQueryScreenState extends ConsumerState<PostQueryScreen> {
   final _descriptionController = TextEditingController();
   bool _postToAll = false;
+  File? _pickedImage;
+  final _picker = ImagePicker();
 
   @override
   void dispose() {
     _descriptionController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickImage() async {
+    final picked = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: BusinessConstants.queryImageQuality,
+      maxWidth: BusinessConstants.maxQueryImageWidth,
+    );
+    if (picked != null) setState(() => _pickedImage = File(picked.path));
   }
 
   @override
@@ -74,6 +88,56 @@ class _PostQueryScreenState extends ConsumerState<PostQueryScreen> {
               ),
 
               const SizedBox(height: AppSizes.medium),
+
+              // Image picker
+              Row(
+                mainAxisAlignment: .center,
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: _pickImage,
+                      icon: Icon(
+                        Icons.image_outlined,
+                        color: AppColors.whitish,
+                      ),
+                      label: Text(
+                        _pickedImage == null ? "Attach Image (Max. ${BusinessConstants.maxQueryImageSizeMB}MB)" : "Replace",
+                        style: TextStyle(color: AppColors.whitish),
+                      ),
+                    ),
+                  ),
+                  if (_pickedImage != null) ...[
+                    const SizedBox(width: AppSizes.small),
+                    Stack(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(AppSizes.small),
+                          child: Image.file(
+                            _pickedImage!,
+                            height: 50,
+                            width: 50,
+                            fit: .cover,
+                          ),
+                        ),
+                        Positioned(
+                          top: -15,
+                          right: -15,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.cancel,
+                              size: AppSizes.mediumIcon,
+                              color: AppColors.error,
+                            ),
+                            onPressed: () =>
+                                setState(() => _pickedImage = null),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ],
+              ),
+              SizedBox(height: AppSizes.small,),
 
               // Post to all campuses checkbox
               CheckboxListTile(
@@ -138,8 +202,17 @@ class _PostQueryScreenState extends ConsumerState<PostQueryScreen> {
       return;
     }
 
+    String? base64Image;
+    if (_pickedImage != null) {
+      base64Image = base64Encode(_pickedImage!.readAsBytesSync());
+    }
+
     ref
         .read(postQueryProvider.notifier)
-        .postQuery(description: description, postToAllCampuses: _postToAll);
+        .postQuery(
+          description: description,
+          postToAllCampuses: _postToAll,
+          base64Image: base64Image,
+        );
   }
 }
