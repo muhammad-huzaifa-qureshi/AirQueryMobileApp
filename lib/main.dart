@@ -20,7 +20,7 @@ void main() async {
     // change to "AndroidDebugProvider()" in debug mode
     // copy the debug token (from logs)
     // paste in firebase (App Check  -> debug tokens)
-    providerAndroid: AndroidDebugProvider(),
+    providerAndroid: AndroidPlayIntegrityProvider(),
   );
 
   runApp(ProviderScope(child: const AirQuery()));
