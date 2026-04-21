@@ -282,7 +282,7 @@ class _QueryDetailScreenState extends ConsumerState<ResponsesScreen> {
                     child: TextField(
                       controller: _responseController,
                       textInputAction: TextInputAction.newline,
-                      onSubmitted: (_) => _onPost(),
+                      maxLines: null,
                       maxLength: BusinessConstants.maxResponseLen,
                       decoration: const InputDecoration(
                         hintText: "Write a response...",
