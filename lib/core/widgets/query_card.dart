@@ -13,7 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../models/query_model.dart';
 import '../theme/query_colors.dart';
 
-enum _QueryAction { delete, resolve }
+enum _QueryAction { delete, resolve, report }
 
 class QueryCard extends StatelessWidget {
   final QueryModel query;
@@ -22,6 +22,7 @@ class QueryCard extends StatelessWidget {
 
   final VoidCallback? onDelete;
   final VoidCallback? onResolve;
+  final VoidCallback? onReport;
 
   const QueryCard({
     super.key,
@@ -30,6 +31,7 @@ class QueryCard extends StatelessWidget {
     required this.colorIndex,
     this.onDelete,
     this.onResolve,
+    this.onReport,
   });
 
   @override
@@ -158,7 +160,13 @@ class QueryCard extends StatelessWidget {
                   icon: const Icon(Icons.comment),
                   tooltip: "Responses",
                 ),
-                if (isOwnQuery) ...[const Spacer(), _buildMenu(context)],
+                if (isOwnQuery) ...[
+                  const Spacer(),
+                  _buildMenu(context),
+                ] else ...[
+                  const Spacer(),
+                  _buildGuestMenu(context),
+                ],
               ],
             ),
           ],
@@ -230,6 +238,41 @@ class QueryCard extends StatelessWidget {
               ),
               SizedBox(width: AppSizes.vSmall),
               Text("Delete", style: TextStyle(color: AppColors.error)),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGuestMenu(BuildContext context) {
+    return PopupMenuButton<_QueryAction>(
+      color: AppColors.blackish,
+      icon: Icon(Icons.more_horiz, color: AppColors.whitish),
+      tooltip: "Menu",
+      onSelected: (action) async {
+        if (action == _QueryAction.report) {
+          final confirmed = await ConfirmDialog.show(
+            context,
+            content: 'Report this query as inappropriate or spam?',
+            cancelColor: AppColors.primary,
+            confirmColor: AppColors.error,
+          );
+          if (confirmed) onReport?.call();
+        }
+      },
+      itemBuilder: (_) => [
+        PopupMenuItem(
+          value: _QueryAction.report,
+          child: Row(
+            children: [
+              Icon(
+                Icons.flag_outlined,
+                color: AppColors.error,
+                size: AppSizes.mediumIcon,
+              ),
+              SizedBox(width: AppSizes.vSmall),
+              Text("Report", style: TextStyle(color: AppColors.error)),
             ],
           ),
         ),

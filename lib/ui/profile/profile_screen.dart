@@ -25,7 +25,16 @@ class ProfileScreen extends ConsumerWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(title: Text("My Profile")),
+      appBar: AppBar(
+        title: Text("My Profile"),
+        actions: [
+          IconButton(
+            onPressed: () => Navigator.pushNamed(context, AppRoutes.settings),
+            icon: const Icon(Icons.settings),
+            tooltip: "Settings",
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Consumer(
           builder: (context, ref, child) {
@@ -198,15 +207,24 @@ class ProfileScreen extends ConsumerWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: StatBox(label: "Lifetime Queries", value: user.queriesPosted),
+                  child: StatBox(
+                    label: "Lifetime Queries",
+                    value: user.queriesPosted,
+                  ),
                 ),
                 const SizedBox(width: AppSizes.medium),
                 Expanded(
-                  child: StatBox(label: "Lifetime Responses", value: user.responsesPosted),
+                  child: StatBox(
+                    label: "Lifetime Responses",
+                    value: user.responsesPosted,
+                  ),
                 ),
                 const SizedBox(width: AppSizes.medium),
                 Expanded(
-                  child: StatBox(label: "Queries Resolved", value: user.queriesResolved),
+                  child: StatBox(
+                    label: "Queries Resolved",
+                    value: user.queriesResolved,
+                  ),
                 ),
               ],
             ),

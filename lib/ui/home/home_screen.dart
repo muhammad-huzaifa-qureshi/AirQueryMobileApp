@@ -1,8 +1,8 @@
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
-import 'package:air_query/ui/home/notifier/home_notifier.dart';
 import 'package:air_query/core/widgets/query_card.dart';
+import 'package:air_query/ui/home/notifier/home_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,6 +11,7 @@ class HomeScreen extends ConsumerStatefulWidget {
   // for supporting the feature:
   // on "Bottom NavBar Home click -> scrolls to top"
   final ScrollController scrollController;
+
   const HomeScreen({super.key, required this.scrollController});
 
   @override
@@ -174,6 +175,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 onResolve: query.postedByUid == _currentUId
                     ? () =>
                           ref.read(homeProvider.notifier).resolveQuery(query.id)
+                    : null,
+                onReport: query.postedByUid != _currentUId
+                    ? () =>
+                          ref.read(homeProvider.notifier).reportQuery(query)
                     : null,
               );
             },

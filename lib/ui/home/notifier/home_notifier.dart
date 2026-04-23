@@ -1,4 +1,5 @@
 import 'package:air_query/core/constants/business_constants.dart';
+import 'package:air_query/models/query_model.dart';
 import 'package:air_query/repositories/auth/auth_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -100,6 +101,17 @@ class HomeNotifier extends Notifier<HomeQueriesState> {
         queries: state.queries.where((q) => q.id != queryId).toList(),
         clearError: true,
       );
+    } catch (e) {
+      final message = e is FirebaseException
+          ? e.message ?? 'Something went wrong.'
+          : 'Something went wrong.';
+      state = state.copyWith(error: message);
+    }
+  }
+
+  Future<void> reportQuery(QueryModel query) async {
+    try {
+      await _repository.reportQuery(query: query);
     } catch (e) {
       final message = e is FirebaseException
           ? e.message ?? 'Something went wrong.'

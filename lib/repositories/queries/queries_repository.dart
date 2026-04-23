@@ -138,4 +138,21 @@ class QueriesRepository {
       );
     }).toList();
   }
+
+  Future<void> reportQuery({required QueryModel query}) async {
+    final uid = AuthRepository().currentUser?.uid;
+    if (uid == null) {
+      throw FirebaseAuthException(
+        code: 'unauthenticated',
+        message: 'Please login to continue',
+      );
+    }
+
+    await _firestore.collection('reportedQueries').doc('${query.id}_$uid').set({
+      'queryId': query.id,
+      'queryDescription': query.description,
+      'reportedBy': uid,
+      'reportedAt': FieldValue.serverTimestamp(),
+    });
+  }
 }

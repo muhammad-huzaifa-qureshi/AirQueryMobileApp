@@ -1,6 +1,6 @@
 class BusinessConstants {
   // version
-  static const appCurrentVersion = "2.8.0 (17)";
+  static const appCurrentVersion = "2.9.0";
 
   // Links
   static const String githubRepoLink =
