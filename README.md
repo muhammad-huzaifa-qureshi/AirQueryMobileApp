@@ -92,7 +92,6 @@ Document ID is `{queryId}_{uid}` — prevents duplicate reports from the same us
 
 # What’s Coming Next
 
-- Query reporting system
 - Skeleton loading (shimmer effect) on home feed
 - Fix navigation issue when opening responses from notifications (missing back option)
 - Firebase Crashlytics integration for crash monitoring
