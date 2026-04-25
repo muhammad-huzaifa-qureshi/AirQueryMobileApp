@@ -61,6 +61,7 @@ in a smart and organized way.
 - `responseCount`: Int
 - `isResolved`: bool
 - `imagePath`: String | null
+- `expiresAt`: Timestamp | null (set, when resolved)
 
 ## `queries/{queryId}/responses/{responseId}`
 
@@ -137,6 +138,10 @@ Deploy the included rules and indexes:
 ```bash
 firebase deploy --only firestore:rules,firestore:indexes
 ```
+
+### TTL Policy
+
+- Collection: queries, Timestamp Field: `expiresAt`
 
 ## 4. Storage Rules
 

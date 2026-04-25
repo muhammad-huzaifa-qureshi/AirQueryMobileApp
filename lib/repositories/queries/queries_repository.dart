@@ -52,7 +52,6 @@ class QueriesRepository {
     Query query = _firestore
         .collection('queries')
         .where('campus', whereIn: [campus, 'All'])
-        .where('isResolved', isEqualTo: false)
         .orderBy('postedAt', descending: true)
         .limit(BusinessConstants.queryFetchLimit);
 

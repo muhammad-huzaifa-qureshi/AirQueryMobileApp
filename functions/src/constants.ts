@@ -30,4 +30,7 @@ export class Constants {
 
   static readonly maxQueriesPerDayPerUser = 1;
   static readonly maxResponsesPerDayPerUser = 50;
+
+  // query expiry
+  static readonly resolvedQueryTTLDays = 7;
 }

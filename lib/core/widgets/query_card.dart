@@ -119,6 +119,26 @@ class QueryCard extends StatelessWidget {
               ).textTheme.labelSmall?.copyWith(color: queryColor),
             ),
 
+            if (query.isResolved) ...[
+              const SizedBox(height: AppSizes.vSmall),
+              Row(
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    color: queryColor,
+                    size: AppSizes.smallIcon,
+                  ),
+                  const SizedBox(width: AppSizes.vSmall),
+                  Text(
+                    "Resolved",
+                    style: Theme.of(
+                      context,
+                    ).textTheme.labelSmall?.copyWith(color: queryColor),
+                  ),
+                ],
+              ),
+            ],
+
             const SizedBox(height: AppSizes.medium),
 
             // Description
@@ -193,7 +213,7 @@ class QueryCard extends StatelessWidget {
           final confirmed = await ConfirmDialog.show(
             context,
             content:
-                "Mark this query as resolved? It will be hidden from the public feed but remain visible in your queries.",
+                "It will be tagged as \"resolved\" and deleted after ${BusinessConstants.resolvedQueryTTLDays} days.",
             cancelColor: AppColors.primary,
             confirmColor: AppColors.error,
           );

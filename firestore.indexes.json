@@ -5,7 +5,6 @@
       "queryScope": "COLLECTION",
       "fields": [
         { "fieldPath": "campus", "order": "ASCENDING" },
-        { "fieldPath": "isResolved", "order": "ASCENDING" },
         { "fieldPath": "postedAt", "order": "DESCENDING" },
         { "fieldPath": "__name__", "order": "DESCENDING" }
       ]
@@ -21,6 +20,12 @@
     }
   ],
   "fieldOverrides": [
+    {
+      "collectionGroup": "queries",
+      "fieldPath": "expiresAt",
+      "ttl": true,
+      "indexes": []
+    },
     {
       "collectionGroup": "responses",
       "fieldPath": "postedBy.uid",

@@ -10,6 +10,7 @@ class QueryModel {
   final int responseCount;
   final bool isResolved;
   final String? imagePath;
+  final DateTime? expiresAt;
 
   QueryModel({
     required this.id,
@@ -21,6 +22,7 @@ class QueryModel {
     required this.responseCount,
     required this.isResolved,
     this.imagePath,
+    this.expiresAt
   });
 
   factory QueryModel.fromMap(Map<String, dynamic> map, String docId) {
@@ -35,6 +37,7 @@ class QueryModel {
       responseCount: int.parse(map['responseCount'].toString()),
       isResolved: map['isResolved'] ?? false,
       imagePath: map['imagePath'] as String?,
+      expiresAt: (map['postedAt'] as Timestamp).toDate(),
     );
   }
 
@@ -47,7 +50,8 @@ class QueryModel {
     DateTime? postedAt,
     int? responseCount,
     bool? isResolved,
-    String? imagePath
+    String? imagePath,
+    DateTime? expiresAt,
   }) {
     return QueryModel(
       id: id ?? this.id,
@@ -58,7 +62,8 @@ class QueryModel {
       postedAt: postedAt ?? this.postedAt,
       responseCount: responseCount ?? this.responseCount,
       isResolved: isResolved ?? this.isResolved,
-      imagePath: imagePath ?? this.imagePath
+      imagePath: imagePath ?? this.imagePath,
+      expiresAt: expiresAt ?? this.expiresAt,
     );
   }
 }

@@ -1,5 +1,6 @@
 import {onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
+import {Constants} from "../constants";
 
 /** Resolves a query — deletes it, its responses, and updates counters. */
 export const resolveQuery = onCall(
@@ -41,6 +42,9 @@ export const resolveQuery = onCall(
       );
     }
 
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + Constants.resolvedQueryTTLDays);
+
     // Atomically delete query + update counters
     const userRef = db.collection("users").doc(uid);
     const statsRef = db.collection("platformStats").doc("global");
@@ -51,7 +55,10 @@ export const resolveQuery = onCall(
         throw new HttpsError("not-found", "Query no longer exists.");
       }
 
-      tx.update(queryRef, {isResolved: true});
+      tx.update(queryRef, {
+        isResolved: true,
+        expiresAt: admin.firestore.Timestamp.fromDate(expiresAt),
+      });
       tx.update(userRef, {
         queriesResolved: admin.firestore.FieldValue.increment(1),
       });

@@ -1,6 +1,6 @@
 class BusinessConstants {
   // version
-  static const appCurrentVersion = "2.9.0";
+  static const appCurrentVersion = "2.10.0";
 
   // Links
   static const String githubRepoLink =
@@ -48,4 +48,7 @@ class BusinessConstants {
   static const maxQueryImageSizeMB = 5;
   static const maxQueryImageWidth = 1024.00;
   static const queryImageQuality = 70;
+
+  // query expiry
+  static const resolvedQueryTTLDays = 7;
 }
