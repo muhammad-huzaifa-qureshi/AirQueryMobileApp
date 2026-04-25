@@ -93,12 +93,9 @@ Document ID is `{queryId}_{uid}` — prevents duplicate reports from the same us
 
 # What’s Coming Next
 
-- Skeleton loading (shimmer effect) on home feed
 - Fix navigation issue when opening responses from notifications (missing back option)
-- Firebase Crashlytics integration for crash monitoring
+- Skeleton loading (shimmer effect) on home feed
 - Dedicated notifications tab
-- Home feed filters (date, response count, etc.)
-- Automatic query deletion after 30 days
 - Improved user experience and interaction flow
 - UI and visual design enhancements
 - Codebase refactoring for better maintainability
