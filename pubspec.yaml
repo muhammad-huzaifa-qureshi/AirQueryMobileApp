@@ -4,7 +4,7 @@ description: "Air Query is an unofficial platform designed specifically for Air 
 publish_to: 'none'
 
 # keep constants' version in sync with this
-version: 2.10.0+19
+version: 2.10.1+20
 
 environment:
   sdk: ^3.10.8
