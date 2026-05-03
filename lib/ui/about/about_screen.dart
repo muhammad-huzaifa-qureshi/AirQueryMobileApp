@@ -45,7 +45,7 @@ class AboutScreen extends StatelessWidget {
                     ),
                     SizedBox(height: AppSizes.small),
                     Text(
-                      'Air Query is an unofficial platform designed specifically for Air University students. It provides a focused space to post and answer campus-related questions, helping students navigate university life through peer-to-peer support.',
+                      "Air Query is an unofficial platform built for the Air University community including students, staff, alumni, and explorers. It offers a focused space to ask questions, share knowledge, discover opportunities, and connect through peer-to-peer support.",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     SizedBox(height: AppSizes.medium),

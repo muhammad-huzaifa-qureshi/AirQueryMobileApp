@@ -4,15 +4,6 @@
       "collectionGroup": "queries",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "campus", "order": "ASCENDING" },
-        { "fieldPath": "postedAt", "order": "DESCENDING" },
-        { "fieldPath": "__name__", "order": "DESCENDING" }
-      ]
-    },
-    {
-      "collectionGroup": "queries",
-      "queryScope": "COLLECTION",
-      "fields": [
         { "fieldPath": "postedBy.uid", "order": "ASCENDING" },
         { "fieldPath": "postedAt", "order": "DESCENDING" },
         { "fieldPath": "__name__", "order": "DESCENDING" }

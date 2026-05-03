@@ -3,9 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class QueryModel {
   final String id;
   final String description;
-  final String campus;
   final String postedByUid;
   final String postedByName;
+  final bool postedByIsInsider;
+  final bool postedByIsPremium;
   final DateTime postedAt;
   final int responseCount;
   final bool isResolved;
@@ -15,14 +16,15 @@ class QueryModel {
   QueryModel({
     required this.id,
     required this.description,
-    required this.campus,
     required this.postedByUid,
     required this.postedByName,
+    this.postedByIsInsider = false,
+    this.postedByIsPremium = false,
     required this.postedAt,
     required this.responseCount,
     required this.isResolved,
     this.imagePath,
-    this.expiresAt
+    this.expiresAt,
   });
 
   factory QueryModel.fromMap(Map<String, dynamic> map, String docId) {
@@ -30,23 +32,27 @@ class QueryModel {
     return QueryModel(
       id: docId,
       description: map['description'] ?? '',
-      campus: map['campus'] ?? '',
       postedByUid: postedBy['uid'] ?? '',
       postedByName: postedBy['name'] ?? '',
+      postedByIsInsider: postedBy['isInsider'] ?? false,
+      postedByIsPremium: postedBy['isPremium'] ?? false,
       postedAt: (map['postedAt'] as Timestamp).toDate(),
       responseCount: int.parse(map['responseCount'].toString()),
       isResolved: map['isResolved'] ?? false,
       imagePath: map['imagePath'] as String?,
-      expiresAt: (map['postedAt'] as Timestamp).toDate(),
+      expiresAt: map['expiresAt'] != null
+          ? (map['expiresAt'] as Timestamp).toDate()
+          : null,
     );
   }
 
   QueryModel copyWith({
     String? id,
     String? description,
-    String? campus,
     String? postedByUid,
     String? postedByName,
+    bool? postedByIsInsider,
+    bool? postedByIsPremium,
     DateTime? postedAt,
     int? responseCount,
     bool? isResolved,
@@ -56,9 +62,10 @@ class QueryModel {
     return QueryModel(
       id: id ?? this.id,
       description: description ?? this.description,
-      campus: campus ?? this.campus,
       postedByUid: postedByUid ?? this.postedByUid,
       postedByName: postedByName ?? this.postedByName,
+      postedByIsInsider: postedByIsInsider ?? this.postedByIsInsider,
+      postedByIsPremium: postedByIsPremium ?? this.postedByIsPremium,
       postedAt: postedAt ?? this.postedAt,
       responseCount: responseCount ?? this.responseCount,
       isResolved: isResolved ?? this.isResolved,

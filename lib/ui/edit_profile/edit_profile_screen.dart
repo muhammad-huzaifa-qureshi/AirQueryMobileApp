@@ -1,6 +1,5 @@
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/constants/business_constants.dart';
-import 'package:air_query/core/constants/campuses.dart';
 import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
 import 'package:air_query/ui/profile/notifier/profile_notifier.dart';
@@ -17,10 +16,9 @@ class EditProfileScreen extends ConsumerStatefulWidget {
 
 class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   final _nameController = TextEditingController();
-  String? _selectedCampus;
-  String? _selectedSemester;
 
-  final _semesters = ["1", "2", "3", "4", "5", "6", "7", "8"];
+  final _aboutController = TextEditingController();
+  String? _selectedRole;
 
   @override
   void initState() {
@@ -29,14 +27,18 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final user = ref.read(profileProvider).user;
     if (user != null) {
       _nameController.text = user.name;
-      _selectedCampus = user.campus.isNotEmpty ? user.campus : null;
-      _selectedSemester = user.semester.isNotEmpty ? user.semester : null;
+      _aboutController.text = user.about ?? '';
+      // Only pre-fill if the stored role is selectable (e.g. not "Founder")
+      _selectedRole = BusinessConstants.roles.contains(user.role)
+          ? user.role
+          : null;
     }
   }
 
   @override
   void dispose() {
     _nameController.dispose();
+    _aboutController.dispose();
     super.dispose();
   }
 
@@ -86,37 +88,31 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
               const SizedBox(height: AppSizes.medium),
 
-              // Campus dropdown
-              DropdownButtonFormField<String>(
-                initialValue: _selectedCampus,
-                hint: const Text("Select Campus"),
+              // About field
+              TextField(
+                controller: _aboutController,
                 decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.school_outlined),
+                  labelText: "About",
+                  prefixIcon: const Icon(Icons.info_outline),
                 ),
-                items: Campuses.list
-                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
-                    .toList(),
-                onChanged: (val) => setState(() => _selectedCampus = val),
+                maxLength: BusinessConstants.aboutMaxChars,
+                maxLines: null,
+                textInputAction: .newline,
               ),
 
               const SizedBox(height: AppSizes.medium),
 
-              // Semester dropdown
+              // Role dropdown
               DropdownButtonFormField<String>(
-                initialValue: _selectedSemester,
-                hint: const Text("Select Semester"),
+                initialValue: _selectedRole,
+                hint: const Text("Select Role"),
                 decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.layers_outlined),
+                  prefixIcon: const Icon(Icons.badge_outlined),
                 ),
-                items: _semesters
-                    .map(
-                      (s) => DropdownMenuItem(
-                        value: s,
-                        child: Text("Semester $s"),
-                      ),
-                    )
+                items: BusinessConstants.roles
+                    .map((r) => DropdownMenuItem(value: r, child: Text(r)))
                     .toList(),
-                onChanged: (val) => setState(() => _selectedSemester = val),
+                onChanged: (val) => setState(() => _selectedRole = val),
               ),
 
               const SizedBox(height: AppSizes.vLarge),
@@ -126,9 +122,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 textAlign: .center,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
-              SizedBox(height: AppSizes.medium,),
+              SizedBox(height: AppSizes.vSmall),
               Text(
-                "In case of non-availability of your campus, contact admin support (email/linkedin info provided in settings)",
+                "Only AU emails can set Insider Roles (Student/Staff)",
                 textAlign: .center,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
@@ -158,7 +154,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   void _onSave() {
     final name = _nameController.text.trim();
 
-    if (name.isEmpty || _selectedCampus == null || _selectedSemester == null) {
+    if (name.isEmpty || _selectedRole == null) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text("Please fill all fields.")));
@@ -191,8 +187,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final user = ref.read(profileProvider).user;
     if (user != null &&
         user.name == name &&
-        user.campus == _selectedCampus &&
-        user.semester == _selectedSemester) {
+        user.role == _selectedRole &&
+        user.about == _aboutController.text.trim()) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text("No changes to save.")));
@@ -203,8 +199,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         .read(editProfileProvider.notifier)
         .updateProfile(
           name: name,
-          campus: _selectedCampus!,
-          semester: _selectedSemester!,
+          role: _selectedRole!,
+          about: _aboutController.text.trim(),
         );
   }
 }

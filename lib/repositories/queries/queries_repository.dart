@@ -18,7 +18,7 @@ class QueriesRepository {
       );
     }
 
-    // Fetch user profile for campus + profileComplete check
+    // Fetch user profile for profileComplete check
     final userDoc = await _firestore.collection('users').doc(uid).get();
 
     if (!userDoc.exists || userDoc.data() == null) {
@@ -39,19 +39,9 @@ class QueriesRepository {
       );
     }
 
-    final campus = userData['campus'] as String?;
-    if (campus == null || campus.isEmpty) {
-      throw FirebaseException(
-        plugin: 'queries_repository',
-        code: 'failed-precondition',
-        message: 'No campus set. Please check your profile or contact support.',
-      );
-    }
-
-    // Build query
+    // Build query — all queries
     Query query = _firestore
         .collection('queries')
-        .where('campus', whereIn: [campus, 'All'])
         .orderBy('postedAt', descending: true)
         .limit(BusinessConstants.queryFetchLimit);
 
@@ -81,13 +71,11 @@ class QueriesRepository {
 
   Future<void> postQuery({
     required String description,
-    required bool postToAllCampuses,
     String? base64Image,
   }) async {
     final callable = _functions.httpsCallable('postQuery');
     await callable.call({
       'description': description,
-      'postToAll': postToAllCampuses,
       'base64Image': ?base64Image,
     });
   }

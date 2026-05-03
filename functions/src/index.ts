@@ -15,4 +15,4 @@ export {updateProfile} from "./users/update_profile";
 // export triggers
 export {onQueryCreated} from "./triggers/on_query_created";
 export {onResponseCreated} from "./triggers/on_response_created";
-export {syncFcmTokenInMap} from "./triggers/sync_fcm_token_in_map";
+export {onUserUpdated} from "./triggers/on_user_updated";

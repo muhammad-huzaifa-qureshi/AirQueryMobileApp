@@ -19,15 +19,13 @@ class PostQueryNotifier extends Notifier<PostQueryState> {
 
   Future<void> postQuery({
     required String description,
-    required bool postToAllCampuses,
-    String? base64Image
+    String? base64Image,
   }) async {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       await _repository.postQuery(
         description: description,
-        postToAllCampuses: postToAllCampuses,
-        base64Image: base64Image
+        base64Image: base64Image,
       );
       state = state.copyWith(isLoading: false, success: true);
     } catch (e) {

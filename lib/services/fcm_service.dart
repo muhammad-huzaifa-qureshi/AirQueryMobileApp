@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/repositories/auth/auth_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -25,6 +26,9 @@ class FcmService {
     final token = await _messaging.getToken();
     if (token != null) await _saveToken(token);
 
+    // Subscribe to the global topic
+    await _messaging.subscribeToTopic(BusinessConstants.fcmTopicAllUsers);
+
     // Save when token rotates
     await _tokenRefreshSub?.cancel();
     _tokenRefreshSub = _messaging.onTokenRefresh.listen(
@@ -41,6 +45,9 @@ class FcmService {
   Future<void> deleteToken() async {
     await _tokenRefreshSub?.cancel();
     _tokenRefreshSub = null;
+
+    // Unsubscribe from global topic
+    await _messaging.unsubscribeFromTopic(BusinessConstants.fcmTopicAllUsers);
 
     await _messaging.deleteToken();
 

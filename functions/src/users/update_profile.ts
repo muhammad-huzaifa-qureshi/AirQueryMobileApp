@@ -1,6 +1,6 @@
 import {onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
-import {batchUpdateName} from "../utils/batch_update_name";
+import {batchUpdatePostedBy} from "../utils/batch_update_posted_by";
 import {Constants} from "../constants";
 
 export const updateProfile = onCall(
@@ -18,33 +18,36 @@ export const updateProfile = onCall(
     }
 
     const uid = request.auth.uid;
-    const {name, campus, semester} = request.data;
+    const {name, role, about} = request.data;
 
+    // TYPE VALIDATION
     if (
       typeof name !== "string" ||
-      typeof campus !== "string" ||
-      typeof semester !== "string"
+      typeof role !== "string" ||
+      typeof about !== "string"
     ) {
       throw new HttpsError("invalid-argument", "Invalid profile data.");
     }
 
-    // CAMPUS VALIDATION
-    if (!Constants.campuses.includes(campus)) {
-      throw new HttpsError("invalid-argument", "Invalid campus selected.");
+    // ROLE VALIDATION (Founder/etc. is excluded — set directly in Firestore)
+    if (!Constants.allowedRoles.includes(role)) {
+      throw new HttpsError("invalid-argument", "Invalid role selected.");
     }
 
-    // SEMESTER VALIDATION
-    const semesterNumber = Number(semester);
+    // EMAIL-DOMAIN CHECK for insider roles
+    const email = request.auth.token.email ?? "";
     if (
-      !Number.isInteger(semesterNumber) ||
-      semesterNumber < 1 ||
-      semesterNumber > 8
+      Constants.insiderRoles.includes(role) &&
+      !email.endsWith(`${Constants.auEmailDomain}`)
     ) {
       throw new HttpsError(
-        "invalid-argument",
-        "Semester must be between 1 and 8."
+        "failed-precondition",
+        "Only @au.edu.pk email addresses can select AU Student" +
+        " or AU Staff roles."
       );
     }
+
+    const isInsider = Constants.insiderRoles.includes(role);
 
     const db = admin.firestore();
     const userRef = db.collection("users").doc(uid);
@@ -60,8 +63,10 @@ export const updateProfile = onCall(
     if (isNewUser) {
       await userRef.set({
         name: "",
-        campus: "",
-        semester: "",
+        role: "",
+        about: "",
+        isInsider: false,
+        isPremium: false,
         queriesPosted: 0,
         responsesPosted: 0,
         queriesResolved: 0,
@@ -72,15 +77,16 @@ export const updateProfile = onCall(
     const user = isNewUser ? {} : (userSnap.data() ?? {});
 
     const oldName = user.name ?? "";
-    const oldCampus = user.campus ?? "";
-    const oldSemester = user.semester ?? "";
+    const oldRole = user.role ?? "";
+    const oldAbout = user.about ?? "";
 
     const nameChanged = oldName !== name;
-    const campusChanged = oldCampus !== campus;
-    const semesterChanged = oldSemester !== semester;
+    const roleChanged = oldRole !== role;
+    const aboutChanged = oldAbout !== about;
+    const isInsiderChanged = (user.isInsider ?? false) !== isInsider;
 
     // NO CHANGES
-    if (!(nameChanged || campusChanged || semesterChanged)) {
+    if (!(nameChanged || roleChanged || aboutChanged)) {
       return {success: true};
     }
 
@@ -105,13 +111,22 @@ export const updateProfile = onCall(
     // UPDATE USER PROFILE
     await userRef.set({
       name,
-      campus,
-      semester,
+      role,
+      about,
+      isInsider,
       profileComplete: true,
     }, {merge: true});
 
-    // PROPAGATE NAME
-    if (nameChanged && !isNewUser) {
+    // PROPAGATE POSTED BY INFO
+    if ((nameChanged || isInsiderChanged) && !isNewUser) {
+      const fields: Partial<{
+          name: string;
+          isInsider: boolean;
+          isPremium: boolean
+         }> = {};
+      if (nameChanged) fields.name = name;
+      if (isInsiderChanged) fields.isInsider = isInsider;
+
       const [querySnap, responseSnap] = await Promise.all([
         db.collection("queries")
           .where("postedBy.uid", "==", uid)
@@ -122,41 +137,9 @@ export const updateProfile = onCall(
       ]);
 
       await Promise.all([
-        batchUpdateName(db, querySnap.docs, name),
-        batchUpdateName(db, responseSnap.docs, name),
+        batchUpdatePostedBy(db, querySnap.docs, fields),
+        batchUpdatePostedBy(db, responseSnap.docs, fields),
       ]);
-    }
-
-    // MOVE FCM TOKEN (CAMPUS CHANGE)
-    if (campusChanged) {
-      const tokenSnap = await userRef
-        .collection("private")
-        .doc("fcmToken")
-        .get();
-
-      const token = tokenSnap.data()?.token;
-
-      if (token) {
-        const batch = db.batch();
-
-        // remove from old campus only if it existed
-        if (oldCampus !== "") {
-          batch.set(
-            db.collection("fcmTokens").doc(oldCampus),
-            {[uid]: admin.firestore.FieldValue.delete()},
-            {merge: true}
-          );
-        }
-
-        // add to new campus
-        batch.set(
-          db.collection("fcmTokens").doc(campus),
-          {[uid]: token},
-          {merge: true}
-        );
-
-        await batch.commit();
-      }
     }
 
     // UPDATE RATE LIMIT

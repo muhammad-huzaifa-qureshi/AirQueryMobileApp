@@ -1,8 +1,8 @@
 import 'package:air_query/core/widgets/stat_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../core/constants/app_sizes.dart';
+import '../../core/widgets/user_badges.dart';
 import 'notifier/other_user_profile_notifier.dart';
 
 void showUserProfileCard(BuildContext context, String uid) {
@@ -54,11 +54,22 @@ void showUserProfileCard(BuildContext context, String uid) {
                     ],
                   ),
 
-                  // campus and semester
-                  _profileRow(context, label: "Campus", value: user.campus),
-                  _profileRow(context, label: "Semester", value: user.semester),
+                  // Insider / Premium badges
+                  if (user.isInsider || user.isPremium) ...[
+                    const SizedBox(height: AppSizes.vSmall),
+                    UserBadges(
+                      isInsider: user.isInsider,
+                      isPremium: user.isPremium,
+                    ),
+                  ],
 
-                  SizedBox(height: AppSizes.vLarge),
+                  // role and about
+                  SizedBox(height: AppSizes.medium,),
+                  _profileRow(context, label: "Role", value: user.role),
+                  if (user.about != null && user.about!.isNotEmpty)
+                    _profileRow(context, label: "About", value: user.about!),
+
+                  SizedBox(height: AppSizes.large),
 
                   // stats
                   IntrinsicHeight(
@@ -99,16 +110,24 @@ void showUserProfileCard(BuildContext context, String uid) {
 }
 
 Widget _profileRow(
-    BuildContext context, {
-      required String label,
-      required String value,
-    }) {
+  BuildContext context, {
+  required String label,
+  required String value,
+}) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: AppSizes.minute),
     child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text("$label: ", style: Theme.of(context).textTheme.titleSmall),
-        Text(value, style: Theme.of(context).textTheme.bodyMedium),
+        Flexible(
+          child: Text(
+            value,
+            style: Theme.of(context).textTheme.bodyMedium,
+            softWrap: true,
+            maxLines: null,
+          ),
+        ),
       ],
     ),
   );

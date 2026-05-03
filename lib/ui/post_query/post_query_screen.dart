@@ -20,7 +20,6 @@ class PostQueryScreen extends ConsumerStatefulWidget {
 
 class _PostQueryScreenState extends ConsumerState<PostQueryScreen> {
   final _descriptionController = TextEditingController();
-  bool _postToAll = false;
   File? _pickedImage;
   final _picker = ImagePicker();
 
@@ -137,19 +136,6 @@ class _PostQueryScreenState extends ConsumerState<PostQueryScreen> {
                   ],
                 ],
               ),
-              SizedBox(height: AppSizes.small,),
-
-              // Post to all campuses checkbox
-              CheckboxListTile(
-                value: _postToAll,
-                activeColor: AppColors.primary,
-                onChanged: (val) => setState(() => _postToAll = val ?? false),
-                title: Text(
-                  "Relevant to all campuses? Check to share everywhere.",
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                controlAffinity: .leading,
-              ),
 
               const SizedBox(height: AppSizes.vLarge),
 
@@ -211,7 +197,6 @@ class _PostQueryScreenState extends ConsumerState<PostQueryScreen> {
         .read(postQueryProvider.notifier)
         .postQuery(
           description: description,
-          postToAllCampuses: _postToAll,
           base64Image: base64Image,
         );
   }

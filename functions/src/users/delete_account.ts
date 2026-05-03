@@ -36,10 +36,6 @@ export const deleteAccount = onCall(
     const uid = request.auth.uid;
     const db = admin.firestore();
 
-    // Fetch user doc to get campus
-    const userDoc = await db.collection("users").doc(uid).get();
-    const campus = userDoc.data()?.campus as string | undefined;
-
     // Fetch all user's queries
     const queriesSnap = await db
       .collection("queries")
@@ -99,14 +95,6 @@ export const deleteAccount = onCall(
 
     // Delete user doc
     await db.collection("users").doc(uid).delete();
-
-    // Remove uid field from fcmTokens/{campus} doc
-    if (campus) {
-      await db
-        .collection("fcmTokens")
-        .doc(campus)
-        .update({[uid]: admin.firestore.FieldValue.delete()});
-    }
 
     // Delete Firebase Auth user last
     await admin.auth().deleteUser(uid);

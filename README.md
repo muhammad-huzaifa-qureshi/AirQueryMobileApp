@@ -1,7 +1,8 @@
 # Air Query
 
-An **unofficial** mobile app for Air University students to post and answer campus related questions
-in a smart and organized way.
+Air Query is an unofficial platform built for the Air University community including students,
+staff, alumni, and explorers. It offers a focused space to ask questions, share knowledge, discover
+opportunities, and connect through peer-to-peer support.
 
 [![Get it on Google Play](https://img.shields.io/badge/Download-Google%20Play-34A853?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=com.hqapplications.airuniversity.airquery)
 
@@ -33,8 +34,11 @@ in a smart and organized way.
 ## `users/{uid}`
 
 - `name`: String
-- `campus`: String
-- `semester`: String
+- `role`: String — one of `AU Student`, `AU Staff`, `Alumnus`, `Explorer` (or `Founder` — set
+  directly in Firestore)
+- `about`: String
+- `isInsider`: Bool — `true` for `AU Student` / `AU Staff`
+- `isPremium`: Bool
 - `queriesPosted`: Int
 - `responsesPosted`: Int
 - `queriesResolved`: Int
@@ -55,18 +59,17 @@ in a smart and organized way.
 ## `queries/{queryId}`
 
 - `description`: String
-- `campus`: String — user's campus or `"All"`
-- `postedBy`: Map — `{ uid: String, name: String }`
+- `postedBy`: Map — `{ uid: String, name: String, isInsider: Bool, isPremium: Bool }`
 - `postedAt`: Timestamp
 - `responseCount`: Int
 - `isResolved`: bool
 - `imagePath`: String | null
-- `expiresAt`: Timestamp | null (set, when resolved)
+- `expiresAt`: Timestamp | null (set when resolved)
 
 ## `queries/{queryId}/responses/{responseId}`
 
 - `description`: String
-- `postedBy`: Map — `{ uid: String, name: String }`
+- `postedBy`: Map — `{ uid: String, name: String, isInsider: Bool, isPremium: Bool }`
 - `postedAt`: Timestamp
 - `mentionedUid`: string | null
 - `mentionedName`: string | null
@@ -76,11 +79,6 @@ in a smart and organized way.
 - `totalQueriesPosted`: Int
 - `totalQueriesResolved`: Int
 - `totalResponses`: Int
-
-## `fcmTokens/{campus}`
-
-- Each document key is a `uid` of a user in that campus.
-- The value for each `uid` is the FCM token string.
 
 ## `reportedQueries/{queryId}_{uid}`
 
@@ -96,6 +94,7 @@ Document ID is `{queryId}_{uid}` — prevents duplicate reports from the same us
 - Fix navigation issue when opening responses from notifications (missing back option)
 - Skeleton loading (shimmer effect) on home feed
 - Dedicated notifications tab
+- Filters: resolved-based and role-based
 - Improved user experience and interaction flow
 - UI and visual design enhancements
 - Codebase refactoring for better maintainability

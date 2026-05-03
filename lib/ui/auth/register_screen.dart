@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../core/theme/app_colors.dart';
 import '../../core/utils/app_external_launchers.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -20,13 +21,13 @@ class RegisterScreen extends ConsumerStatefulWidget {
 
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _idController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
   void dispose() {
-    _idController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -88,20 +89,26 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: AppSizes.medium),
+
+                // use AU email
+                Text(
+                  "Use AU email to get Insider badge!",
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.primary),
+                  textAlign: .center,
+                ),
                 const SizedBox(height: AppSizes.large),
 
                 // id field
                 TextFormField(
-                  controller: _idController,
+                  controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
                   decoration: const InputDecoration(
-                    labelText: "AU Email",
-                    hintText: "eg: 000000@students",
+                    labelText: "Email",
                     prefixIcon: Icon(Icons.email_outlined),
-                    suffixText: BusinessConstants.auEmailDomainExtension,
                   ),
-                  validator: AuthValidators.validateAuId,
+                  validator: AuthValidators.validateEmail,
                 ),
                 const SizedBox(height: AppSizes.small),
 
@@ -147,7 +154,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                     ref
                                         .read(authProvider.notifier)
                                         .register(
-                                          id: _idController.text.trim(),
+                                          email: _emailController.text.trim(),
                                           password: _passwordController.text
                                               .trim(),
                                         );

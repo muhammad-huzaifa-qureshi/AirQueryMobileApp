@@ -1,16 +1,20 @@
 /** Application-wide constants */
 export class Constants {
-  // campuses
-  static readonly campuses = [
-    "Islamabad E9 Campus",
-    "Islamabad H11 Campus",
-    "Multan Campus",
-    "Kamra Campus",
-    "Karachi Campus",
-    "Kharian Campus",
-    "Karachi Campus",
-    "Bahu Campus",
+  // insider roles (require @au.edu.pk email)
+  static readonly insiderRoles = ["AU Student", "AU Staff"];
+
+  // all selectable roles (Founder/etc. is excluded; set directly in Firestore)
+  static readonly allowedRoles = [
+    ...Constants.insiderRoles,
+    "Alumnus",
+    "Explorer",
   ];
+
+  // email domain required for insider roles
+  static readonly auEmailDomain = "au.edu.pk";
+
+  // FCM topic for broadcasting new-query notifications to all users
+  static readonly fcmTopicAllUsers = "all_users";
 
   // image size
   static readonly maxQueryImageSizeMB = 5;

@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../models/query_model.dart';
+import '../constants/app_icons.dart';
 import '../theme/query_colors.dart';
 
 enum _QueryAction { delete, resolve, report }
@@ -87,14 +88,31 @@ class QueryCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        if (query.postedByUid == BusinessConstants.devUid) ...[
-                          const SizedBox(width: AppSizes.small),
+
+                        // premium icon
+                        if (query.postedByIsPremium) ...[
+                          const SizedBox(width: AppSizes.vSmall),
                           Tooltip(
-                            message: "Founder",
+                            triggerMode: .tap,
+                            message: "Premium User",
                             child: Icon(
-                              Icons.verified_user_rounded,
+                              AppIcons.premium,
                               size: AppSizes.mediumIcon,
                               color: queryColor,
+                            ),
+                          ),
+                        ],
+
+                        // insider icon
+                        if (query.postedByIsInsider) ...[
+                          const SizedBox(width: AppSizes.vSmall),
+                          Tooltip(
+                            triggerMode: .tap,
+                            message: "Insider",
+                            child: Icon(
+                              AppIcons.insider,
+                              size: AppSizes.mediumIcon,
+                              color: AppColors.whitish,
                             ),
                           ),
                         ],
@@ -109,14 +127,6 @@ class QueryCard extends StatelessWidget {
                   ).textTheme.labelSmall?.copyWith(color: queryColor),
                 ),
               ],
-            ),
-            const SizedBox(height: AppSizes.vSmall),
-            // campus
-            Text(
-              "For ${query.campus == "All" ? "All Campuses" : query.campus}",
-              style: Theme.of(
-                context,
-              ).textTheme.labelSmall?.copyWith(color: queryColor),
             ),
 
             if (query.isResolved) ...[
@@ -139,7 +149,7 @@ class QueryCard extends StatelessWidget {
               ),
             ],
 
-            const SizedBox(height: AppSizes.medium),
+            const SizedBox(height: AppSizes.small),
 
             // Description
             Linkify(

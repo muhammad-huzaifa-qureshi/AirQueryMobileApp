@@ -20,7 +20,7 @@ export const postQuery = onCall(
     const uid = request.auth.uid;
     const db = admin.firestore();
 
-    const {description, postToAll, base64Image} = request.data;
+    const {description, base64Image} = request.data;
     const trimmedDescription = (description as string).trim();
 
     // Validate description
@@ -79,8 +79,6 @@ export const postQuery = onCall(
         "today. Try again tomorrow."
       );
     }
-
-    const campus = postToAll ? "All" : userData.campus;
 
     const queryRef = db.collection("queries").doc();
     const userRef = db.collection("users").doc(uid);
@@ -167,10 +165,11 @@ export const postQuery = onCall(
     await db.runTransaction(async (tx) => {
       tx.set(queryRef, {
         description: trimmedDescription,
-        campus,
         postedBy: {
           uid,
           name: userData.name,
+          isInsider: userData.isInsider ?? false,
+          isPremium: userData.isPremium ?? false,
         },
         postedAt: admin.firestore.FieldValue.serverTimestamp(),
         responseCount: 0,

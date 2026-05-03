@@ -1,6 +1,6 @@
 class BusinessConstants {
   // version
-  static const appCurrentVersion = "2.10.1";
+  static const appCurrentVersion = "3.0.0";
 
   // Links
   static const String githubRepoLink =
@@ -12,7 +12,9 @@ class BusinessConstants {
   static const String devEmail = "mailto:muhammadhuzaifaqureshi01@gmail.com";
   static const String appPlayStoreLink =
       "https://play.google.com/store/apps/details?id=com.hqapplications.airuniversity.airquery";
-  static const String devUid = "taqpDnlMfiX4P5E6xIAuZKemEGm1";
+
+  // FCM topics
+  static const String fcmTopicAllUsers = "all_users";
 
   // password policy
   static const minPassChars = 8;
@@ -20,12 +22,18 @@ class BusinessConstants {
 
   // authentication
   static const resendCooldownSeconds = 60;
-  static const auEmailDomainExtension = '.au.edu.pk';
   static const timerTickSeconds = 2;
 
-  // user full name
+  // user profile
   static const nameMinChars = 3;
   static const nameMaxChars = 30;
+  static const aboutMaxChars = 150;
+  static const List<String> roles = [
+    "AU Student",
+    "AU Staff",
+    "Alumnus",
+    "Explorer",
+  ];
 
   // query len
   static const minQueryLen = 10;

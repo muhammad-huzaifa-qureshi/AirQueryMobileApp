@@ -24,12 +24,14 @@ class UserRepository {
       return UserModel(
         uid: uid,
         name: '',
-        campus: '',
-        semester: '',
+        role: '',
+        about: '',
+        isInsider: false,
         queriesPosted: 0,
         responsesPosted: 0,
         queriesResolved: 0,
         profileComplete: false,
+        isPremium: false,
       );
     }
 
@@ -38,11 +40,11 @@ class UserRepository {
 
   Future<void> updateProfile({
     required String name,
-    required String campus,
-    required String semester,
+    required String role,
+    required String about,
   }) async {
     final callable = _functions.httpsCallable('updateProfile');
-    await callable.call({'name': name, 'campus': campus, 'semester': semester});
+    await callable.call({'name': name, 'role': role, 'about': about});
   }
 
   // for other user profile

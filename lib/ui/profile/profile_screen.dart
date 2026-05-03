@@ -3,12 +3,11 @@ import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
 import 'package:air_query/models/user_model.dart';
 import 'package:air_query/ui/profile/notifier/profile_notifier.dart';
-import 'package:air_query/ui/profile/widgets/info_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../core/theme/app_colors.dart';
 import '../../core/widgets/stat_box.dart';
+import '../../core/widgets/user_badges.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -140,40 +139,18 @@ class ProfileScreen extends ConsumerWidget {
             textAlign: TextAlign.center,
           ),
 
-          const SizedBox(height: AppSizes.small),
-
-          // Profile complete badge
-          if (user.profileComplete)
+          // Insider / Premium badges
+          if (user.isInsider || user.isPremium)...[
+            const SizedBox(height: AppSizes.medium),
             Center(
-              child: Container(
-                padding: const .symmetric(
-                  horizontal: AppSizes.medium,
-                  vertical: AppSizes.vSmall,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.blackish,
-                  borderRadius: BorderRadius.circular(AppSizes.vLarge),
-                  border: Border.all(color: AppColors.primary),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.verified,
-                      size: AppSizes.smallIcon,
-                      color: AppColors.primary,
-                    ),
-                    const SizedBox(width: AppSizes.vSmall),
-                    Text(
-                      "Profile Complete",
-                      style: Theme.of(context).textTheme.labelSmall,
-                    ),
-                  ],
-                ),
+              child: UserBadges(
+                isInsider: user.isInsider,
+                isPremium: user.isPremium,
               ),
             ),
+          ],
 
-          const SizedBox(height: AppSizes.vLarge),
+          const SizedBox(height: AppSizes.large),
 
           // Info card
           Container(
@@ -184,18 +161,51 @@ class ProfileScreen extends ConsumerWidget {
               border: Border.all(color: AppColors.greyish),
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                InfoRow(
-                  icon: Icons.school_outlined,
-                  label: "Campus",
-                  value: user.campus,
+                Row(
+                  children: [
+                    Icon(
+                      Icons.badge_outlined,
+                      size: AppSizes.mediumIcon,
+                      color: AppColors.whitish,
+                    ),
+                    const SizedBox(width: AppSizes.small),
+                    Text(
+                      "Role",
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                    const Spacer(),
+                    Text(
+                      user.role,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppColors.whitish,
+                      ),
+                    ),
+                  ],
                 ),
                 const Divider(height: AppSizes.large),
-                InfoRow(
-                  icon: Icons.layers_outlined,
-                  label: "Semester",
-                  value: user.semester,
+                Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      size: AppSizes.mediumIcon,
+                      color: AppColors.whitish,
+                    ),
+                    const SizedBox(width: AppSizes.small),
+                    Text(
+                      "About",
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                  ],
                 ),
+                if(user.about!.isNotEmpty)...[
+                  const SizedBox(height: AppSizes.vSmall),
+                  Text(
+                    user.about ?? '',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ]
               ],
             ),
           ),
@@ -248,3 +258,4 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 }
+

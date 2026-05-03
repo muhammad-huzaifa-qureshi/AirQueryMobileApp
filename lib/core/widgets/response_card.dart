@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../models/response_model.dart';
 import '../../ui/responses/notifier/mention_notifier.dart';
+import '../constants/app_icons.dart';
 import '../constants/app_sizes.dart';
-import '../constants/business_constants.dart';
 import '../routing/app_routes.dart';
 import '../theme/app_colors.dart';
 import '../utils/format_time.dart';
@@ -43,23 +44,42 @@ class ResponseCard extends ConsumerWidget {
                             showUserProfileCard(context, response.postedByUid),
                   child: Row(
                     children: [
-                      Text(
-                        isOwn
-                            ? "${response.postedByName} (Me)"
-                            : response.postedByName,
-                        style: Theme.of(context).textTheme.labelMedium
-                            ?.copyWith(color: AppColors.primary),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                      Flexible(
+                        child: Text(
+                          isOwn
+                              ? "${response.postedByName} (Me)"
+                              : response.postedByName,
+                          style: Theme.of(context).textTheme.labelMedium
+                              ?.copyWith(color: AppColors.primary),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      if (response.postedByUid == BusinessConstants.devUid) ...[
+
+                      // premium icon
+                      if (response.postedByIsPremium) ...[
                         const SizedBox(width: AppSizes.vSmall),
                         Tooltip(
-                          message: "Founder",
+                          triggerMode: .tap,
+                          message: "Premium User",
                           child: Icon(
-                            Icons.verified_user_rounded,
+                            AppIcons.premium,
                             size: AppSizes.smallIcon,
                             color: AppColors.primary,
+                          ),
+                        ),
+                      ],
+
+                      // insider icon
+                      if (response.postedByIsInsider) ...[
+                        const SizedBox(width: AppSizes.vSmall),
+                        Tooltip(
+                          triggerMode: .tap,
+                          message: "Insider",
+                          child: Icon(
+                            AppIcons.insider,
+                            size: AppSizes.smallIcon,
+                            color: AppColors.whitish,
                           ),
                         ),
                       ],

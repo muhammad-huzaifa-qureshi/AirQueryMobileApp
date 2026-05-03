@@ -19,15 +19,15 @@ class EditProfileNotifier extends Notifier<EditProfileState> {
 
   Future<void> updateProfile({
     required String name,
-    required String campus,
-    required String semester,
+    required String role,
+    required String about,
   }) async {
     state = state.copyWith(isLoading: true, clearError: true);
     try {
       await _repository.updateProfile(
         name: name,
-        campus: campus,
-        semester: semester,
+        role: role,
+        about: about,
       );
       state = state.copyWith(isLoading: false, success: true);
     } catch (e) {

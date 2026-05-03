@@ -20,7 +20,7 @@ class ForgotPasswordScreen extends ConsumerStatefulWidget {
 
 class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _idController = TextEditingController();
+  final _emailController = TextEditingController();
 
   bool _resetSent = false;
   Timer? _cooldownTimer;
@@ -28,7 +28,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
 
   @override
   void dispose() {
-    _idController.dispose();
+    _emailController.dispose();
     _cooldownTimer?.cancel();
     super.dispose();
   }
@@ -57,7 +57,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
       FocusScope.of(context).unfocus();
       ref
           .read(authProvider.notifier)
-          .sendPasswordReset(_idController.text.trim());
+          .sendPasswordReset(_emailController.text.trim());
       _startCooldown();
     }
   }
@@ -116,16 +116,14 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               Form(
                 key: _formKey,
                 child: TextFormField(
-                  controller: _idController,
+                  controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.done,
                   decoration: const InputDecoration(
-                    labelText: "AU Email",
-                    hintText: "eg: 000000@students",
+                    labelText: "Email",
                     prefixIcon: Icon(Icons.email_outlined),
-                    suffixText: BusinessConstants.auEmailDomainExtension,
                   ),
-                  validator: AuthValidators.validateAuId,
+                  validator: AuthValidators.validateEmail,
                 ),
               ),
 

@@ -77,7 +77,10 @@ export const postResponse = onCall(
       );
     }
 
-    const userName = userSnap.data()?.name as string ?? "";
+    const userData = userSnap.data() ?? {};
+    const userName = userData.name as string ?? "";
+    const isInsider = userData.isInsider ?? false;
+    const isPremium = userData.isPremium ?? false;
 
     // Validate mention data
     let finalMentionedUid: string | null = null;
@@ -106,7 +109,12 @@ export const postResponse = onCall(
     await db.runTransaction(async (tx) => {
       tx.set(responseRef, {
         description: trimmedDescription,
-        postedBy: {uid, name: userName},
+        postedBy: {
+          uid,
+          name: userName,
+          isInsider,
+          isPremium,
+        },
         postedAt: admin.firestore.FieldValue.serverTimestamp(),
         mentionedUid: finalMentionedUid,
         mentionedName: finalMentionedName,

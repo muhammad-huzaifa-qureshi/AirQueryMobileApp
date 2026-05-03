@@ -1,5 +1,4 @@
 import 'package:air_query/core/constants/app_sizes.dart';
-import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
 import 'package:air_query/core/utils/app_external_launchers.dart';
@@ -19,13 +18,13 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _idController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
   void dispose() {
-    _idController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -97,16 +96,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                 // id field
                 TextFormField(
-                  controller: _idController,
+                  controller: _emailController,
                   keyboardType: .emailAddress,
                   textInputAction: .next,
                   decoration: const InputDecoration(
-                    labelText: "AU Email",
-                    hintText: "eg: 000000@students",
+                    labelText: "Email",
                     prefixIcon: Icon(Icons.email_outlined),
-                    suffixText: BusinessConstants.auEmailDomainExtension,
                   ),
-                  validator: AuthValidators.validateAuId,
+                  validator: AuthValidators.validateEmail,
                 ),
                 const SizedBox(height: AppSizes.small),
 
@@ -164,7 +161,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     ref
                                         .read(authProvider.notifier)
                                         .login(
-                                          id: _idController.text.trim(),
+                                          email: _emailController.text.trim(),
                                           password: _passwordController.text
                                               .trim(),
                                         );

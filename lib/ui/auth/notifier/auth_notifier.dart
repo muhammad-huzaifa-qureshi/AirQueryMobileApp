@@ -1,4 +1,3 @@
-import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/ui/auth/notifier/auth_status.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,12 +42,12 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
     return AuthStatus.emailNotVerified;
   }
 
-  Future<void> login({required String id, required String password}) async {
+  Future<void> login({required String email, required String password}) async {
     state = const AsyncLoading();
 
     try {
       final user = await _authRepository.login(
-        email: "$id${BusinessConstants.auEmailDomainExtension}",
+        email: email,
         password: password,
       );
 
@@ -84,12 +83,15 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
     }
   }
 
-  Future<void> register({required String id, required String password}) async {
+  Future<void> register({
+    required String email,
+    required String password,
+  }) async {
     state = const AsyncLoading();
 
     try {
       final user = await _authRepository.register(
-        email: "$id${BusinessConstants.auEmailDomainExtension}",
+        email: email,
         password: password,
       );
 
@@ -120,13 +122,11 @@ class AuthNotifier extends AsyncNotifier<AuthStatus> {
     }
   }
 
-  Future<void> sendPasswordReset(String id) async {
+  Future<void> sendPasswordReset(String email) async {
     state = const AsyncLoading();
 
     try {
-      await _authRepository.sendPasswordResetEmail(
-        email: "$id${BusinessConstants.auEmailDomainExtension}",
-      );
+      await _authRepository.sendPasswordResetEmail(email: email);
       state = AsyncData(state.value ?? AuthStatus.unauthenticated);
     } on FirebaseException catch (e) {
       state = AsyncError(
