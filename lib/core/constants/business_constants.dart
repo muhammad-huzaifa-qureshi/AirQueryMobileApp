@@ -12,6 +12,8 @@ class BusinessConstants {
   static const String devEmail = "mailto:muhammadhuzaifaqureshi01@gmail.com";
   static const String appPlayStoreLink =
       "https://play.google.com/store/apps/details?id=com.hqapplications.airuniversity.airquery";
+  static const String premiumApplicationLink =
+      "https://forms.gle/TKLJMbbwJ5GTNrjG7";
 
   // FCM topics
   static const String fcmTopicAllUsers = "all_users";
@@ -23,6 +25,9 @@ class BusinessConstants {
   // authentication
   static const resendCooldownSeconds = 60;
   static const timerTickSeconds = 2;
+
+  // premium
+  static const premiumPricePKR = 99;
 
   // user profile
   static const nameMinChars = 3;

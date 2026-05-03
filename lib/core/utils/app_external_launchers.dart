@@ -23,6 +23,11 @@ class AppExternalLaunchers {
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
+  static Future<void> launchPremiumApplication() async {
+    final uri = Uri.parse(BusinessConstants.premiumApplicationLink);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
   static Future<void> launchAuthorEmail() async {
     final uri = Uri.parse(BusinessConstants.devEmail);
     await launchUrl(uri, mode: LaunchMode.externalApplication);

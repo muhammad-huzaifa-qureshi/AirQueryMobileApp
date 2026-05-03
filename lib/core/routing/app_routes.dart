@@ -12,6 +12,7 @@ class AppRoutes {
   // about
   static const about = "about";
   static const platformStats = "platform-stats";
+  static const badges = "badges";
 
   // profile
   static const profile = "profile";

@@ -28,6 +28,11 @@ class ProfileScreen extends ConsumerWidget {
         title: Text("My Profile"),
         actions: [
           IconButton(
+            onPressed: () => Navigator.pushNamed(context, AppRoutes.badges),
+            icon: const Icon(Icons.workspace_premium),
+            tooltip: "Badges Info",
+          ),
+          IconButton(
             onPressed: () => Navigator.pushNamed(context, AppRoutes.settings),
             icon: const Icon(Icons.settings),
             tooltip: "Settings",

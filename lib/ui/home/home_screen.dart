@@ -60,6 +60,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         title: const Text("Air Query"),
         actions: [
           IconButton(
+            onPressed: () => Navigator.pushNamed(context, AppRoutes.badges),
+            icon: const Icon(Icons.workspace_premium),
+            tooltip: "Badges Info",
+          ),
+          IconButton(
             onPressed: () => Navigator.pushNamed(context, AppRoutes.settings),
             icon: const Icon(Icons.settings),
             tooltip: "Settings",
@@ -177,8 +182,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ref.read(homeProvider.notifier).resolveQuery(query.id)
                     : null,
                 onReport: query.postedByUid != _currentUId
-                    ? () =>
-                          ref.read(homeProvider.notifier).reportQuery(query)
+                    ? () => ref.read(homeProvider.notifier).reportQuery(query)
                     : null,
               );
             },
