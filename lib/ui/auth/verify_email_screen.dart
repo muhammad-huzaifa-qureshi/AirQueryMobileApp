@@ -113,7 +113,7 @@ class _VerifyEmailScreenState extends ConsumerState<VerifyEmailScreen> {
               ),
               const SizedBox(height: AppSizes.small),
               Text(
-                "A verification link has been sent to your AU email. Please click the link to verify your account.",
+                "A verification link has been sent to your email. Please click the link to verify your account.",
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
               ),

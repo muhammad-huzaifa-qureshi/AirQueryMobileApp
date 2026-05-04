@@ -106,7 +106,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               Text(
                 _resetSent
                     ? "If an account exists, a reset link has been sent to your email. Please check your spam folder too."
-                    : "Enter your AU student ID to receive a password reset link.",
+                    : "Enter your email to receive a password reset link.",
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
               ),

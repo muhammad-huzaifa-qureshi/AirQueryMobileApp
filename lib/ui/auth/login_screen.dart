@@ -88,7 +88,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: AppSizes.small),
                 Text(
-                  "Unofficial platform for Air University Pakistan Students' Queries!",
+                  "Unofficial platform for Air University Pakistan Queries!",
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: .center,
                 ),
