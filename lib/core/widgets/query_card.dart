@@ -12,7 +12,6 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../models/query_model.dart';
 import '../constants/app_icons.dart';
-import '../theme/query_colors.dart';
 
 enum _QueryAction { delete, resolve, report }
 
@@ -37,8 +36,9 @@ class QueryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final queryColor =
-        QueryColors.strokes[colorIndex % QueryColors.strokes.length];
+    final queryColor = query.postedByIsPremium
+        ? AppColors.golden
+        : AppColors.primary;
 
     return GestureDetector(
       onTap: () => Navigator.pushNamed(
@@ -70,9 +70,7 @@ class QueryCard extends StatelessWidget {
               children: [
                 Flexible(
                   child: GestureDetector(
-                    onTap: isOwnQuery
-                        ? () => Navigator.pushNamed(context, AppRoutes.profile)
-                        : () => showUserProfileCard(context, query.postedByUid),
+                    onTap: () => showUserProfileCard(context, query.postedByUid),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [

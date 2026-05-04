@@ -8,7 +8,6 @@ import '../../models/response_model.dart';
 import '../../ui/responses/notifier/mention_notifier.dart';
 import '../constants/app_icons.dart';
 import '../constants/app_sizes.dart';
-import '../routing/app_routes.dart';
 import '../theme/app_colors.dart';
 import '../utils/format_time.dart';
 import 'confirm_dialog.dart';
@@ -38,10 +37,7 @@ class ResponseCard extends ConsumerWidget {
             children: [
               Flexible(
                 child: GestureDetector(
-                  onTap: isOwn
-                      ? () => Navigator.pushNamed(context, AppRoutes.profile)
-                      : () =>
-                            showUserProfileCard(context, response.postedByUid),
+                  onTap: () => showUserProfileCard(context, response.postedByUid),
                   child: Row(
                     children: [
                       Flexible(
