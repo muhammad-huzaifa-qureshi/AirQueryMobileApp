@@ -29,7 +29,7 @@ class ProfileScreen extends ConsumerWidget {
         actions: [
           IconButton(
             onPressed: () => Navigator.pushNamed(context, AppRoutes.badges),
-            icon: const Icon(Icons.workspace_premium),
+            icon: Icon(Icons.workspace_premium, color: AppColors.golden,),
             tooltip: "Badges Info",
           ),
           IconButton(

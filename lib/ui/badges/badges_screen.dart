@@ -67,7 +67,7 @@ class BadgesScreen extends ConsumerWidget {
 
               // Premium Badge Info
               AboutCard(
-                borderColor: AppColors.primary,
+                borderColor: AppColors.golden,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -75,32 +75,44 @@ class BadgesScreen extends ConsumerWidget {
                       children: [
                         Icon(
                           AppIcons.premium,
-                          color: AppColors.primary,
+                          color: AppColors.golden,
                           size: AppSizes.mediumIcon,
                         ),
                         const SizedBox(width: AppSizes.small),
                         Text(
-                          'Premium User',
+                          'Premium User (80% OFF)',
                           style: Theme.of(context).textTheme.titleLarge
-                              ?.copyWith(color: AppColors.primary),
+                              ?.copyWith(color: AppColors.golden),
                         ),
                       ],
                     ),
                     const SizedBox(height: AppSizes.small),
                     Text(
-                      'Premium users get a unique and distinct badge, along with 24/7 WhatsApp support. Show your support for the platform and stand out!',
+                      "Premium users enjoy a unique badge, a persistent golden query highlight, and 24/7 WhatsApp support.",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     const SizedBox(height: AppSizes.medium),
+
                     Text(
-                      'Price: ${BusinessConstants.premiumPricePKR} PKR (Lifetime)\nPayment Method: Easypaisa',
+                      "Price: ${BusinessConstants.premiumPricePKR} PKR (Lifetime)",
+                      style: Theme.of(
+                        context,
+                      ).textTheme.labelLarge?.copyWith(color: AppColors.golden),
+                    ),
+                    Text(
+                      "Payment Method: Any method (received via Easypaisa)",
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: AppColors.primary,
+                        color: AppColors.whitish,
                       ),
                     ),
+
                     const SizedBox(height: AppSizes.medium),
                     Text(
-                      'How to apply:\n1. Click the button below to open the form.\n2. Fill in the brief form and attach your payment receipt.\n3. Our team will review the form ASAP.\n4. We will contact you via WhatsApp for confirmation.',
+                      'How to apply:\n'
+                      '1. Click the button below to open the form.\n'
+                      '2. Fill in the brief form and attach your payment receipt.\n'
+                      '3. Our team will review the form ASAP.\n'
+                      '4. We will contact you via WhatsApp for confirmation.',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     const SizedBox(height: AppSizes.medium),
@@ -116,6 +128,7 @@ class BadgesScreen extends ConsumerWidget {
                           text: isPremium
                               ? "Premium Activated"
                               : "Apply via Google Form",
+                          isPremium: true,
                           isDisabled: isPremium,
                           onPressed: isPremium
                               ? null

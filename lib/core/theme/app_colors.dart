@@ -6,4 +6,7 @@ class AppColors {
   static final whitish = Color(0xFFDDDDDD);
   static final error = Color(0xFFE27676);
   static final greyish = Color(0xFFA6A6A6);
+
+  // premium color
+  static final golden = Color(0xFFF2D479);
 }

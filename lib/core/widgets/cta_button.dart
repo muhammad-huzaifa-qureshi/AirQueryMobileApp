@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../theme/app_colors.dart';
 
 class CTAButton extends StatelessWidget {
@@ -8,6 +9,7 @@ class CTAButton extends StatelessWidget {
   final bool isPrimary;
   final bool isDanger;
   final bool isDisabled;
+  final bool isPremium;
 
   const CTAButton({
     super.key,
@@ -17,6 +19,7 @@ class CTAButton extends StatelessWidget {
     this.isPrimary = true,
     this.isDanger = false,
     this.isDisabled = false,
+    this.isPremium = false,
   });
 
   bool get _isInactive => isDisabled || isLoading || onPressed == null;
@@ -24,13 +27,18 @@ class CTAButton extends StatelessWidget {
   Color _getBg() {
     if (_isInactive) return AppColors.greyish;
     if (!isPrimary) return Colors.transparent;
-    return isDanger ? AppColors.error : AppColors.primary;
+    if (isDanger) return AppColors.error;
+    return isPremium ? AppColors.golden : AppColors.primary;
   }
 
   Color _getFg() {
     if (_isInactive) return AppColors.whitish;
-    if (isPrimary) return isDanger ? AppColors.whitish : AppColors.blackish;
-    return isDanger ? AppColors.error : AppColors.primary;
+    if (isPrimary) {
+      if (isDanger) return AppColors.whitish;
+      return AppColors.blackish;
+    }
+    if (isDanger) return AppColors.error;
+    return isPremium ? AppColors.golden : AppColors.primary;
   }
 
   @override
