@@ -2,6 +2,7 @@ import 'package:air_query/core/widgets/stat_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_sizes.dart';
+import '../../core/utils/format_date.dart';
 import '../../core/widgets/user_badges.dart';
 import 'notifier/other_user_profile_notifier.dart';
 
@@ -64,7 +65,7 @@ void showUserProfileCard(BuildContext context, String uid) {
                   ],
 
                   // role and about
-                  SizedBox(height: AppSizes.medium,),
+                  SizedBox(height: AppSizes.medium),
                   _profileRow(context, label: "Role", value: user.role),
                   if (user.about != null && user.about!.isNotEmpty)
                     _profileRow(context, label: "About", value: user.about!),
@@ -97,6 +98,16 @@ void showUserProfileCard(BuildContext context, String uid) {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+
+                  // createdAt text
+                  const SizedBox(height: AppSizes.medium,),
+                  Center(
+                    child: Text(
+                      "Joined ${formatDate(user.createdAt)}",
+                      style: Theme.of(context).textTheme.bodySmall,
+                      textAlign: .center,
                     ),
                   ),
                 ],

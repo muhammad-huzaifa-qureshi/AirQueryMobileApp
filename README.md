@@ -43,6 +43,7 @@ opportunities, and connect through peer-to-peer support.
 - `responsesPosted`: Int
 - `queriesResolved`: Int
 - `profileComplete`: Bool
+- `createdAt`: Timestamp
 
 ## `users/{uid}/private/fcmToken`
 

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserModel {
   final String uid;
   final String name;
@@ -9,6 +11,7 @@ class UserModel {
   final int queriesResolved;
   final bool profileComplete;
   final bool isPremium;
+  final DateTime createdAt;
 
   UserModel({
     required this.uid,
@@ -21,6 +24,7 @@ class UserModel {
     required this.queriesResolved,
     required this.profileComplete,
     this.isPremium = false,
+    required this.createdAt
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
@@ -35,6 +39,7 @@ class UserModel {
       queriesResolved: int.parse((map['queriesResolved'] ?? 0).toString()),
       profileComplete: map['profileComplete'] ?? false,
       isPremium: map['isPremium'] ?? false,
+      createdAt: (map['createdAt'] as Timestamp).toDate(),
     );
   }
 }

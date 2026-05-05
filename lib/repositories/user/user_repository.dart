@@ -32,6 +32,7 @@ class UserRepository {
         queriesResolved: 0,
         profileComplete: false,
         isPremium: false,
+        createdAt: DateTime.now(),
       );
     }
 

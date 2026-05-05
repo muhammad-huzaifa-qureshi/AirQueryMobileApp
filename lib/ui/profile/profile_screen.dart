@@ -6,6 +6,7 @@ import 'package:air_query/ui/profile/notifier/profile_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/utils/format_date.dart';
 import '../../core/widgets/stat_box.dart';
 import '../../core/widgets/user_badges.dart';
 
@@ -141,6 +142,14 @@ class ProfileScreen extends ConsumerWidget {
           Text(
             user.name,
             style: Theme.of(context).textTheme.titleLarge,
+            textAlign: TextAlign.center,
+          ),
+
+          // createdAt text
+          const SizedBox(height: AppSizes.minute,),
+          Text(
+            "Joined ${formatDate(user.createdAt)}",
+            style: Theme.of(context).textTheme.bodySmall,
             textAlign: TextAlign.center,
           ),
 

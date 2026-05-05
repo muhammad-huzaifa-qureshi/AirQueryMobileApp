@@ -71,6 +71,7 @@ export const updateProfile = onCall(
         responsesPosted: 0,
         queriesResolved: 0,
         profileComplete: false,
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
       });
     }
 
