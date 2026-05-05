@@ -9,11 +9,28 @@ import 'package:air_query/ui/profile/notifier/profile_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BadgesScreen extends ConsumerWidget {
+class BadgesScreen extends ConsumerStatefulWidget {
   const BadgesScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<BadgesScreen> createState() => _BadgesScreenState();
+}
+
+class _BadgesScreenState extends ConsumerState<BadgesScreen> {
+  late final double discountPC;
+
+  @override
+  void initState() {
+    discountPC =
+        (1 -
+            (BusinessConstants.premiumDiscountedPricePKR /
+                BusinessConstants.premiumActualPrice)) *
+        100;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Badges')),
       body: SafeArea(
@@ -80,7 +97,7 @@ class BadgesScreen extends ConsumerWidget {
                         ),
                         const SizedBox(width: AppSizes.small),
                         Text(
-                          'Premium User (80% OFF)',
+                          'Premium User ${discountPC > 0 ? "(${discountPC.round()}%)" : ""}',
                           style: Theme.of(context).textTheme.titleLarge
                               ?.copyWith(color: AppColors.golden),
                         ),
@@ -88,13 +105,16 @@ class BadgesScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: AppSizes.small),
                     Text(
-                      "Premium users enjoy a unique badge, a persistent golden query highlight, and 24/7 WhatsApp support.",
+                      "Premium users enjoy:\n"
+                      "• Premium Unique Badge\n"
+                      "• Golden Queries\n"
+                      "• 24/7 WhatsApp Support",
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     const SizedBox(height: AppSizes.medium),
 
                     Text(
-                      "Price: ${BusinessConstants.premiumPricePKR} PKR (Lifetime)",
+                      "Price: ${BusinessConstants.premiumDiscountedPricePKR} PKR (Lifetime)",
                       style: Theme.of(
                         context,
                       ).textTheme.labelLarge?.copyWith(color: AppColors.golden),
