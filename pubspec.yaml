@@ -4,7 +4,7 @@ description: "Air Query is an unofficial platform built for the Air University c
 publish_to: 'none'
 
 # keep constants' version in sync with this
-version: 3.0.0+21
+version: 3.1.0+22
 
 environment:
   sdk: ^3.10.8
