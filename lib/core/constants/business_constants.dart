@@ -27,7 +27,8 @@ class BusinessConstants {
   static const timerTickSeconds = 2;
 
   // premium
-  static const premiumPricePKR = 99;
+  static const premiumActualPrice = 500;
+  static const premiumDiscountedPricePKR = 99;
 
   // user profile
   static const nameMinChars = 3;

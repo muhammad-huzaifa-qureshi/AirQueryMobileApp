@@ -70,7 +70,8 @@ class QueryCard extends StatelessWidget {
               children: [
                 Flexible(
                   child: GestureDetector(
-                    onTap: () => showUserProfileCard(context, query.postedByUid),
+                    onTap: () =>
+                        showUserProfileCard(context, query.postedByUid),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
