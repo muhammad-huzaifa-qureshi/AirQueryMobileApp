@@ -85,6 +85,10 @@ class HomeNotifier extends Notifier<HomeQueriesState> {
       state = state.copyWith(
         queries: state.queries.where((q) => q.id != queryId).toList(),
         clearError: true,
+        minorActionsSuccess: 'Query deleted!',
+      );
+      await Future.microtask(
+        () => state = state.copyWith(clearMinorActionsSuccess: true),
       );
     } catch (e) {
       final message = e is FirebaseException
@@ -102,6 +106,10 @@ class HomeNotifier extends Notifier<HomeQueriesState> {
             .map((q) => q.id == queryId ? q.copyWith(isResolved: true) : q)
             .toList(),
         clearError: true,
+        minorActionsSuccess: 'Query Resolved!',
+      );
+      await Future.microtask(
+        () => state = state.copyWith(clearMinorActionsSuccess: true),
       );
     } catch (e) {
       final message = e is FirebaseException
@@ -114,6 +122,14 @@ class HomeNotifier extends Notifier<HomeQueriesState> {
   Future<void> reportQuery(QueryModel query) async {
     try {
       await _repository.reportQuery(query: query);
+      state = state.copyWith(
+        clearError: true,
+        minorActionsSuccess:
+            "Thanks for your cooperation, our team will look into this!",
+      );
+      await Future.microtask(
+        () => state = state.copyWith(clearMinorActionsSuccess: true),
+      );
     } catch (e) {
       final message = e is FirebaseException
           ? e.message ?? 'Something went wrong.'

@@ -6,6 +6,7 @@ class HomeQueriesState {
   final bool isLoadingMore;
   final bool hasMore;
   final String? error;
+  final String? minorActionsSuccess; // for report, delete, resolve, etc.
 
   const HomeQueriesState({
     this.queries = const [],
@@ -13,6 +14,7 @@ class HomeQueriesState {
     this.isLoadingMore = false,
     this.hasMore = true,
     this.error,
+    this.minorActionsSuccess,
   });
 
   HomeQueriesState copyWith({
@@ -21,7 +23,9 @@ class HomeQueriesState {
     bool? isLoadingMore,
     bool? hasMore,
     String? error,
+    String? minorActionsSuccess,
     bool clearError = false,
+    bool clearMinorActionsSuccess = false,
   }) {
     return HomeQueriesState(
       queries: queries ?? this.queries,
@@ -29,6 +33,9 @@ class HomeQueriesState {
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
       hasMore: hasMore ?? this.hasMore,
       error: clearError ? null : (error ?? this.error),
+      minorActionsSuccess: clearMinorActionsSuccess
+          ? null
+          : (minorActionsSuccess ?? this.minorActionsSuccess),
     );
   }
 }

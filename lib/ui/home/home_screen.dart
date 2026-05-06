@@ -55,6 +55,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         );
       }
     });
+    // for minor actions
+    ref.listen(homeProvider.select((s) => s.minorActionsSuccess), (_, success) {
+      if (success != null) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(success)));
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -172,7 +180,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 );
               }
               // Bottom loader
-              if (index == state.queries.length + 1) {
+              if (index == state.queries.length + 1 && state.isLoadingMore) {
                 return const Padding(
                   padding: .symmetric(vertical: AppSizes.medium),
                   child: Center(
