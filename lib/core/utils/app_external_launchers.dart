@@ -1,6 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../constants/business_constants.dart';
+import '../widgets/web_view_screen.dart';
 
 class AppExternalLaunchers {
   static Future<void> launchGithub() async {
@@ -13,9 +16,16 @@ class AppExternalLaunchers {
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
-  static Future<void> launchPrivacyPolicy() async {
-    final uri = Uri.parse(BusinessConstants.privacyPolicy);
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  static Future<void> launchPrivacyPolicy(BuildContext context) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => WebViewScreen(
+          url: BusinessConstants.privacyPolicy,
+          title: 'Privacy Policy',
+        ),
+      ),
+    );
   }
 
   static Future<void> launchPlayStore() async {

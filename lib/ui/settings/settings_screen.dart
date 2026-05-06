@@ -47,7 +47,7 @@ class SettingsScreen extends ConsumerWidget {
               SettingsCard(
                 text: "Privacy Policy",
                 icon: Icon(Icons.privacy_tip_outlined),
-                onTap: AppExternalLaunchers.launchPrivacyPolicy,
+                onTap: () => AppExternalLaunchers.launchPrivacyPolicy(context),
               ),
               SizedBox(height: AppSizes.vLarge),
 
