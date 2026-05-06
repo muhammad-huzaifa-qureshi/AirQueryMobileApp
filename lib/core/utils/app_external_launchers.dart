@@ -28,6 +28,18 @@ class AppExternalLaunchers {
     );
   }
 
+  static Future<void> launchHowItWorks(BuildContext context) async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => WebViewScreen(
+          url: BusinessConstants.howItWorksLink,
+          title: 'How it Works?',
+        ),
+      ),
+    );
+  }
+
   static Future<void> launchPlayStore() async {
     final uri = Uri.parse(BusinessConstants.appPlayStoreLink);
     await launchUrl(uri, mode: LaunchMode.externalApplication);

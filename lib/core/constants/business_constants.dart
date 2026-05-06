@@ -14,6 +14,8 @@ class BusinessConstants {
       "https://play.google.com/store/apps/details?id=com.hqapplications.airuniversity.airquery";
   static const String premiumApplicationLink =
       "https://forms.gle/TKLJMbbwJ5GTNrjG7";
+  static const String howItWorksLink =
+      "https://sites.google.com/view/air-query-how-it-works/home";
 
   // FCM topics
   static const String fcmTopicAllUsers = "all_users";

@@ -1,6 +1,7 @@
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/routing/app_routes.dart';
 import 'package:air_query/core/theme/app_colors.dart';
+import 'package:air_query/core/utils/app_external_launchers.dart';
 import 'package:air_query/core/widgets/query_card.dart';
 import 'package:air_query/ui/home/notifier/home_notifier.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () => Navigator.pushNamed(context, AppRoutes.badges),
-            icon: Icon(Icons.workspace_premium, color: AppColors.golden,),
+            icon: Icon(Icons.workspace_premium, color: AppColors.golden),
             tooltip: "Badges Info",
           ),
           IconButton(
@@ -71,11 +72,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, AppRoutes.postQuery),
-        tooltip: "Post a Query",
-        child: const Icon(Icons.add),
+      floatingActionButton: Column(
+        mainAxisSize: .min,
+        children: [
+          FloatingActionButton(
+            heroTag: "sec_btn",
+            onPressed: () => AppExternalLaunchers.launchHowItWorks(context),
+            tooltip: "How it works?",
+            backgroundColor: AppColors.blackish,
+            foregroundColor: AppColors.whitish,
+            child: const Icon(Icons.help_outline),
+          ),
+          const SizedBox(height: AppSizes.medium),
+          FloatingActionButton(
+            heroTag: "prim_btn",
+            onPressed: () => Navigator.pushNamed(context, AppRoutes.postQuery),
+            tooltip: "Post a Query",
+            child: const Icon(Icons.add),
+          ),
+        ],
       ),
+
       body: SafeArea(child: _buildBody()),
     );
   }
@@ -131,7 +148,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           onRefresh: () => ref.read(homeProvider.notifier).refresh(),
           child: ListView.builder(
             controller: widget.scrollController,
-            physics: const AlwaysScrollableScrollPhysics(), // to enable pull to refresh all time
+            physics: const AlwaysScrollableScrollPhysics(),
+            // to enable pull to refresh all time
             padding: const EdgeInsets.fromLTRB(
               AppSizes.medium,
               AppSizes.medium,
