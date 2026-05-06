@@ -2,7 +2,6 @@ import 'package:air_query/core/constants/app_icons.dart';
 import 'package:air_query/core/constants/app_sizes.dart';
 import 'package:air_query/core/constants/business_constants.dart';
 import 'package:air_query/core/theme/app_colors.dart';
-import 'package:air_query/core/utils/app_external_launchers.dart';
 import 'package:air_query/core/widgets/cta_button.dart';
 import 'package:air_query/ui/about/widgets/about_card.dart';
 import 'package:air_query/ui/profile/notifier/profile_notifier.dart';
@@ -147,12 +146,13 @@ class _BadgesScreenState extends ConsumerState<BadgesScreen> {
                         return CTAButton(
                           text: isPremium
                               ? "Premium Activated"
-                              : "Apply via Google Form",
+                              : "Coming Soon...",
                           isPremium: true,
                           isDisabled: isPremium,
-                          onPressed: isPremium
-                              ? null
-                              : AppExternalLaunchers.launchPremiumApplication,
+                          onPressed: null,
+                          // onPressed: isPremium
+                          //     ? null
+                          //     : AppExternalLaunchers.launchPremiumApplication,
                         );
                       },
                     ),
