@@ -95,6 +95,7 @@ Document ID is `{queryId}_{uid}` — prevents duplicate reports from the same us
 - Fix navigation issue when opening responses from notifications (missing back option)
 - Skeleton loading (shimmer effect) on home feed
 - Dedicated notifications tab
+- Add a proper onboarding for new user
 - Filters: resolved-based and role-based
 - Improved user experience and interaction flow
 - UI and visual design enhancements
