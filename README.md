@@ -94,9 +94,11 @@ Document ID is `{queryId}_{uid}` — prevents duplicate reports from the same us
 
 - Fix navigation issue when opening responses from notifications (missing back option)
 - Skeleton loading (shimmer effect) on home feed
+- Add SVG Icons on error, empty screens
 - Dedicated notifications tab
 - Add a proper onboarding for new user
 - Filters: resolved-based and role-based
+- Add Intent Filter for sharing Image file
 - Improved user experience and interaction flow
 - UI and visual design enhancements
 - Codebase refactoring for better maintainability
