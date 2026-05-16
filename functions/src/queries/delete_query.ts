@@ -1,8 +1,7 @@
 import {onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
-import {batchDelete} from "../utils/batch_delete";
 
-/** Deletes a query and all its responses. */
+/** Deletes a query. Cleanup is handled by the query delete trigger. */
 export const deleteQuery = onCall(
   {maxInstances: 1, enforceAppCheck: true},
   async (request) => {
@@ -42,24 +41,6 @@ export const deleteQuery = onCall(
       );
     }
 
-    // Delete image from Storage if present
-    const imagePath = querySnap.data()?.imagePath;
-    if (imagePath) {
-      try {
-        await admin.storage()
-          .bucket()
-          .file(imagePath)
-          .delete();
-      } catch (e) {
-        console.warn("Image delete failed:", e);
-      }
-    }
-
-    // Delete all responses first (outside transaction — too many ops)
-    const responsesSnap = await queryRef.collection("responses").get();
-    await batchDelete(db, responsesSnap.docs);
-
-    // Delete query doc
     await queryRef.delete();
 
     return {success: true};

@@ -14,5 +14,6 @@ export {deleteAccount} from "./users/delete_account";
 export {updateProfile} from "./users/update_profile";
 // export triggers
 export {onQueryCreated} from "./triggers/on_query_created";
+export {onQueryDeleted} from "./triggers/on_query_deleted";
 export {onResponseCreated} from "./triggers/on_response_created";
 export {onUserUpdated} from "./triggers/on_user_updated";
