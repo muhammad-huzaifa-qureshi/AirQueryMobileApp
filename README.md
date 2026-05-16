@@ -81,6 +81,11 @@ opportunities, and connect through peer-to-peer support.
 - `totalQueriesResolved`: Int
 - `totalResponses`: Int
 
+## `premiumPlanPricing/current`
+
+- `premiumActualPricePKR`: Double | null
+- `premiumDiscountedPricePKR`: Double | null
+
 ## `reportedQueries/{queryId}_{uid}`
 
 Document ID is `{queryId}_{uid}` — prevents duplicate reports from the same user on the same query.

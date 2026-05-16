@@ -1,6 +1,6 @@
 class BusinessConstants {
   // version
-  static const appCurrentVersion = "3.2.0";
+  static const appCurrentVersion = "3.2.1";
 
   // Links
   static const String githubRepoLink =
@@ -27,10 +27,6 @@ class BusinessConstants {
   // authentication
   static const resendCooldownSeconds = 60;
   static const timerTickSeconds = 2;
-
-  // premium
-  static const premiumActualPrice = 500;
-  static const premiumDiscountedPricePKR = 99;
 
   // user profile
   static const nameMinChars = 3;

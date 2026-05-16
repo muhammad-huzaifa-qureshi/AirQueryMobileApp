@@ -20,6 +20,11 @@ service cloud.firestore {
       allow list, create, update, delete: if false;
     }
 
+    match /premiumPlanPricing/{docId} {
+      allow get: if isAuthed();
+      allow list, create, update, delete: if false;
+    }
+
     match /users/{uid} {
       allow get: if isAuthed();
       allow list: if false;
