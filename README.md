@@ -1,16 +1,11 @@
 # Air Query
+Not actively maintained
 
 Air Query is an unofficial platform built for the Air University community including students,
 staff, alumni, and explorers. It offers a focused space to ask questions, share knowledge, discover
 opportunities, and connect through peer-to-peer support.
 
 [![Get it on Google Play](https://img.shields.io/badge/Download-Google%20Play-34A853?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=com.hqapplications.airuniversity.airquery)
-
-[![License](https://img.shields.io/badge/License-Air%20Query-111111?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE.md)
-
-[![Privacy Policy](https://img.shields.io/badge/Privacy-Policy-2563EB?style=for-the-badge&logo=shield&logoColor=white)](https://sites.google.com/view/air-query-privacy-policy/air-query)
-
-[![Delete Account](https://img.shields.io/badge/Account-Data%20Deletion-DC2626?style=for-the-badge&logo=trash&logoColor=white)](https://forms.gle/DmUXGR4ZAqZQ9szJA)
 
 # Tech Stack
 
@@ -186,12 +181,3 @@ or by using Android Studio.
 This application is an independent project and is **NOT** affiliated with, endorsed by, or
 officially associated with Air University in any capacity. All references to Air University are for
 identification purposes only.
-
-# Contact
-
-Before starting work on a new feature, **reach out first** — open a GitHub discussion or email
-`muhammadhuzaifaqureshi01@gmail.com`. This avoids duplicate effort and ensures the feature aligns
-with the project direction. Bug fixes and improvements are welcome directly via PR.
-
-For any technical issues or questions regarding the codebase, feel free to reach out via email or
-open a GitHub issue.
