@@ -1,4 +1,5 @@
 # Air Query Source Available License
+NOT ACTIVELY MAINTAINED!
 
 Copyright © Air Query, Muhammad Huzaifa Qureshi 2026
 
