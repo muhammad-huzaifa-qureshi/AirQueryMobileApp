@@ -1,5 +1,5 @@
 # Air Query
-Not actively maintained
+NOT ACTIVELY MAINTAINED!
 
 Air Query is an unofficial platform built for the Air University community including students,
 staff, alumni, and explorers. It offers a focused space to ask questions, share knowledge, discover
